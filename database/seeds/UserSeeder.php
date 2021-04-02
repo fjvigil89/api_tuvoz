@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
                           'name'       => $faker->firstName("male"),
                           'email'      => $faker->email,
                           'password'   => $faker->password,
-                          'treatment_id'  => $i+1,
+                          //'treatment_id'  => $i+1,
                           'created_at' => date('Y-m-d H:m:s'),
                           'updated_at' => date('Y-m-d H:m:s')
                     )

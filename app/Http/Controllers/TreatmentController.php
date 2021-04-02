@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Treatment;
+use App\Phrase;
+use App\Record;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
+use Log;
 
 class TreatmentController extends Controller
 {
@@ -16,7 +20,13 @@ class TreatmentController extends Controller
     public function index()
     {
         //
-        return view('Treatment/index');
+        $treatment=Treatment::all();
+        if (!$treatment) {
+            return response("No existen Elementos", 404);
+        }        
+        return response()->json($treatment,200);
+
+        //return view('Treatment/index');
     }
 
     /**
@@ -27,14 +37,30 @@ class TreatmentController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $treatment = new Treatment;
+        if($request->has('name'))
+        {
+            $treatment->name = $request->name;
+            
+
+        }
+        else{ return response("No ha entrado el nombre del Tratamiento", 300); }
+        if($request->has('desc'))
+        {
+            $treatment->desc = $request->desc;
+
+        }
+        else{ return response("No ha entrado la descripción del Tratamiento", 300); }
+        
+        
 
         if($request->hasFile('file'))
         {
-          
-           //obtenemos el campo file definido en el formulario
-           $file = $request->file('file');
+          //obtenemos el campo file definido en el formulario
+            $file = $request->file('file');
 
-           $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'file' => 'required|file|mimes:mp3,jpeg',
 
             ]);
@@ -42,24 +68,55 @@ class TreatmentController extends Controller
             if($validator->fails()){
                 return redirect()->back()->withErrors($validator);
             }
-
            
-           //obtenemos el nombre del archivo
-           $nombre = $file->getClientOriginalName();
-           
+            if($this->saveAudio($file))
+            {
+                $record = new Record;
+                $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
+                $record->name = $file->getClientOriginalName();
+                $record->save();
+                
+                $treatment->Record()->associate($record->id);
+                
+                
+            }
+              
+        }
+        ///aqui debe ser un array o lista para asocialo al tratamiento
+        if($request->has('phrase'))
+        {
+            $phrase = new Phrase;
+            $phrase->phrase = $request->phrase;
+            $phrase->save();
 
-           //indicamos que queremos guardar un nuevo archivo en el disco local
-           \Storage::disk('audio')->put($nombre,  \File::get($file));
+            $treatment->Phrase()->associate($phrase->id);
+            
+            
 
-           //return $request->root()."/storage/audio/".$nombre;
-            return back();   
         }
 
-        return "No ha subido ningun audio";
+        $treatment->save();
+
+        return response()->json($treatment, 200);
          
     }
 
-    
+    function saveAudio($file)
+    {
+        try{       
+            //obtenemos el nombre del archivo
+            $nombre = $file->getClientOriginalName();
+            
+            //indicamos que queremos guardar un nuevo archivo en el disco local
+            \Storage::disk('audio')->put($nombre,  \File::get($file));
+            return true;
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("The file is not save :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return false;
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -67,9 +124,24 @@ class TreatmentController extends Controller
      * @param  \App\Treatment  $treatment
      * @return \Illuminate\Http\Response
      */
-    public function show(Treatment $treatment)
+    public function show($treatment)
     {
+     
+        //return view('treatment.show', compact('treatment'));
         //
+        try{
+            $item = Treatment::find($treatment);
+            if (!$item) {
+                return response("No existe el Tratamiento deseado", 404);
+            }            
+            return response()->json($item, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No existe el Tratamiento deseado :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+
     }
 
     /**
@@ -90,8 +162,39 @@ class TreatmentController extends Controller
      * @param  \App\Treatment  $treatment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Treatment $treatment)
+    public function destroy($treatment)
     {
         //
+        //
+        try{
+            $item = Treatment::FindOrFail($treatment);
+            if (!$item) {
+                return response("No existe el Tratamiento deseado", 404);
+            }
+
+            
+            $item_phrase = Phrase::FindOrFail($item->Phrase->id);
+
+            if ($item_phrase) {
+                $item_phrase->delete();
+            }
+
+            $item_record = Record::FindOrFail($item->Record->id);
+            if ($item_record) {
+                $item_record->delete();
+            }
+
+            $item->delete();  
+
+            return response()->json($item, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No existe el Tratamiento deseado :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+
+        
+
     }
 }

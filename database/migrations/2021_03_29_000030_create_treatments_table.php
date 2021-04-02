@@ -18,10 +18,14 @@ class CreateTreatmentsTable extends Migration
             $table->string('name');
             $table->string('desc');
             
-            //$table->foreign('user_id')->references('id')->on('users');
-            //$table->foreignId('user_id')->references('id')->on('User');
-            $table->foreignId('phrase_id')->constrained();
-            $table->foreignId('record_id')->constrained();
+            
+            $table->unsignedBigInteger('record_id')->nullable();
+            $table->unsignedBigInteger('phrase_id')->nullable();
+
+            $table->foreign('phrase_id')->references('id')->on('phrases')->onDelete('cascade');
+            $table->foreign('record_id')->references('id')->on('records')->onDelete('cascade');
+            
+            
 
             $table->timestamps();
         });

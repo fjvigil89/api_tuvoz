@@ -34,7 +34,7 @@ class Treatment extends Model
      */
     public function Record()
     {
-        return $this->hasOne(Record::class);
+        return $this->belongsTo('App\Record');
     }
 
 }
