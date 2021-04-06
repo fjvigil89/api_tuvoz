@@ -24,6 +24,10 @@ Route::post('login', 'Api\\AuthController@login');
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('treatment', 'TreatmentController',['only'=>[
         'index','store','show','update','destroy'
-        ]]);
+        ]]);   
+
+    
+    Route::post('logout', 'Api\\AuthController@logout');
 });
+
 

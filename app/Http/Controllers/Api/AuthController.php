@@ -5,17 +5,25 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use Validator;
+use Log;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     //
     public function register(Request $request)
     {
-        $request->validate([
+       
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:6'
         ]);
+
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -25,19 +33,24 @@ class AuthController extends Controller
 
         
         //$user->roles()->attach(2); // Simple user role
-
+        //$this->login($request);
         return response()->json($user);
     }
 
     public function login(Request $request)
     {
-        $request->validate([
+        
+        $validator = Validator::make($request->all(), [
             'email' => 'email|required',
             'password' => 'required'
         ]);
 
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator);
+        }
+
         $credentials = request(['email', 'password']);
-        if (!auth()->attempt($credentials)) {
+        if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => [
@@ -49,10 +62,21 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
+        
         $authToken = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
             'access_token' => $authToken,
         ]);
+       
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'message' => "Token deleted successfully!",
+        ], 200);
+       
     }
 }
