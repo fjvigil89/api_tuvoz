@@ -29,7 +29,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-        ]);
+        ])->assignRole('Guest');
 
         
         //$user->roles()->attach(2); // Simple user role
