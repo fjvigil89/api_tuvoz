@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use App\User;
 
 class UserSeeder extends Seeder
 {
@@ -12,21 +13,21 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        
+      $user = User::create([
+            'name' => "Frank Josué Vigil Vega",
+            'email' => "frankjosue.vigilvega@gmail.com",
+            'password' => bcrypt("89120815065"),
+        ])->assignRole('Admin');
 
         $faker = Faker::create();
         for ($i=0; $i < 10; $i++) {
-              \DB::table("users")->insert(
-                    array(
-                          //'id'         => $faker->unique()->randomNumber,
-                          'name'       => $faker->firstName("male"),
-                          'email'      => $faker->email,
-                          'password'   => $faker->password,
-                          //'treatment_id'  => $i+1,
-                          'created_at' => date('Y-m-d H:m:s'),
-                          'updated_at' => date('Y-m-d H:m:s')
-                    )
-              );
+              $user = User::create([
+                  'name'       => $faker->firstName("male"),
+                  'email'      => $faker->email,
+                  'password'   => $faker->password,
+                  'created_at' => date('Y-m-d H:m:s'),
+                  'updated_at' => date('Y-m-d H:m:s')
+              ])->assignRole($faker->randomElement(['Guest', 'Specialist']));
         }
     }
 }

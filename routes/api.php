@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('register', 'Api\\AuthController@register');
-Route::post('login', 'Api\\AuthController@login');
+Route::post('register', 'Api\\AuthController@register')->name('api.register');
+Route::post('login', 'Api\\AuthController@login')->name('api.login');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('treatment', 'TreatmentController',['only'=>[
@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         ]]);   
 
     
-    Route::post('logout', 'Api\\AuthController@logout');
+    Route::post('logout', 'Api\\AuthController@logout')->name('api.logout');
 });
 
 

@@ -17,5 +17,5 @@ use App\Treatment;
 Route::get('/', function () {
 
     return view('welcome');
-});
+})->name('home');
 
