@@ -28,6 +28,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     
     Route::post('logout', 'Api\\AuthController@logout')->name('api.logout');
+    Route::post('update-password', 'Api\\UpdatePwdController@updatePassword')->name('updatePassword');    
 });
+
+Route::post('forgot-password', 'Api\\PasswordController@fotgotPassword')->name('fotgotPassword');
+
 
 
