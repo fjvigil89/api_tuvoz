@@ -58,7 +58,7 @@ class AuthController extends Controller
                         'Invalid credentials'
                     ],
                 ]
-            ], 422);
+            ], Response::HTTP_NOT_FOUND);
         }
 
         $user = User::where('email', $request->email)->first();
@@ -66,6 +66,7 @@ class AuthController extends Controller
         $authToken = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
+            'data' => $user,
             'access_token' => $authToken,
         ]);
        

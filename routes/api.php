@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('register', 'Api\\AuthController@register')->name('api.register');
-Route::post('login', 'Api\\AuthController@login')->name('api.login');
+Route::get('login', 'Api\\AuthController@login');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('treatment', 'TreatmentController',['only'=>[
