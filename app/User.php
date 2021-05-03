@@ -44,4 +44,5 @@ class User extends Authenticatable
     public function Treatment() {
         return $this->belongsToMany('App\Treatment');
     }
+
 }

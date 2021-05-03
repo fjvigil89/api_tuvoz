@@ -43,7 +43,7 @@ class AuthController extends Controller
         try{
             $validator = Validator::make($request->all(), [
                 'email' => 'email|required',
-                'password' => 'required'
+                'password' => 'required'                
             ]);
     
             if($validator->fails()){
@@ -62,12 +62,11 @@ class AuthController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
     
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();            
+            $authToken = $user->createToken($user->name)->plainTextToken;
             
-            $authToken = $user->createToken('auth-token')->plainTextToken;
-    
             return response()->json([
-                'data' => $user,
+                'data' => Auth::user(),
                 'access_token' => $authToken,                
             ], Response::HTTP_OK);
         }
@@ -79,19 +78,20 @@ class AuthController extends Controller
        
     }
 
+    //se pasa el id del usuario que esta loguedo
     public function logout(Request $request)
-    {
+    {   
         try{
-            $request->user()->currentAccessToken()->delete();
-        return response()->json([
-            'data' => $request->user(),
-            'message' => "Token deleted successfully!",
-        ], Response::HTTP_OK);
-        }
-        catch(\Exception $e)
-        {  	        			
-          Log::critical(" Error al hace logout: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-        } 		
+            $user = Auth::user()->currentAccessToken()->delete();            
+            return response()->json([
+                    'data' => $user,                    
+                    'message' => "Token deleted successfully!",
+                ], Response::HTTP_OK);
+            }
+            catch(\Exception $e)
+            {  	        			
+                Log::critical(" Error al hace logout: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            } 		
                
-    }
+        }
 }

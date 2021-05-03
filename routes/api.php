@@ -18,20 +18,25 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('register', 'Api\\AuthController@register')->name('api.register');
-Route::get('login', 'Api\\AuthController@login');
+
+
+Route::get('login', 'Api\\AuthController@login')->name('login');
+
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+
     Route::resource('treatment', 'TreatmentController',['only'=>[
         'index','store','show','update','destroy'
         ]]);   
-
     
-    Route::post('logout', 'Api\\AuthController@logout')->name('api.logout');
     Route::post('update-password', 'Api\\UpdatePwdController@updatePassword')->name('updatePassword');    
+    Route::post('logout', 'Api\\AuthController@logout')->name('api.logout');
 });
 
+
+Route::post('register', 'Api\\AuthController@register')->name('api.register');
 Route::post('forgot-password', 'Api\\PasswordController@fotgotPassword')->name('fotgotPassword');
+
 
 
 
