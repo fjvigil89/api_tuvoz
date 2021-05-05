@@ -13,13 +13,13 @@ class Treatment extends Model
      * @var array
      */
     protected $fillable = [
-        'id','name','desc','phrase_id','record_id'
+        'id','name','desc', 'user_id','phrase_id','record_id'
     ];
     
 
     public function Users() {
     	return $this->belongsToMany('App\User');
-	}
+	}    
 
 	/**
      * Get the post that owns the comment.

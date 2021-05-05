@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
 use Log;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class TreatmentController extends Controller
 {
@@ -20,13 +22,39 @@ class TreatmentController extends Controller
     public function index()
     {
         //
-        $treatment=Treatment::all();
+        $user = Auth::user();
+        $treatment=Treatment::where('user_id', $user->id)->get();
         if (!$treatment) {
-            return response("No existen Elementos", 404);
+            return response()->json([
+                'message' => 'The given data was not found.',
+            ], Response::HTTP_NOT_FOUND);
         }        
-        return response()->json($treatment,200);
+        
+        return response()->json([
+            'data' => $treatment,
+            'message' => 'The data was found successfully.',
+        ], Response::HTTP_OK);
 
-        //return view('Treatment/index');
+        
+    }
+
+    public function countTreatment()
+    {
+        //
+        $user = Auth::user();
+        $treatment=Treatment::where('user_id', $user->id)->get();
+        if (!$treatment) {
+            return response()->json([
+                'message' => 'The given data was not found.',
+            ], Response::HTTP_NOT_FOUND);
+        }        
+        
+        return response()->json([
+            'data' => count($treatment),
+            'message' => 'The data was found successfully.',
+        ], Response::HTTP_OK);
+
+        
     }
 
     /**

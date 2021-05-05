@@ -20,8 +20,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             
-            $table->unsignedBigInteger('treatment_id')->nullable();
-            $table->foreign('treatment_id')->references('id')->on('treatments')->onUpdate('cascade');
+            //$table->unsignedBigInteger('treatment_id')->nullable();
+            //$table->foreign('treatment_id')->references('id')->on('treatments')->onUpdate('cascade');
             //$table->foreignId('treatment_id')->constrained();
             
             $table->rememberToken();

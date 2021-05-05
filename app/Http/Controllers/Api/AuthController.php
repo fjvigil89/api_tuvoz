@@ -40,7 +40,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        try{
+        
             $validator = Validator::make($request->all(), [
                 'email' => 'email|required',
                 'password' => 'required'                
@@ -67,13 +67,10 @@ class AuthController extends Controller
             
             return response()->json([
                 'data' => Auth::user(),
-                'access_token' => $authToken,                
+                'access_token' => $authToken,
+                'message' => "Congratulation!! your login es successfully."               
             ], Response::HTTP_OK);
-        }
-        catch(\Exception $e)
-        {  	        			
-          Log::critical(" Error al hace login: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-        } 
+        
         
        
     }

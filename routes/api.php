@@ -25,6 +25,7 @@ Route::get('login', 'Api\\AuthController@login')->name('login');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
+    Route::get('countTreatment', 'TreatmentController@countTreatment')->name('treatment.countTreatment');
     Route::resource('treatment', 'TreatmentController',['only'=>[
         'index','store','show','update','destroy'
         ]]);   
