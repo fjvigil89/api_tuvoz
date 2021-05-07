@@ -13,28 +13,22 @@ class Treatment extends Model
      * @var array
      */
     protected $fillable = [
-        'id','name','desc', 'user_id','phrase_id','record_id'
+        'id','name','desc', 'status', 'specialist_id'
     ];
     
 
-    public function Users() {
-    	return $this->belongsToMany('App\User');
+    public function Specialist() {
+    	return $this->belongsToMany('App\User', 'specialist_id', 'id' );
 	}    
 
-	/**
-     * Get the post that owns the comment.
-     */
-    public function Phrase()
-    {
-        return $this->belongsTo('App\Phrase');
-    }
 
-    /**
-     * Get the phone associated with the user.
-     */
-    public function Record()
-    {
-        return $this->belongsTo('App\Record');
-    }
+    public function Patinet_Treatment() {
+    	return $this->belongsToMany('App\User_Treatment');
+	}
+
+    public function User() {
+    	return $this->belongsToMany('App\User');
+	}
+	
 
 }

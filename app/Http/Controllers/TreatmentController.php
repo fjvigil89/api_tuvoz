@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Treatment;
+use App\User_Treatment;
 use App\Phrase;
 use App\Record;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
@@ -14,35 +16,69 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TreatmentController extends Controller
 {
+    //Solo muestra los tratamientos del usuario logueado
     /**
      * Display a listing of the resource.
-     *
+     * 
      * @return \Illuminate\Http\Response
-     */
+     */    
     public function index()
     {
-        //
-        $user = Auth::user();
-        $treatment=Treatment::where('user_id', $user->id)->get();
-        if (!$treatment) {
+        try{
+            $user = Auth::user();
+            $treatment=Treatment::where('specialist_id', $user->id)->get();
+            
+            if (!$treatment) {
+                return response()->json([
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }        
+                        
+            foreach($treatment as $item)
+            {
+                $user_treatment = array();            
+                $patinets = User_Treatment::where('treatment_id', $item->id)->get();                                
+                 foreach($patinets as $patient){                    
+                     array_push($user_treatment, User::where('id', $patient->patient_id)->get());
+                 }
+                 $item['patients'] = $user_treatment;
+
+            }
+            
             return response()->json([
-                'message' => 'The given data was not found.',
-            ], Response::HTTP_NOT_FOUND);
-        }        
-        
-        return response()->json([
-            'data' => $treatment,
-            'message' => 'The data was found successfully.',
-        ], Response::HTTP_OK);
+                'data' => $treatment,                              
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        }
+        catch(\Exception $e)
+            {  	        			
+                Log::critical(" Error al cargar los Tratamiento: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            } 
 
         
     }
 
+    public function ChangeStatus(Request $request)
+    {
+        try{
+                //$treatment=Treatment::where('id', $request->id)->first();
+                //$treatment->status != $treatment->status;                
+                return response()->json([
+                    'data' => $request,                              
+                    'message' => 'The data was found successfully.',
+                ], Response::HTTP_OK);
+        }
+        catch(\Exception $e)
+            {  	        			
+                Log::critical(" Error al cambiar el estado del Tratamiento: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            }       
+    }
+   
     public function countTreatment()
     {
         //
         $user = Auth::user();
-        $treatment=Treatment::where('user_id', $user->id)->get();
+        $treatment=Treatment::where('specialist_id', $user->id)->get();
         if (!$treatment) {
             return response()->json([
                 'message' => 'The given data was not found.',

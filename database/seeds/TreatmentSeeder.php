@@ -15,17 +15,16 @@ class TreatmentSeeder extends Seeder
         //
         $faker = Faker::create();
         for ($i=0; $i < 10; $i++) {
-              \DB::table("treatments")->insert(
-                    array(
-                          //'id'         => $faker->unique()->randomNumber,
-                          'name'       => $faker->firstName("male"),
-                          'desc'       => $faker->sentence,
-                          'phrase_id'  => $i+1,
-                          'record_id'  => $i+1,
-                          'created_at' => date('Y-m-d H:m:s'),
-                          'updated_at' => date('Y-m-d H:m:s')
-                    )
-              );
+            \DB::table("treatments")->insert(
+                  array(
+                        //'id'         => $faker->unique()->randomNumber,
+                        'name'       => $faker->firstName("male"),
+                        'desc'       => $faker->sentence,  
+                        'specialist_id' => '1',               
+                        'created_at' => date('Y-m-d H:m:s'),
+                        'updated_at' => date('Y-m-d H:m:s')
+                  )
+            );
         }
     }
 }

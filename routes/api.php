@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('login', 'Api\\AuthController@login')->name('login');
 
 
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
 
     Route::get('countTreatment', 'TreatmentController@countTreatment')->name('treatment.countTreatment');
     Route::resource('treatment', 'TreatmentController',['only'=>[
@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     Route::post('update-password', 'Api\\UpdatePwdController@updatePassword')->name('updatePassword');    
     Route::post('logout', 'Api\\AuthController@logout')->name('api.logout');
+
+    Route::post('treatment_status/{id}', 'TreatmentController@ChangeStatus')->name('treatment_status');
 });
 
 

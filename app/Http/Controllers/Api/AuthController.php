@@ -30,6 +30,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'role' => 'Guest',
         ])->assignRole('Guest');
 
         
@@ -64,7 +65,8 @@ class AuthController extends Controller
     
             $user = User::where('email', $request->email)->first();            
             $authToken = $user->createToken($user->name)->plainTextToken;
-            
+            $user->remember_token = $authToken;
+            $user->save();
             return response()->json([
                 'data' => Auth::user(),
                 'access_token' => $authToken,
@@ -90,5 +92,5 @@ class AuthController extends Controller
                 Log::critical(" Error al hace logout: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             } 		
                
-        }
+    }
 }

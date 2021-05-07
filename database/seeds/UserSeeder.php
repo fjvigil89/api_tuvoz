@@ -17,17 +17,21 @@ class UserSeeder extends Seeder
             'name' => "Frank Josué Vigil Vega",
             'email' => "frankjosue.vigilvega@gmail.com",
             'password' => bcrypt("89120815065"),
-        ])->assignRole('Admin');
+            'role'=> 'Specialist',
+        ])->assignRole('Specialist');
 
         $faker = Faker::create();
         for ($i=0; $i < 10; $i++) {
-              $user = User::create([
+              $role = 'Guest'; //$faker->randomElement(['Guest', 'Specialist']);
+              $user2 = User::create([
                   'name'       => $faker->firstName("male"),
                   'email'      => $faker->email,
                   'password'   => $faker->password,
+                  'role'       => $role,
+                  'specialist_id' => $user->id,
                   'created_at' => date('Y-m-d H:m:s'),
                   'updated_at' => date('Y-m-d H:m:s')
-              ])->assignRole($faker->randomElement(['Guest', 'Specialist']));
+              ])->assignRole($role);
         }
     }
 }
