@@ -26,6 +26,8 @@ Route::get('login', 'Api\\AuthController@login')->name('login');
 Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
 
     Route::get('countTreatment', 'TreatmentController@countTreatment')->name('treatment.countTreatment');
+    Route::get('countUserByTreatment', 'TreatmentController@countUserByTreatment')->name('treatment.countUserByTreatment');
+
     Route::resource('treatment', 'TreatmentController',['only'=>[
         'index','store','show','update','destroy'
         ]]);   
@@ -33,7 +35,7 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::post('update-password', 'Api\\UpdatePwdController@updatePassword')->name('updatePassword');    
     Route::post('logout', 'Api\\AuthController@logout')->name('api.logout');
 
-    Route::post('treatment_status/{id}', 'TreatmentController@ChangeStatus')->name('treatment_status');
+    Route::post('treatment_status', 'TreatmentController@ChangeStatus')->name('treatment_status');
 });
 
 

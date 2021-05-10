@@ -58,6 +58,42 @@ class TreatmentController extends Controller
         
     }
 
+     //Solo muestra los tratamientos del usuario logueado
+    /**
+     * Display a listing of the resource.
+     * 
+     * @return \Illuminate\Http\Response
+     */    
+    public function countUserByTreatment()
+    {
+        try{
+            $user = Auth::user();
+            $treatment=Treatment::where('specialist_id', $user->id)->get();
+            
+            if (!$treatment) {
+                return response()->json([
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }        
+            $count =0;            
+            foreach($treatment as $item)
+            {
+                $count += count(User_Treatment::where('treatment_id', $item->id)->get());
+            }
+            
+            return response()->json([
+                'data' => $count,                              
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        }
+        catch(\Exception $e)
+            {  	        			
+                Log::critical(" Error al cargar los Tratamiento: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            } 
+
+        
+    }
+
     public function ChangeStatus(Request $request)
     {
         try{
@@ -101,67 +137,87 @@ class TreatmentController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $treatment = new Treatment;
-        if($request->has('name'))
-        {
-            $treatment->name = $request->name;
-            
-
-        }
-        else{ return response("No ha entrado el nombre del Tratamiento", 300); }
-        if($request->has('desc'))
-        {
-            $treatment->desc = $request->desc;
-
-        }
-        else{ return response("No ha entrado la descripción del Tratamiento", 300); }
-        
-        
-
-        if($request->hasFile('file'))
-        {
-          //obtenemos el campo file definido en el formulario
-            $file = $request->file('file');
-
-            $validator = Validator::make($request->all(), [
-                'file' => 'required|file|mimes:mp3,jpeg',
-
-            ]);
-
-            if($validator->fails()){
-                return redirect()->back()->withErrors($validator);
-            }
-           
-            if($this->saveAudio($file))
+        try{
+            $user = Auth::user();
+            $treatment = new Treatment;
+            if($request->has('name'))
             {
-                $record = new Record;
-                $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
-                $record->name = $file->getClientOriginalName();
-                $record->save();
+                $treatment->name = $request->name;
                 
-                $treatment->Record()->associate($record->id);
-                
-                
+
             }
-              
-        }
-        ///aqui debe ser un array o lista para asocialo al tratamiento
-        if($request->has('phrase'))
-        {
-            $phrase = new Phrase;
-            $phrase->phrase = $request->phrase;
-            $phrase->save();
+            else{
+                return response()->json([                    
+                    'message' => 'The data name was found successfully.',
+                ], Response::HTTP_NOT_FOUND);                 
+            }
+            if($request->has('desc'))
+            {
+                $treatment->desc = $request->desc;
 
-            $treatment->Phrase()->associate($phrase->id);
+            }
+            else{ 
+                return response()->json([                    
+                    'message' => 'The data descriptions was found successfully.',
+                ], Response::HTTP_NOT_FOUND); }
             
+            $treatment->status=true;
+            
+            $treatment->specialist_id = $user->id;        
+            $treatment->save();
+            
+            // if($request->hasFile('file'))
+            // {
+            //   //obtenemos el campo file definido en el formulario
+            //     $file = $request->file('file');
+
+            //     $validator = Validator::make($request->all(), [
+            //         'file' => 'required|file|mimes:mp3,jpeg',
+
+            //     ]);
+
+            //     if($validator->fails()){
+            //         return redirect()->back()->withErrors($validator);
+            //     }
+            
+            //     if($this->saveAudio($file))
+            //     {
+            //         $record = new Record;
+            //         $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
+            //         $record->name = $file->getClientOriginalName();
+            //         $record->save();
+                    
+            //         $treatment->Record()->associate($record->id);
+                    
+                    
+            //     }
+                
+            // }
+            // ///aqui debe ser un array o lista para asocialo al tratamiento
+            // if($request->has('phrase'))
+            // {
+            //     $phrase = new Phrase;
+            //     $phrase->phrase = $request->phrase;
+            //     $phrase->save();
+
+            //     $treatment->Phrase()->associate($phrase->id);
+                
+                
+
+            // }
+
             
 
+            return response()->json([
+                'data' => $treatment,
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+            
         }
-
-        $treatment->save();
-
-        return response()->json($treatment, 200);
+        catch(\Exception $e)
+            {  	        			
+                Log::critical(" Error al adicionar Tratamiento: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            } 
          
     }
 
