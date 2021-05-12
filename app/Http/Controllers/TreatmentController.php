@@ -308,34 +308,25 @@ class TreatmentController extends Controller
      */
     public function destroy($treatment)
     {
-        //
-        //
         try{
             $item = Treatment::FindOrFail($treatment);
             if (!$item) {
-                return response("No existe el Tratamiento deseado", 404);
-            }
-
-            
-            $item_phrase = Phrase::FindOrFail($item->Phrase->id);
-
-            if ($item_phrase) {
-                $item_phrase->delete();
-            }
-
-            $item_record = Record::FindOrFail($item->Record->id);
-            if ($item_record) {
-                $item_record->delete();
+                return response()->json([                    
+                    'message' => 'The data treatment was found successfully.',
+                ], Response::HTTP_NOT_FOUND); 
             }
 
             $item->delete();  
-
-            return response()->json($item, 200);
+                        
+            return response()->json([
+                'data' => $item,
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
         }
         catch(\Exception $e)
         {
             Log::critical("No existe el Tratamiento deseado :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            return response("Alguna cosa esta mal", 500);
+            
         }
 
         
