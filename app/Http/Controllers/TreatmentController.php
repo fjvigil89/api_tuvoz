@@ -217,21 +217,6 @@ class TreatmentController extends Controller
             //     }
                 
             // }
-            // ///aqui debe ser un array o lista para asocialo al tratamiento
-            // if($request->has('phrase'))
-            // {
-            //     $phrase = new Phrase;
-            //     $phrase->phrase = $request->phrase;
-            //     $phrase->save();
-
-            //     $treatment->Phrase()->associate($phrase->id);
-                
-                
-
-            // }
-
-            
-
             return response()->json([
                 'data' => $treatment,
                 'message' => 'The data was found successfully.',

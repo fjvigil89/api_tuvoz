@@ -12,18 +12,18 @@ class PhraseSeeder extends Seeder
      */
     public function run()
     {
-        //
-        $faker = Faker::create();
-        for ($i=0; $i < 10; $i++) {
-              \DB::table("phrases")->insert(
-                    array(
-                          //'id'         => $faker->unique()->randomNumber,
-                          'phrase'       => $faker->sentence,
+      //   //
+      //   $faker = Faker::create();
+      //   for ($i=0; $i < 10; $i++) {
+      //         \DB::table("phrases")->insert(
+      //               array(
+      //                     //'id'         => $faker->unique()->randomNumber,
+      //                     'phrase'       => $faker->sentence,
                           
-                          'created_at' => date('Y-m-d H:m:s'),
-                          'updated_at' => date('Y-m-d H:m:s')
-                    )
-              );
-        }
+      //                     'created_at' => date('Y-m-d H:m:s'),
+      //                     'updated_at' => date('Y-m-d H:m:s')
+      //               )
+      //         );
+      //   }
     }
 }

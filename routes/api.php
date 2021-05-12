@@ -31,7 +31,13 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::resource('treatment', 'TreatmentController',['only'=>[
         'index','store','show','update','destroy'
         ]]);   
-    
+         
+  
+    Route::get('countPatientTreatment', 'TreatmentPatientController@countPatientTreatment')->name('treatment.countPatientTreatment');
+    Route::resource('treatment_patient', 'TreatmentPatientController',['only'=>[
+        'index'
+        ]]);  
+
     Route::post('update-password', 'Api\\UpdatePwdController@updatePassword')->name('updatePassword');    
     Route::post('logout', 'Api\\AuthController@logout')->name('api.logout');
 
