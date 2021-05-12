@@ -18,8 +18,8 @@ class CreateTreatmentsTable extends Migration
             $table->string('name');
             $table->string('desc');
             $table->boolean('status')->default(true);
-            $table->unsignedBigInteger('specialist_id')->nullable();          
-            $table->foreign('specialist_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('specialist_id')->nullable();   
+            $table->foreign('specialist_id')->references('id')->on('users')->onDelete('cascade');           
             
 
             $table->timestamps();

@@ -15,9 +15,10 @@ class User_TreatmentSeeder extends Seeder
         //
         $faker = Faker::create();
         for ($i=0; $i < 10; $i++) {              
-              $user = User_Treatment::create([                  
-                  'created_at' => date('Y-m-d H:m:s'),
-                  'updated_at' => date('Y-m-d H:m:s')
+              $user = User_Treatment::create([                    
+                  'treatment_id'   => 1,
+                  'created_at'      => date('Y-m-d H:m:s'),
+                  'updated_at'      => date('Y-m-d H:m:s')
               ]);
         }
     }

@@ -14,6 +14,14 @@ class Phrase extends Model
      * @var array
      */
     protected $fillable = [
-         'id','phrase',
+         'id','phrase','treatment_id'
     ];
+
+    /**
+     * Get the post that owns the comment.
+     */
+    public function Treatment()
+    {
+        return $this->belongsTo('App\Treatment');
+    }
 }

@@ -164,8 +164,32 @@ class TreatmentController extends Controller
             $treatment->status=true;
             
             $treatment->specialist_id = $user->id;        
+
             $treatment->save();
-            
+
+            //Relaciones con las frases
+            if($request->has('phrase'))
+            {
+                $phrases = $request->phrase;                
+                 foreach($phrases as $item)                    
+                    {
+                        
+                        $newPhrase = Phrase::create([
+                            'phrase' => $item['namePhrase'],
+                            'treatment_id'=> $treatment->id,
+                            'created_at' => date('Y-m-d H:m:s'),
+                            'updated_at' => date('Y-m-d H:m:s')
+                        ]);                        
+                        
+                    }
+                
+            }
+            else{ 
+                return response()->json([                    
+                    'message' => 'The data phrase was found successfully.',
+                ], Response::HTTP_NOT_FOUND); }
+
+
             // if($request->hasFile('file'))
             // {
             //   //obtenemos el campo file definido en el formulario

@@ -17,6 +17,10 @@ class CreatePhrasesTable extends Migration
             $table->id();
             $table->string('phrase');
             $table->timestamps();
+
+            $table->unsignedBigInteger('treatment_id')->nullable();
+            $table->foreign('treatment_id')->references('id')->on('treatments')->onDelete('cascade');
+            
         });
     }
 

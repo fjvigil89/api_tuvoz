@@ -18,11 +18,11 @@ class TreatmentSeeder extends Seeder
             \DB::table("treatments")->insert(
                   array(
                         //'id'         => $faker->unique()->randomNumber,
-                        'name'       => $faker->firstName("male"),
-                        'desc'       => $faker->sentence,  
-                        'specialist_id' => '1',               
-                        'created_at' => date('Y-m-d H:m:s'),
-                        'updated_at' => date('Y-m-d H:m:s')
+                        'name'          => $faker->firstName("male"),
+                        'desc'          => $faker->sentence,  
+                        'specialist_id' => 1,                        
+                        'created_at'    => date('Y-m-d H:m:s'),
+                        'updated_at'    => date('Y-m-d H:m:s')
                   )
             );
         }

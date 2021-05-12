@@ -29,6 +29,10 @@ class Treatment extends Model
     public function User() {
     	return $this->belongsToMany('App\User');
 	}
+
+   
+
+
 	
 
 }
