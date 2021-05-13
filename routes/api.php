@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
         ]]);   
          
   
+    Route::get('phrasePatientTreatment/{treatment}', 'TreatmentPatientController@phrasePatientTreatment')->name('treatment.phrasePatientTreatment');
     Route::get('countPatientTreatment', 'TreatmentPatientController@countPatientTreatment')->name('treatment.countPatientTreatment');
     Route::resource('treatment_patient', 'TreatmentPatientController',['only'=>[
         'index'

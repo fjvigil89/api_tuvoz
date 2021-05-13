@@ -76,6 +76,30 @@ class TreatmentPatientController extends Controller
 
         
     }
+    
+     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Treatment  $treatment
+     * @return \Illuminate\Http\Response
+     */
+    public function phrasePatientTreatment($treatment)
+    {
+               
+        $phrase=Phrase::where('treatment_id', $treatment)->get();
+        if (!$phrase) {
+            return response()->json([
+                'message' => 'The given data was not found.',
+            ], Response::HTTP_NOT_FOUND);
+        }        
+        
+        return response()->json([
+            'data' => $phrase,
+            'message' => 'The data was found successfully.',
+        ], Response::HTTP_OK);
+
+        
+    }
 
     
 
