@@ -14,7 +14,7 @@ class User_Treatment extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'patient_id','treatment_id','record_id'
+        'id', 'patient_id','treatment_id'
     ];
     
 
@@ -31,13 +31,7 @@ class User_Treatment extends Model
         return $this->belongsTo('App\Treatment');
     }
 
-        /**
-     * Get the phone associated with the user.
-     */
-    public function Record()
-    {
-        return $this->belongsTo('App\Record');
-    }
+    
 
     
 }

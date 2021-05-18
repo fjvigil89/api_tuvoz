@@ -148,7 +148,7 @@ class TreatmentController extends Controller
             }
             else{
                 return response()->json([                    
-                    'message' => 'The data name was found successfully.',
+                    'message' => 'The data descriptions were not found correctly.',
                 ], Response::HTTP_NOT_FOUND);                 
             }
             if($request->has('desc'))
@@ -158,7 +158,7 @@ class TreatmentController extends Controller
             }
             else{ 
                 return response()->json([                    
-                    'message' => 'The data descriptions was found successfully.',
+                    'message' => 'The data descriptions were not found correctly.',
                 ], Response::HTTP_NOT_FOUND); }
             
             $treatment->status=true;
@@ -186,37 +186,9 @@ class TreatmentController extends Controller
             }
             else{ 
                 return response()->json([                    
-                    'message' => 'The data phrase was found successfully.',
-                ], Response::HTTP_NOT_FOUND); }
-
-
-            // if($request->hasFile('file'))
-            // {
-            //   //obtenemos el campo file definido en el formulario
-            //     $file = $request->file('file');
-
-            //     $validator = Validator::make($request->all(), [
-            //         'file' => 'required|file|mimes:mp3,jpeg',
-
-            //     ]);
-
-            //     if($validator->fails()){
-            //         return redirect()->back()->withErrors($validator);
-            //     }
-            
-            //     if($this->saveAudio($file))
-            //     {
-            //         $record = new Record;
-            //         $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
-            //         $record->name = $file->getClientOriginalName();
-            //         $record->save();
-                    
-            //         $treatment->Record()->associate($record->id);
-                    
-                    
-            //     }
-                
-            // }
+                    'message' => 'The data descriptions were not found correctly.',
+                ], Response::HTTP_NOT_FOUND); 
+            }
             return response()->json([
                 'data' => $treatment,
                 'message' => 'The data was found successfully.',
@@ -230,22 +202,7 @@ class TreatmentController extends Controller
          
     }
 
-    function saveAudio($file)
-    {
-        try{       
-            //obtenemos el nombre del archivo
-            $nombre = $file->getClientOriginalName();
-            
-            //indicamos que queremos guardar un nuevo archivo en el disco local
-            \Storage::disk('audio')->put($nombre,  \File::get($file));
-            return true;
-        }
-        catch(\Exception $e)
-        {
-            Log::critical("The file is not save :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            return false;
-        }
-    }
+
 
     /**
      * Display the specified resource.

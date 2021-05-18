@@ -13,18 +13,19 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-       $user = User::create([
+       $specialis = User::create([
             'name' => "Frank Josué Vigil Vega",
             'email' => "frankjosue.vigilvega@gmail.com",
             'password' => bcrypt("89120815065"),
             'role'=> 'Specialist',
         ])->assignRole('Specialist');
 
-        $user = User::create([
+        $patient = User::create([
             'name' => "Invitado",
             'email' => "admin@gmail.com",
             'password' => bcrypt("admin"),
             'role'=> 'Guest',
+            'specialist_id'=> $specialis->id,
         ])->assignRole('Guest');
 
         // $faker = Faker::create();

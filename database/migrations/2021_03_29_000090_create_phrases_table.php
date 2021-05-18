@@ -16,7 +16,8 @@ class CreatePhrasesTable extends Migration
         Schema::create('phrases', function (Blueprint $table) {
             $table->id();
             $table->string('phrase');
-            $table->timestamps();
+            $table->boolean('status')->default(false);
+            $table->timestamps();           
 
             $table->unsignedBigInteger('treatment_id')->nullable();
             $table->foreign('treatment_id')->references('id')->on('treatments')->onDelete('cascade');

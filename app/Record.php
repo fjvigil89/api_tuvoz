@@ -13,6 +13,14 @@ class Record extends Model
      * @var array
      */
     protected $fillable = [
-        'id','path', 'name',
+        'id','path', 'name','phrase_id'
     ];
+
+    /**
+     * Get the post that owns the comment.
+     */
+    public function Phrase()
+    {
+        return $this->belongsTo('App\Phrase');
+    }
 }

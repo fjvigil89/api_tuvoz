@@ -15,8 +15,10 @@ class CreateRecordsTable extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
+            $table->binary('path');
             $table->string('name')->unique();
+            $table->unsignedBigInteger('phrase_id')->nullable();          
+            $table->foreign('phrase_id')->references('id')->on('phrases')->onDelete('cascade');
             $table->timestamps();
         });
     }

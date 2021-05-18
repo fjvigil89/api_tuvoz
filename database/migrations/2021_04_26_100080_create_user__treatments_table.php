@@ -17,9 +17,7 @@ class CreateUserTreatmentsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('treatment_id')->nullable();
-            $table->unsignedBigInteger('patient_id')->nullable();  
-            $table->unsignedBigInteger('record_id')->nullable();          
-            $table->foreign('record_id')->references('id')->on('records')->onDelete('cascade');
+            $table->unsignedBigInteger('patient_id')->nullable();              
             $table->foreign('patient_id')->references('id')->on('users')->onDelete('cascade');           
             $table->foreign('treatment_id')->references('id')->on('treatments')->onDelete('cascade');
         });

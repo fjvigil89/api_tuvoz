@@ -25,13 +25,18 @@ Route::get('login', 'Api\\AuthController@login')->name('login');
 
 Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
 
+    Route::get('getPatientNotTreatment', 'UserController@getPatientNotTreatment')->name('user.getPatientNotTreatment');
+    Route::get('getAllpatient', 'UserController@getAllpatient')->name('user.getAllpatient');
     Route::get('countTreatment', 'TreatmentController@countTreatment')->name('treatment.countTreatment');
     Route::get('countUserByTreatment', 'TreatmentController@countUserByTreatment')->name('treatment.countUserByTreatment');
 
     Route::resource('treatment', 'TreatmentController',['only'=>[
         'index','store','show','update','destroy'
         ]]);   
-         
+    
+    Route::resource('record', 'RecordController',['only'=>[
+        'index','store','show','update','destroy'
+        ]]);   
   
     Route::get('phrasePatientTreatment/{treatment}', 'TreatmentPatientController@phrasePatientTreatment')->name('treatment.phrasePatientTreatment');
     Route::get('countPatientTreatment', 'TreatmentPatientController@countPatientTreatment')->name('treatment.countPatientTreatment');

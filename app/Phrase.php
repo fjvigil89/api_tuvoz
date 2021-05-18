@@ -14,7 +14,7 @@ class Phrase extends Model
      * @var array
      */
     protected $fillable = [
-         'id','phrase','treatment_id'
+         'id','phrase', 'status','treatment_id'
     ];
 
     /**
@@ -24,4 +24,6 @@ class Phrase extends Model
     {
         return $this->belongsTo('App\Treatment');
     }
+
+    
 }
