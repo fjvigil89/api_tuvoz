@@ -68,21 +68,23 @@ class TreatmentController extends Controller
     {
         try{
             $user = Auth::user();
-            $treatment=Treatment::where('specialist_id', $user->id)->get();
+            $userCurrent=User::where('specialist_id', $user->id)->get();
+            $userAll=User::all();
             
-            if (!$treatment) {
+            if (!$userCurrent) {
                 return response()->json([
                     'message' => 'The given data was not found.',
                 ], Response::HTTP_NOT_FOUND);
             }        
-            $count =0;            
-            foreach($treatment as $item)
-            {
-                $count += count(User_Treatment::where('treatment_id', $item->id)->get());
-            }
+            // $count =0;            
+            // foreach($treatment as $item)
+            // {
+            //     $count += count(User_Treatment::where('treatment_id', $item->id)->get());
+            // }
             
             return response()->json([
-                'data' => $count,                              
+                'data' => count($userCurrent),
+                'porcent' => $this->obtenerPorcentaje(count($userCurrent), count($userAll)),
                 'message' => 'The data was found successfully.',
             ], Response::HTTP_OK);
         }
@@ -92,6 +94,13 @@ class TreatmentController extends Controller
             } 
 
         
+    }
+
+    function obtenerPorcentaje($current, $total) {
+        $total = (float)$total; 
+        $porcentaje = ((float)$current * 100) / $total; 
+        $porcentaje = round($porcentaje, 2);
+        return $porcentaje;
     }
 
     public function ChangeStatus(Request $request)
@@ -114,15 +123,17 @@ class TreatmentController extends Controller
     {
         //
         $user = Auth::user();
-        $treatment=Treatment::where('specialist_id', $user->id)->get();
-        if (!$treatment) {
+        $treatmentCurrent=Treatment::where('specialist_id', $user->id)->get();
+        $treatmentAll=Treatment::all();
+        if (!$treatmentCurrent) {
             return response()->json([
                 'message' => 'The given data was not found.',
             ], Response::HTTP_NOT_FOUND);
         }        
         
         return response()->json([
-            'data' => count($treatment),
+            'data' => count($treatmentCurrent),
+            'porcent' => $this->obtenerPorcentaje(count($treatmentCurrent), count($treatmentAll)),
             'message' => 'The data was found successfully.',
         ], Response::HTTP_OK);
 

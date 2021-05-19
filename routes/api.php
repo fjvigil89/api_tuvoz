@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::post('logout', 'Api\\AuthController@logout')->name('api.logout');
 
     Route::post('treatment_status', 'TreatmentController@ChangeStatus')->name('treatment_status');
+    Route::post('associatePatientTreatment', 'UserController@associatePatientTreatment')->name('associatePatientTreatment');
 });
 
 
