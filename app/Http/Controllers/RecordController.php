@@ -13,6 +13,8 @@ use Validator;
 use Log;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 class RecordController extends Controller
 {
     /**
@@ -77,10 +79,9 @@ class RecordController extends Controller
     {
         try{       
             //obtenemos el nombre del archivo
-            $nombre = $file->getClientOriginalName();
-            
+            $nombre = $file['name'];            
             //indicamos que queremos guardar un nuevo archivo en el disco local
-            \Storage::disk('audio')->put($nombre,  \File::get($file));
+            \Storage::disk('audio')->put($nombre,  $file['tmp_name']);
             return true;
         }
         catch(\Exception $e)
@@ -88,6 +89,31 @@ class RecordController extends Controller
             Log::critical("The file is not save :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             return false;
         }
+    }
+
+    public function storeRecordFile(Request $request)
+    {             
+         if($this->saveAudio($_FILES['audio']))
+            {
+                // $record = new Record;
+                // $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
+                // $record->name = $file->getClientOriginalName();
+                // $record->save();
+                
+                // $treatment->Record()->associate($record->id);                
+                return response()->json([
+                    'data' => TRUE,
+                    'message' => 'The data was found successfully.',
+                ], Response::HTTP_OK);
+            }
+
+            return response()->json([
+                'data' => FALSE,
+                'message' => 'The data file were not found correctly.',
+            ], Response::HTTP_NOT_FOUND);
+
+        //\Storage::disk('audio')->put($_FILES['audio']['name'], $_FILES['audio']['tmp_name']);
+        
     }
 
     /**
