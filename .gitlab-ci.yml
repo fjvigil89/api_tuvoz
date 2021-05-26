@@ -1,0 +1,32 @@
+---
+
+stages:
+  - deploy
+  - composer
+
+deploy_environment:
+  stage: deploy
+  tags:
+   - apituvoz
+  script:
+   - echo "${CI_COMMIT_REF_NAME}"
+   - tools/deploy-git.sh $CI_COMMIT_REF_NAME
+  when: always
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+  only: 
+    - master 
+
+
+composer_environment:
+  stage: composer
+  tags:
+   - apituvoz
+  script:
+   - echo "${CI_COMMIT_REF_NAME}"
+   - tools/composer.sh $CI_COMMIT_REF_NAME
+  when: always
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+  only: 
+    - master 
