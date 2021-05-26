@@ -9,8 +9,7 @@ deploy_environment:
   tags:
    - apituvoz
   script:
-   - echo "${CI_COMMIT_REF_NAME}"
-   - tools/deploy-git.sh $CI_COMMIT_REF_NAME
+   - echo "${CI_COMMIT_REF_NAME}"    
   when: always
   environment:
     name: ${CI_COMMIT_REF_NAME}
@@ -24,7 +23,6 @@ composer_environment:
    - apituvoz
   script:
    - echo "${CI_COMMIT_REF_NAME}"
-   - tools/composer.sh $CI_COMMIT_REF_NAME
   when: always
   environment:
     name: ${CI_COMMIT_REF_NAME}
