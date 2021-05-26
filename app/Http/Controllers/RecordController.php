@@ -34,45 +34,47 @@ class RecordController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
-        try{
-             if($request->has('record'))
-                {
-                //obtenemos el campo file definido en el formulario                    
-                    $name = explode("/", $request->record);
-                    $record = Record::create([
-                        'path' => $request->record,
-                        'name' =>$name[count($name)-1],
-                        'phrase_id' => $request->idPhrase,
-                    ]);
+    {           
+        return response()->json($request, 200);
+
+        // try{
+        //      if($request->has('record'))
+        //         {
+        //         //obtenemos el campo file definido en el formulario                    
+        //             $name = explode("/", $request->record);
+        //             $record = Record::create([
+        //                 'path' => $request->record,
+        //                 'name' =>$name[count($name)-1],
+        //                 'phrase_id' => $request->idPhrase,
+        //             ]);
                     
-                    // if($this->saveAudio($file))
-                    // {
-                    //     $record = new Record;
-                    //     $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
-                    //     $record->name = $file->getClientOriginalName();
-                    //     $record->save();
+        //             // if($this->saveAudio($file))
+        //             // {
+        //             //     $record = new Record;
+        //             //     $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
+        //             //     $record->name = $file->getClientOriginalName();
+        //             //     $record->save();
                         
-                    //     $treatment->Record()->associate($record->id);
-                    // }
+        //             //     $treatment->Record()->associate($record->id);
+        //             // }
                     
-                }
-                else{
-                    return response()->json([                    
-                        'message' => 'The data descriptions were not found correctly.',
-                    ], Response::HTTP_NOT_FOUND); 
-                }                   
+        //         }
+        //         else{
+        //             return response()->json([                    
+        //                 'message' => 'The data descriptions were not found correctly.',
+        //             ], Response::HTTP_NOT_FOUND); 
+        //         }                   
                         
-            return response()->json([
-                'data' => $record,
-                'message' => 'The data was found successfully.',
-            ], Response::HTTP_OK);
-        }
-        catch(\Exception $e)
-        {
-            Log::critical("problema con la Grabación deseado :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        //     return response()->json([
+        //         'data' => $record,
+        //         'message' => 'The data was found successfully.',
+        //     ], Response::HTTP_OK);
+        // }
+        // catch(\Exception $e)
+        // {
+        //     Log::critical("problema con la Grabación deseado :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
-        }
+        // }
     }
 
     function saveAudio($file)
@@ -81,8 +83,13 @@ class RecordController extends Controller
             //obtenemos el nombre del archivo
             $nombre = $file['name'];            
             //indicamos que queremos guardar un nuevo archivo en el disco local
-            \Storage::disk('audio')->put($nombre,  $file['tmp_name']);
-            return true;
+            $path="../storage/audio/". $file['name'];
+            if(move_uploaded_file($file['tmp_name'],$path ))
+            {
+                return true;
+
+            }
+            return false;
         }
         catch(\Exception $e)
         {
@@ -106,13 +113,17 @@ class RecordController extends Controller
                     'message' => 'The data was found successfully.',
                 ], Response::HTTP_OK);
             }
-
-            return response()->json([
-                'data' => FALSE,
-                'message' => 'The data file were not found correctly.',
-            ], Response::HTTP_NOT_FOUND);
+            
+        return response()->json([
+            'data' => FALSE,
+            'message' => 'The data file were not found correctly.',
+        ], Response::HTTP_NOT_FOUND);
 
         //\Storage::disk('audio')->put($_FILES['audio']['name'], $_FILES['audio']['tmp_name']);
+
+        // $img_path="../storage/audio/". $_FILES['audio']['name'];
+        // move_uploaded_file($_FILES['audio']['tmp_name'],$img_path );
+        // return response()->json($img_path, 200);
         
     }
 
