@@ -121,7 +121,7 @@ class RecordController extends Controller
 
         //\Storage::disk('audio')->put($_FILES['audio']['name'], $_FILES['audio']['tmp_name']);
 
-        $img_path="../storage/audio/". $_FILES['audio']['name'];
+        $img_path="../storage/audio/";
         //  $a = move_uploaded_file($_FILES['audio']['tmp_name'],$img_path );        
         return response()->json($img_path, 200);
 
