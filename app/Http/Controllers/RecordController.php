@@ -96,34 +96,34 @@ class RecordController extends Controller
 
     public function storeRecordFile()
     {
-        try {            
-            if ($this->saveAudio($_FILES['audio'])) {
-                // $record = new Record;
-                // $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
-                // $record->name = $file->getClientOriginalName();
-                // $record->save();
+        // try {            
+        //     if ($this->saveAudio($_FILES['audio'])) {
+        //         // $record = new Record;
+        //         // $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
+        //         // $record->name = $file->getClientOriginalName();
+        //         // $record->save();
 
-                // $treatment->Record()->associate($record->id);                
-                return response()->json([
-                    'data' => TRUE,
-                    'message' => 'The data was found successfully.',
-                ], Response::HTTP_OK);
-            }
+        //         // $treatment->Record()->associate($record->id);                
+        //         return response()->json([
+        //             'data' => TRUE,
+        //             'message' => 'The data was found successfully.',
+        //         ], Response::HTTP_OK);
+        //     }
 
-            return response()->json([
-                'data' => FALSE,
-                'message' => 'The data file were not found correctly.',
-            ], Response::HTTP_NOT_FOUND);
-        } catch (\Exception $e) {
-            Log::critical("The file is not save :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            return false;
-        }
+        //     return response()->json([
+        //         'data' => FALSE,
+        //         'message' => 'The data file were not found correctly.',
+        //     ], Response::HTTP_NOT_FOUND);
+        // } catch (\Exception $e) {
+        //     Log::critical("The file is not save :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        //     return false;
+        // }
 
         //\Storage::disk('audio')->put($_FILES['audio']['name'], $_FILES['audio']['tmp_name']);
 
-        //  $img_path="../storage/audio/". $_FILES['audio']['name'];
+        $img_path="../storage/audio/". $_FILES['audio']['name'];
         //  $a = move_uploaded_file($_FILES['audio']['tmp_name'],$img_path );        
-        //  return response()->json($a, 200);
+        return response()->json($img_path, 200);
 
     }
 
