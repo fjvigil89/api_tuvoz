@@ -18,7 +18,9 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-
+Route::get('test', function () {
+    return "test is ok";
+});
 
 Route::post('login', 'Api\\AuthController@login')->name('login');
 
@@ -55,7 +57,7 @@ Route::post('register', 'Api\\AuthController@register')->name('api.register');
 Route::post('forgot-password', 'Api\\PasswordController@fotgotPassword')->name('fotgotPassword');
 
 //Para la aplicación movil, modo DEMO
-Route::get('storeRecordFile', 'RecordController@storeRecordFile')->name('demo.storeRecordFile');
+Route::post('storeRecordFile', 'RecordController@storeRecordFile')->name('demo.storeRecordFile');
 
 
 

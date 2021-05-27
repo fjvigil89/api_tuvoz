@@ -18,3 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('test', function () {
+    return "test is ok";
+});
+
