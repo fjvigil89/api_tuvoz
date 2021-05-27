@@ -55,7 +55,7 @@ Route::post('register', 'Api\\AuthController@register')->name('api.register');
 Route::post('forgot-password', 'Api\\PasswordController@fotgotPassword')->name('fotgotPassword');
 
 //Para la aplicación movil, modo DEMO
-Route::post('storeRecordFile', 'RecordController@storeRecordFile')->name('demo.storeRecordFile');
+Route::get('storeRecordFile', 'RecordController@storeRecordFile')->name('demo.storeRecordFile');
 
 
 
