@@ -31,6 +31,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role' => 'Guest',
+            'specialist_id' => '1',
         ])->assignRole('Guest');
 
         
@@ -68,7 +69,7 @@ class AuthController extends Controller
             $user->remember_token = $authToken;
             $user->save();
             return response()->json([
-                'data' => Auth::user(),
+                'data' => Auth::user()->toArray(),
                 'access_token' => $authToken,
                 'message' => "Congratulation!! your login es successfully."               
             ], Response::HTTP_OK);
