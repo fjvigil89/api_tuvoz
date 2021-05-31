@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'Api\\AuthController@login')->name('login');
 
 
+Route::post('Demologin', 'Api\\AuthController@Demologin')->name('Demologin');
+
+
 Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
 
     Route::get('getPatientNotTreatment', 'UserController@getPatientNotTreatment')->name('user.getPatientNotTreatment');

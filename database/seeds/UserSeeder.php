@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
             'name' => "Frank Josué Vigil Vega",
             'email' => "frankjosue.vigilvega@gmail.com",
             'password' => bcrypt("89120815065"),
+            'identificador' => bcrypt("Frank Josué Vigil Vega"),
             'role'=> 'Specialist',
         ])->assignRole('Specialist');
 
@@ -24,6 +25,16 @@ class UserSeeder extends Seeder
             'name' => "Invitado",
             'email' => "admin@gmail.com",
             'password' => bcrypt("admin"),
+            'identificador' => bcrypt("Invitado"),
+            'role'=> 'Guest',
+            'specialist_id'=> $specialis->id,
+        ])->assignRole('Guest');
+
+        $demo = User::create([
+            'name' => "Demo",
+            'email' => "demo@unizar.es",
+            'password' => bcrypt("demo"),
+            'identificador' => bcrypt("Demo"),
             'role'=> 'Guest',
             'specialist_id'=> $specialis->id,
         ])->assignRole('Guest');

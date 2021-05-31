@@ -13,8 +13,6 @@ use Validator;
 use Log;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-
 class RecordController extends Controller
 {
     /**
@@ -77,13 +75,12 @@ class RecordController extends Controller
         // }
     }
 
-    function saveAudio($file)
+    function saveAudio($file, $identificador)
     {
-        try {
-            //obtenemos el nombre del archivo
-            $nombre = $file['name'];
+        try {            
+            
             //indicamos que queremos guardar un nuevo archivo en el disco local
-            $path = "../storage/audio/" . $file['name'];
+            $path = "../storage/audio/" . $identificador;
             if (move_uploaded_file($file['tmp_name'], $path)) {
                 return true;
             }
@@ -94,16 +91,27 @@ class RecordController extends Controller
         }
     }
 
-    public function storeRecordFile()
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */ 
+    public function storeRecordFile(Request  $request)
     {
-        try {            
-            if ($this->saveAudio($_FILES['audio'])) {
-                // $record = new Record;
-                // $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
-                // $record->name = $file->getClientOriginalName();
-                // $record->save();
+        
+        try {    
+            
+            $user = User::where("name", "Demo")->first();
 
-                // $treatment->Record()->associate($record->id);                
+            $identificador = $user->identificador.$request->identificador;
+            if ($this->saveAudio($_FILES['audio'], $identificador)) {
+                $record = new Record;
+                $record->path = $request->root()."/storage/audio/".$identificador;
+                $record->name = $request->identificador;
+                $record->save();
+                
                 return response()->json([
                     'data' => TRUE,
                     'message' => 'The data was found successfully.',
@@ -123,7 +131,8 @@ class RecordController extends Controller
 
         //  $img_path="../storage/audio/". $_FILES['audio']['name'];
         //  $a = move_uploaded_file($_FILES['audio']['tmp_name'],$img_path );        
-        //  return response()->json($a, 200);
+        // $user = User::where("name", "Demo")->first();
+        // return response()->json($user->identificador, 200);
 
     }
 

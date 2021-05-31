@@ -97,10 +97,13 @@ class TreatmentController extends Controller
     }
 
     function obtenerPorcentaje($current, $total) {
-        $total = (float)$total; 
-        $porcentaje = ((float)$current * 100) / $total; 
-        $porcentaje = round($porcentaje, 2);
-        return $porcentaje;
+        if ($total > 0) {
+            $total = (float)$total; 
+            $porcentaje = ((float)$current * 100) / $total; 
+            $porcentaje = round($porcentaje, 2);
+            return $porcentaje;
+        }        
+        return 0;
     }
 
     public function ChangeStatus(Request $request)
