@@ -18,9 +18,6 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('test', function () {
-    return "test is ok";
-});
 
 Route::post('login', 'Api\\AuthController@login')->name('login');
 
