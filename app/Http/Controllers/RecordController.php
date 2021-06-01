@@ -115,12 +115,14 @@ class RecordController extends Controller
                 return response()->json([
                     'data' => TRUE,
                     'message' => 'The data was found successfully.',
+                    'status' => Response::HTTP_OK,
                 ], Response::HTTP_OK);
             }
 
             return response()->json([
                 'data' => FALSE,
                 'message' => 'The data file were not found correctly.',
+                'status' => Response::HTTP_NOT_FOUND,
             ], Response::HTTP_NOT_FOUND);
         } catch (\Exception $e) {
             Log::critical("The file is not save :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");

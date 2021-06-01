@@ -56,6 +56,7 @@ class AuthController extends Controller
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'The given data was invalid.',
+                'status' => Response::HTTP_NOT_FOUND,
                 'errors' => [
                     'password' => [
                         'Invalid credentials'
@@ -72,9 +73,10 @@ class AuthController extends Controller
         }
         $user->save();
         return response()->json([
-            'data' => Auth::user()->toArray(),
+            'data' => Auth::user(),
             'access_token' => $authToken,
-            'message' => "Congratulation!! your login es successfully."
+            'message' => "Congratulation!! your login es successfully.",
+            'status' => Response::HTTP_OK,
         ], Response::HTTP_OK);
     }
 
