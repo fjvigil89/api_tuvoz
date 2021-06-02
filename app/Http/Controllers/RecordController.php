@@ -80,7 +80,7 @@ class RecordController extends Controller
         try {            
             
             //indicamos que queremos guardar un nuevo archivo en el disco local
-            $path = "../storage/audio/" . $identificador;
+            $path = "./audio/". $identificador;
             if (move_uploaded_file($file['tmp_name'], $path)) {
                 return true;
             }
@@ -91,13 +91,6 @@ class RecordController extends Controller
         }
     }
 
-    
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */ 
     public function storeRecordFile(Request  $request)
     {
         
@@ -108,7 +101,7 @@ class RecordController extends Controller
             $identificador = $user->identificador.$request->identificador;
             if ($this->saveAudio($_FILES['audio'], $identificador)) {
                 $record = new Record;
-                $record->path = $request->root()."/storage/audio/".$identificador;
+                $record->path = $request->root()."/audio/".$identificador;
                 $record->name = $request->identificador;
                 $record->save();
                 
@@ -134,7 +127,7 @@ class RecordController extends Controller
         //  $img_path="../storage/audio/". $_FILES['audio']['name'];
         //  $a = move_uploaded_file($_FILES['audio']['tmp_name'],$img_path );        
         // $user = User::where("name", "Demo")->first();
-        // return response()->json($user->identificador, 200);
+        //return response()->json($request, 200);
 
     }
 
