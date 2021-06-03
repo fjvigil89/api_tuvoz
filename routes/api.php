@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('login', 'Api\\AuthController@login')->name('login');
+Route::post('webLogin', 'Api\\AuthController@webLogin')->name('weblogin');
 
 Route::post('Demologin', 'Api\\AuthController@Demologin')->name('Demologin');
 
@@ -61,3 +62,5 @@ Route::post('forgot-password', 'Api\\PasswordController@fotgotPassword')->name('
 
 //Para la aplicación movil, modo DEMO
 Route::post('storeRecordFile', 'RecordController@storeRecordFile')->name('demo.storeRecordFile');
+
+//Auth::routes();

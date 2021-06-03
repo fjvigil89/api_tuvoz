@@ -80,6 +80,40 @@ class AuthController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function webLogin(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'email|required',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $credentials = request(['email', 'password']);
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'The given data was invalid.',
+                'status' => Response::HTTP_NOT_FOUND,
+                'errors' => [
+                    'password' => [
+                        'Invalid credentials'
+                    ],
+                ]
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        $authToken = $user->createToken($user->name)->plainTextToken;
+        $user->remember_token = $authToken;
+        if (isset($request->identificador)) {
+            $user->identificador = $request->identificador;
+        }
+        $user->save();
+        return redirect('/');
+    }
 
 
     //se pasa el id del usuario que esta loguedo

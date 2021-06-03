@@ -16,9 +16,13 @@ use App\Treatment;
 
 Route::get('/', function () {    
     return view('welcome');
-})->name('home');
+})->name('welcome');
 
-// Route::get('login', function () {    
-//     return view('Auth\login');
-// })->name('web.login');
+Route::get('login', function () {    
+    return view('auth\login');
+})->name('web.login');
 
+
+//Auth::routes();
+
+//Route::get('/home', 'HomeController@index')->name('home');
