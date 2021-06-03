@@ -10,10 +10,10 @@
     "require": {
         "php": "^7.2.5|^8.0",
         "beyondcode/laravel-websockets": "^1.11",
+        "darkaonline/l5-swagger": "^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
-        "laravel/airlock": "^2.10",
+        "guzzlehttp/guzzle": "^6.3.1|^7.0.1",        
         "laravel/framework": "^7.29",
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.5",

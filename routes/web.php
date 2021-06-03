@@ -18,3 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// Route::get('login', function () {    
+//     return view('Auth\login');
+// })->name('web.login');
+

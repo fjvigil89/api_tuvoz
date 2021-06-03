@@ -1,0 +1,86 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API TuVoz",
+        "description": "Documentación API TuVoz",
+        "contact": {
+            "email": "frankjosue.vigilvega@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Web TuVoz"
+        }
+    ],
+    "paths": {
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Todo los Usuarios",
+                "description": "Todos los Ususarios Solo para el Super Admin",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Resultado con éxito"
+                    },
+                    "400": {
+                        "description": "Invalido el resultado"
+                    }
+                },
+                "deprecated": false,
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Usuarios",
+            "description": "Todo sobre los Usuarios",
+            "externalDocs": {
+                "description": "Más",
+                "url": "https://gitlab.com/frankjosue.vigilvega/voicerecord/-/blob/master/app/User.php"
+            }
+        },
+        {
+            "name": "Tratamientos",
+            "description": "Accesos a los Tratamientos",
+            "externalDocs": {
+                "description": "Más",
+                "url": "https://gitlab.com/frankjosue.vigilvega/voicerecord/-/blob/master/app/Treatment.php"
+            }
+        },
+        {
+            "name": "Frases",
+            "description": "Sobre las Frases",
+            "externalDocs": {
+                "description": "Más",
+                "url": "https://gitlab.com/frankjosue.vigilvega/voicerecord/-/blob/master/app/Phrase.php"
+            }
+        }
+    ],
+    "externalDocs": {
+        "description": "Nuestros repositorios",
+        "url": "https://gitlab.com/frankjosue.vigilvega"
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

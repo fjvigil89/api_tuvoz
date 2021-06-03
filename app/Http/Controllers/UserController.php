@@ -17,13 +17,44 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
     /**
+     * @OA\Get(
+     *     path="/api/user",
+     *     tags={"Usuarios"},
+     *     summary="Todo los Usuarios",
+     *     description="Todos los Ususarios Solo para el Super Admin",
+     *     operationId="index",
+     *     deprecated=false,     
+     *     @OA\Response(
+     *         response=200,
+     *         description="Resultado con éxito"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalido el resultado"
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )     
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        try {
+            $user = User::all();            
+            if (!$user) {
+                return response()->json([
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            return response()->json([
+                'data' => $user,
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical(" Error al cargar los Usuarios: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        }
     }
 
     /**
@@ -34,22 +65,20 @@ class UserController extends Controller
     public function getAllpatient()
     {
         //
-        try{
+        try {
             $user = Auth::user();
-            $patient=User::where('specialist_id', $user->id)->get();
+            $patient = User::where('specialist_id', $user->id)->get();
 
             return response()->json([
-                'data' => $patient,                              
+                'data' => $patient,
                 'message' => 'The data was found successfully.',
             ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical(" Error al cargar los Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
         }
-        catch(\Exception $e)
-            {  	        			
-                Log::critical(" Error al cargar los Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            } 
     }
 
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -58,33 +87,29 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getPatientNotTreatment(Request $request)
-    {        
-        try{
-             $user = Auth::user();
-             $patients=User::where('specialist_id', $user->id)->get();            
-             $notTreatment=array();
-             
-             foreach($patients as $item)
-             {
-                $patient= User_Treatment::where('patient_id', $item->id)->where('treatment_id', $request->idTreatment)->first();
-                if(is_null($patient))
-                {
-                    array_push($notTreatment, $item);                        
+    {
+        try {
+            $user = Auth::user();
+            $patients = User::where('specialist_id', $user->id)->get();
+            $notTreatment = array();
+
+            foreach ($patients as $item) {
+                $patient = User_Treatment::where('patient_id', $item->id)->where('treatment_id', $request->idTreatment)->first();
+                if (is_null($patient)) {
+                    array_push($notTreatment, $item);
                 }
-             }
+            }
 
             return response()->json([
                 'data' =>  $notTreatment,
                 'message' => 'The data was found successfully.',
             ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical(" Error al cargar los Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
         }
-        catch(\Exception $e)
-            {  	        			
-                Log::critical(" Error al cargar los Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            } 
     }
 
-       /**
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -92,31 +117,29 @@ class UserController extends Controller
      */
     public function associatePatientTreatment(Request $request)
     {
-        
-        try{
-             $user = User_Treatment::create([                    
+
+        try {
+            $user = User_Treatment::create([
                 'patient_id'   => $request->idPatient,
                 'treatment_id'   => $request->idTreatment,
                 'created_at'      => date('Y-m-d H:m:s'),
                 'updated_at'      => date('Y-m-d H:m:s')
-             ]); 
-             
-             if (!$user) {
+            ]);
+
+            if (!$user) {
                 return response()->json([
                     'data' => FALSE,
                     'message' => 'The given data was not found.',
                 ], Response::HTTP_NOT_FOUND);
-            } 
+            }
 
             return response()->json([
                 'data' =>  TRUE,
                 'message' => 'The data was found successfully.',
             ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical(" Error al cargar los Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
         }
-        catch(\Exception $e)
-            {  	        			
-                Log::critical(" Error al cargar los Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            } 
     }
 
     /**
