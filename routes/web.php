@@ -14,7 +14,7 @@ use App\Treatment;
 |
 */
 
-Route::get('/', function () {    
+Route::get('/', function () {        
     return view('welcome');
 })->name('welcome');
 
@@ -25,4 +25,4 @@ Route::get('login', function () {
 
 //Auth::routes();
 
-//Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');

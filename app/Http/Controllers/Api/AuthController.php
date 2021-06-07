@@ -112,7 +112,10 @@ class AuthController extends Controller
             $user->identificador = $request->identificador;
         }
         $user->save();
-        return redirect('/');
+        //dd($user->name);
+       //return view('welcome',['users', $user]);
+       return view('main')->with('users', $user);
+       
     }
 
 

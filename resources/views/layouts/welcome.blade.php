@@ -71,8 +71,7 @@
     <div class="flex-center position-ref full-height">
         @if (Route::has('login'))
         <div class="top-right links">
-            @auth
-            <a href="{{ url('/api/doc') }}">Doc</a>
+            @auth            
             @else
             <a href="{{ route('web.login') }}">Login</a>            
             @endauth
