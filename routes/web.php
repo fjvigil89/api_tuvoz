@@ -19,7 +19,7 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('login', function () {    
-    return view('auth\login');
+    return view('auth.login');
 })->name('web.login');
 
 

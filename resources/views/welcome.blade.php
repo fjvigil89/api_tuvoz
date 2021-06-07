@@ -7,7 +7,7 @@
     </div>
 
     <div class="links">
-        <a href="{{ url('/login') }}">Login</a>     
+        <a href="{{ route('web.login') }}">Login</a>     
         <a href="https://gitlab.com/frankjosue.vigilvega/voicerecord">GitHub</a>
     </div>
     
