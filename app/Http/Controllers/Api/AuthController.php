@@ -30,6 +30,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'identificador' => bcrypt($request->name),
             'role' => 'Guest',
             'specialist_id' => '1',
         ])->assignRole('Guest');
