@@ -36,9 +36,9 @@ class SendEmailController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
-            $this->SendEmail($user->name, $request->emailRegister);
+            $this->SendEmail($user, $request);
 
-            return response()->json([
+            return response()->json([                
                 'message' => 'The data was found successfully.',
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
@@ -46,30 +46,19 @@ class SendEmailController extends Controller
         }
     }
 
-    function SendEmail($nombre, $email)
-    {
-
+    function SendEmail($user, $request)
+    {   
     	$data = array(
-			'name' => $nombre,
-			'email' => $email
+			'name' => $user->nombre,
+			'email' => $request->emailRegister, 
+            'url_register' => $request->uri_register,
+            'identificador' => base64_encode($user->id),
 		  );	
 	
   		Mail::send('Email.registroPrevioPatiente', $data, function ($message) use ($data) { 
-  		    $message->from('frank.vigil@upr.edu.cu', 'UPRedes');
-  		    //$message->sender('john@johndoe.com', 'John Doe');
-  			
+  		    $message->from('no-reply@tuvoz.es', 'TuVoz');
   		    $message->to($data['email'], $data['name']);
-  		
-  		    //$message->cc('john@johndoe.com', 'John Doe');
-  		    //$message->bcc('john@johndoe.com', 'John Doe');
-  		
-  		    //$message->replyTo('john@johndoe.com', 'John Doe');
-  		
-  		    $message->subject('Sincronizador Automático de la UPR');
-  		
-  		    //$message->priority(3);
-  		
-  		    //$message->attach('pathToFile');
+  		    $message->subject('Registro en la plataforma TuVoz');
   		});
     }
 

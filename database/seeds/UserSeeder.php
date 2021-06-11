@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt("89120815065"),
             'identificador' => bcrypt("Frank Josué Vigil Vega"),
             'role'=> 'Specialist',
+            'status' => true,
         ])->assignRole('Specialist');
 
         $patient = User::create([
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
             'identificador' => bcrypt("Invitado"),
             'role'=> 'Guest',
             'specialist_id'=> $specialis->id,
+            'status' => true,
         ])->assignRole('Guest');
 
         $demo = User::create([
@@ -37,6 +39,7 @@ class UserSeeder extends Seeder
             'identificador' => bcrypt("Demo"),
             'role'=> 'Guest',
             'specialist_id'=> $specialis->id,
+            'status' => true,
         ])->assignRole('Guest');
 
         // $faker = Faker::create();

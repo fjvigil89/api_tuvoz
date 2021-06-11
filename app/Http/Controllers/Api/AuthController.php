@@ -8,6 +8,7 @@ use App\User;
 use Validator;
 use Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -15,30 +16,65 @@ class AuthController extends Controller
     //
     public function register(Request $request)
     {
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:6'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:6'
+            ]);
+    
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator);
+            }
+    
+            // $user = User::create([
+            //     'name' => $request->name,
+            //     'email' => $request->email,
+            //     'password' => bcrypt($request->password),
+            //     'identificador' => bcrypt($request->name),
+            //     'role' => 'Guest',
+            //     'specialist_id' => '1',
+            // ])->assignRole('Guest');
+    
+    
+            //$user->roles()->attach(2); // Simple user role
+            //$this->login($request);
+            return response()->json($request);
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::critical(" Error al cargar los Usuarios: {$th->getCode()}, {$th->getLine()}, {$th->getMessage()} ");
         }
+        
+    }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'identificador' => bcrypt($request->name),
-            'role' => 'Guest',
-            'specialist_id' => '1',
-        ])->assignRole('Guest');
+    public function pre_register(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'url'           => 'required',
+                'identificador' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator);
+            }
 
 
-        //$user->roles()->attach(2); // Simple user role
-        //$this->login($request);
-        return response()->json($user);
+            User::create([
+                'name' => "Nuevo Registro",
+                'email' => $request->email,
+                'password' => bcrypt(random_int(1, 10)),
+                'identificador' => bcrypt($request->identificador),
+                'role' => 'Guest',
+                'specialist_id' => base64_decode($request->identificador),
+                'status' => false,
+            ])->assignRole('Guest');
+
+            return redirect()->to($request->url . '/' . $request->email);
+        } catch (\Exception $e) {
+            Log::critical(" Error al cargar los Usuarios: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return redirect()->back();
+        }
     }
 
     public function login(Request $request)
@@ -114,9 +150,8 @@ class AuthController extends Controller
         }
         $user->save();
         //dd($user->name);
-       //return view('welcome',['users', $user]);
-       return view('main')->with('users', $user);
-       
+        //return view('welcome',['users', $user]);
+        return view('main')->with('users', $user);
     }
 
 
