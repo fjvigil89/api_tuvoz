@@ -55,6 +55,8 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
 
     Route::post('treatment_status', 'TreatmentController@ChangeStatus')->name('treatment_status');
     Route::post('associatePatientTreatment', 'UserController@associatePatientTreatment')->name('associatePatientTreatment');
+
+    Route::post('setEmailRegisterPatient', 'SendEmailController@setEmailRegisterPatient')->name('api.setEmailRegisterPatient');
 });
 
 Route::post('register', 'Api\\AuthController@register')->name('api.register');

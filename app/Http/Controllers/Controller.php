@@ -43,7 +43,7 @@ use Illuminate\Routing\Controller as BaseController;
  * )
  * @OA\Server(
  *     description="Web TuVoz",
- *     url="http://155.210.158.136:8000"
+ *     url="http://localhost:8000"
  * )
  * @OA\ExternalDocumentation(
  *     description="Nuestros repositorios",
