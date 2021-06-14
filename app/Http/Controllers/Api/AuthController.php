@@ -18,7 +18,7 @@ class AuthController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required',
+                'name' => 'required|min:1|max:50',
                 'email' => 'required|email',
                 'password' => 'required|min:6'
             ]);
@@ -26,20 +26,18 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator);
             }
-    
-            // $user = User::create([
-            //     'name' => $request->name,
-            //     'email' => $request->email,
-            //     'password' => bcrypt($request->password),
-            //     'identificador' => bcrypt($request->name),
-            //     'role' => 'Guest',
-            //     'specialist_id' => '1',
-            // ])->assignRole('Guest');
+            $user = User::where('email', $request->email)->first();
+            
+            $user->name = $request->name;
+            $user->status = TRUE;
+            $user->password = bcrypt($request->password);
+            
+            $user->save();
     
     
             //$user->roles()->attach(2); // Simple user role
-            //$this->login($request);
-            return response()->json($request);
+            return $this->login($request);
+            //return response()->json($user);
         } catch (\Throwable $th) {
             //throw $th;
             Log::critical(" Error al cargar los Usuarios: {$th->getCode()}, {$th->getLine()}, {$th->getMessage()} ");
