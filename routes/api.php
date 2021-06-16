@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'Api\\AuthController@login')->name('login');
 Route::post('webLogin', 'Api\\AuthController@webLogin')->name('weblogin');
 
-Route::post('Demologin', 'Api\\AuthController@Demologin')->name('Demologin');
+
 
 
 Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
