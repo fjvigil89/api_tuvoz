@@ -57,9 +57,13 @@ class AuthController extends Controller
                 return redirect()->back()->withErrors($validator);
             }
 
-
+            $user = User::where('email', $request->email)->first();
+            if ($user && $user->status === 0) {
+                return redirect()->to($request->url . '/' . $request->email);    
+            }
             User::create([
                 'name' => "Nuevo Registro",
+                'username' => explode('@',$request->email)[0],
                 'email' => $request->email,
                 'password' => bcrypt(random_int(1, 10)),
                 'identificador' => bcrypt($request->identificador),
@@ -71,7 +75,7 @@ class AuthController extends Controller
             return redirect()->to($request->url . '/' . $request->email);
         } catch (\Exception $e) {
             Log::critical(" Error al cargar los Usuarios: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            return redirect()->back();
+            return redirect()->to($request->url);    
         }
     }
 

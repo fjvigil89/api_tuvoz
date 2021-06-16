@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
     {
        $specialis = User::create([
             'name' => "Frank Josué Vigil Vega",
+            'username' => 'frankjosue.vigilvega',
             'email' => "frankjosue.vigilvega@gmail.com",
             'password' => bcrypt("89120815065"),
             'identificador' => bcrypt("Frank Josué Vigil Vega"),
@@ -24,6 +25,7 @@ class UserSeeder extends Seeder
 
         $patient = User::create([
             'name' => "Invitado",
+            'username' => 'admin',
             'email' => "admin@gmail.com",
             'password' => bcrypt("admin"),
             'identificador' => bcrypt("Invitado"),
@@ -34,6 +36,7 @@ class UserSeeder extends Seeder
 
         $demo = User::create([
             'name' => "Demo",
+            'username' => 'demo',
             'email' => "demo@unizar.es",
             'password' => bcrypt("demo"),
             'identificador' => bcrypt("Demo"),
