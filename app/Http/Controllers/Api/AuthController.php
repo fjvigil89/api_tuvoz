@@ -67,10 +67,10 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => bcrypt(random_int(1, 10)),
                 'identificador' => bcrypt($request->identificador),
-                'role' => 'Guest',
+                'role' => $request->role,
                 'specialist_id' => base64_decode($request->identificador),
                 'status' => false,
-            ])->assignRole('Guest');
+            ])->assignRole($request->role);
 
             return redirect()->to($request->url . '/' . $request->email);
         } catch (\Exception $e) {
@@ -107,9 +107,11 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         $authToken = $user->createToken($user->name)->plainTextToken;
         $user->remember_token = $authToken;
+
         if (isset($request->identificador)) {
             $user->identificador = $request->identificador;
         }
+        
         $user->save();
         return response()->json([
             'data' => Auth::user(),

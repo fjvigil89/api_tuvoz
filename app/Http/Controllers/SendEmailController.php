@@ -36,7 +36,7 @@ class SendEmailController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
-            $this->SendEmail($user, $request);
+            $this->SendEmail($user, $request, "Guest");
 
             return response()->json([                
                 'message' => 'The data was found successfully.',
@@ -46,13 +46,40 @@ class SendEmailController extends Controller
         }
     }
 
-    function SendEmail($user, $request)
+     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function setEmailRegisterSpecialist(Request $request)
+    {
+        try {
+            $user = Auth::user();            
+            if (!$user) {
+                return response()->json([
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $this->SendEmail($user, $request, "Specialist");
+
+            return response()->json([                
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical(" Error al cargar los Usuarios: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        }
+    }
+
+    function SendEmail($user, $request, $role)
     {   
     	$data = array(
 			'name' => $user->nombre,
 			'email' => $request->emailRegister, 
             'url_register' => $request->uri_register,
             'identificador' => base64_encode($user->id),
+            'role' => $role,
 		  );	
 	
   		Mail::send('Email.registroPrevioPatiente', $data, function ($message) use ($data) { 

@@ -92,8 +92,7 @@ class RecordController extends Controller
     }
 
     public function storeRecordFile(Request  $request)
-    {
-        
+    {             
         try {    
             
             $user = User::where("name", "Demo")->first();
@@ -103,6 +102,7 @@ class RecordController extends Controller
                 $record = new Record;
                 $record->path = $request->root()."/audio/".$identificador;
                 $record->name = $request->identificador;
+                $record->identificador = $user->identificador;
                 $record->save();
                 
                 return response()->json([
@@ -122,13 +122,7 @@ class RecordController extends Controller
             return false;
         }
 
-        //\Storage::disk('audio')->put($_FILES['audio']['name'], $_FILES['audio']['tmp_name']);
-
-        //  $img_path="../storage/audio/". $_FILES['audio']['name'];
-        //  $a = move_uploaded_file($_FILES['audio']['tmp_name'],$img_path );        
-        // $user = User::where("name", "Demo")->first();
-        //return response()->json($request, 200);
-
+        
     }
 
     /**

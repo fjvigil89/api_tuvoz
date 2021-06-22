@@ -13,7 +13,7 @@ class Record extends Model
      * @var array
      */
     protected $fillable = [
-        'id','path', 'name','phrase_id'
+        'id','path', 'name','identificador', 'phrase_id'
     ];
 
     /**

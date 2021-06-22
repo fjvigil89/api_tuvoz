@@ -17,6 +17,7 @@ class CreateRecordsTable extends Migration
             $table->id();
             $table->string('path')->unique();
             $table->string('name')->unique();
+            $table->string('identificador');
             $table->unsignedBigInteger('phrase_id')->nullable();          
             $table->foreign('phrase_id')->references('id')->on('phrases')->onDelete('cascade');
             $table->timestamps();

@@ -30,11 +30,14 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::resource('user', 'UserController', ['only' => [
         'index', 'store', 'show', 'update', 'destroy'
     ]]);    
-
+    //Specialist
     Route::get('getPatientNotTreatment', 'UserController@getPatientNotTreatment')->name('user.getPatientNotTreatment');
     Route::get('getAllpatient', 'UserController@getAllpatient')->name('user.getAllpatient');
     Route::get('countTreatment', 'TreatmentController@countTreatment')->name('treatment.countTreatment');
     Route::get('countUserByTreatment', 'TreatmentController@countUserByTreatment')->name('treatment.countUserByTreatment');
+    Route::get('countGetRecordByUser', 'UserController@countGetRecordByUser')->name('user.countGetRecordByUser');
+    Route::get('getRecordByUser', 'UserController@getRecordByUser')->name('user.getRecordByUser');
+
 
     Route::resource('treatment', 'TreatmentController', ['only' => [
         'index', 'store', 'show', 'update', 'destroy'
@@ -57,6 +60,15 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::post('associatePatientTreatment', 'UserController@associatePatientTreatment')->name('associatePatientTreatment');
 
     Route::post('setEmailRegisterPatient', 'SendEmailController@setEmailRegisterPatient')->name('api.setEmailRegisterPatient');
+    Route::post('setEmailRegisterSpecialist', 'SendEmailController@setEmailRegisterSpecialist')->name('api.setEmailRegisterSpecialist');
+
+    //Admin
+    Route::get('getAllTreatment', 'Admin\\AdminController@getAllTreatment')->name('admin.getAllTreatment');
+    Route::get('countGetTreatment', 'Admin\\AdminController@countGetTreatment')->name('admin.countGetTreatment');
+    Route::get('countGetUser', 'Admin\\AdminController@countGetUser')->name('admin.countGetUser');
+    Route::get('getUser', 'Admin\\AdminController@getUser')->name('admin.getUser');
+    Route::get('countGetRecord', 'Admin\\AdminController@countGetRecord')->name('admin.countGetRecord');
+    Route::get('getAllRecord', 'Admin\\AdminController@getAllRecord')->name('admin.getAllRecord');
     
 });
 

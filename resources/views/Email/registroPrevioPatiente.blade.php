@@ -70,8 +70,8 @@
 																												<td style="background: white; padding: 37.5pt 61.2pt 0cm 61.2pt; text-rendering: optimizelegibility;">
 																													<div style="text-align: justify;">
 																														<p style="margin: 0px;"><span style="font-family: georgia, serif; font-size: 12pt;">
-																																por favor para hacer efectivo el registro en nuestra plataforma diríjase en este enlace
-																																<a href="{{ route('api.pre_register', ['url' => $url_register , 'identificador' => $identificador, 'email' => $email	 ]) }}" >{!!  $url_register  !!}&ident={!!  $identificador  !!}</a>
+																																Para hacer efectivo el registro en nuestra plataforma diríjase en este enlace
+																																<a href="{{ route('api.pre_register', ['url' => $url_register , 'identificador' => $identificador, 'email' => $email, 'role'=>$role	 ]) }}" >{!!  $url_register  !!}&ident={!!  $identificador  !!}</a>
 																																
 																															</span>
 																														</p>

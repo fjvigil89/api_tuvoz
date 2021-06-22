@@ -13,7 +13,17 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-       $specialis = User::create([
+       $admin = User::create([
+            'name' => "Admin",
+            'username' => 'admin',
+            'email' => "tuvoz.unizar@gmail.com",
+            'password' => bcrypt("admin"),
+            'identificador' => bcrypt("Admin"),
+            'role'=> 'Admin',            
+            'status' => true,
+        ])->assignRole('Admin');
+
+        $specialis = User::create([
             'name' => "Frank Josué Vigil Vega",
             'username' => 'frankjosue.vigilvega',
             'email' => "frankjosue.vigilvega@gmail.com",
@@ -22,18 +32,7 @@ class UserSeeder extends Seeder
             'role'=> 'Specialist',
             'status' => true,
         ])->assignRole('Specialist');
-
-        $patient = User::create([
-            'name' => "Invitado",
-            'username' => 'admin',
-            'email' => "admin@gmail.com",
-            'password' => bcrypt("admin"),
-            'identificador' => bcrypt("Invitado"),
-            'role'=> 'Guest',
-            'specialist_id'=> $specialis->id,
-            'status' => true,
-        ])->assignRole('Guest');
-
+        
         $demo = User::create([
             'name' => "Demo",
             'username' => 'demo',

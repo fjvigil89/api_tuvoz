@@ -142,6 +142,56 @@ class UserController extends Controller
         }
     }
 
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRecordByUser()
+    {
+        //
+        try {
+            $user = Auth::user();
+            $patient = User::where('specialist_id', $user->id)->get();
+            $recordList = array();
+            foreach ($patient as $item)
+            {
+                array_push($recordList, Record::where('identificador', $item->identificador)->first());
+            }
+            return response()->json([
+                'data' => $recordList,
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical(" Error al cargar las Voces: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function countGetRecordByUser()
+    {
+        //
+        try {
+            $user = Auth::user();
+            $patient = User::where('specialist_id', $user->id)->get();
+            $recordList = array();
+            foreach ($patient as $item)
+            {
+                array_push($recordList, Record::where('identificador', $item->identificador)->first());
+            }
+            return response()->json([
+                'data' => count($recordList),
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical(" Error al cargar las Voces: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
