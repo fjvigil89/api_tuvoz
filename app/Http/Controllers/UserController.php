@@ -181,7 +181,7 @@ class UserController extends Controller
             $recordList = array();
             foreach ($patient as $item)
             {
-                array_push($recordList, Record::where('identificador', $item->identificador)->first());
+                array_push($recordList, Record::where('identificador', $item->identificador)->get());
             }
             return response()->json([
                 'data' => count($recordList),
