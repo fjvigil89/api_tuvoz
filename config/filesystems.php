@@ -67,9 +67,19 @@ return [
 
         'audio' => [
             'driver' => 'local',
-            'root' => storage_path('audio'),
+            'root' => public_path('audio'),
             'url' => env('APP_URL').'/audio',
             'visibility' => 'public',
+            'permissions' => [
+                'file' => [
+                    'public' => 0664,
+                    'private' => 0600,
+                ],
+                'dir' => [
+                    'public' => 0775,
+                    'private' => 0700,
+                ],
+            ],
         ],
 
     ],

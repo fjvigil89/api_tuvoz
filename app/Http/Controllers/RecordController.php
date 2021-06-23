@@ -13,6 +13,7 @@ use Validator;
 use Log;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Storage;
 class RecordController extends Controller
 {
     /**
@@ -156,6 +157,28 @@ class RecordController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $item = Record::FindOrFail($id);
+            if (!$item) {
+                return response()->json([                    
+                    'message' => 'No se ha encontrado el archivo.',
+                ], Response::HTTP_NOT_FOUND); 
+            }
+
+         
+             if(Storage::disk('audio')->delete($item->identificador.$item->name))
+             {
+                $item->delete();
+             }     
+            return response()->json([
+                'data' => $item,
+                'message' => 'Los datos se han cargado correctamente.',
+            ], Response::HTTP_OK);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No existe el audio deseado :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+        }
     }
 }
