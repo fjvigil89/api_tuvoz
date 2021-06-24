@@ -33,46 +33,35 @@ class RecordController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        return response()->json($request, 200);
+    {        
+        // try {    
+            
+        //     $user = Auth::user();
 
-        // try{
-        //      if($request->has('record'))
-        //         {
-        //         //obtenemos el campo file definido en el formulario                    
-        //             $name = explode("/", $request->record);
-        //             $record = Record::create([
-        //                 'path' => $request->record,
-        //                 'name' =>$name[count($name)-1],
-        //                 'phrase_id' => $request->idPhrase,
-        //             ]);
-
-        //             // if($this->saveAudio($file))
-        //             // {
-        //             //     $record = new Record;
-        //             //     $record->path = $request->root()."/storage/audio/".$file->getClientOriginalName();
-        //             //     $record->name = $file->getClientOriginalName();
-        //             //     $record->save();
-
-        //             //     $treatment->Record()->associate($record->id);
-        //             // }
-
-        //         }
-        //         else{
-        //             return response()->json([                    
-        //                 'message' => 'The data descriptions were not found correctly.',
-        //             ], Response::HTTP_NOT_FOUND); 
-        //         }                   
+        //     $identificador = $user->identificador.$request->identificador;
+        //     if ($this->saveAudio($_FILES['audio'], $identificador)) {
+        //         $record = new Record;
+        //         $record->path = $request->root()."/audio/".$identificador;
+        //         $record->name = $request->identificador;
+        //         $record->identificador = $user->identificador;
+        //         $record->phrase_id = $request->phrase_id;
+        //         $record->save();
+                
+        //         return response()->json([
+        //             'data' => TRUE,
+        //             'message' => 'The data was found successfully.',
+        //             'status' => Response::HTTP_OK,
+        //         ], Response::HTTP_OK);
+        //     }
 
         //     return response()->json([
-        //         'data' => $record,
-        //         'message' => 'The data was found successfully.',
-        //     ], Response::HTTP_OK);
-        // }
-        // catch(\Exception $e)
-        // {
-        //     Log::critical("problema con la Grabación deseado :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-
+        //         'data' => FALSE,
+        //         'message' => 'The data file were not found correctly.',
+        //         'status' => Response::HTTP_NOT_FOUND,
+        //     ], Response::HTTP_NOT_FOUND);
+        // } catch (\Exception $e) {
+        //     Log::critical("The file is not save :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        //     return false;
         // }
     }
 

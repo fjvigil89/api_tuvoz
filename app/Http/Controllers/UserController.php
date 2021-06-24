@@ -14,6 +14,8 @@ use Log;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
+use function PHPUnit\Framework\isNull;
+
 class UserController extends Controller
 {
     /**
@@ -41,7 +43,7 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $user = User::all();            
+            $user = User::all();
             if (!$user) {
                 return response()->json([
                     'message' => 'The given data was not found.',
@@ -142,7 +144,7 @@ class UserController extends Controller
         }
     }
 
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -152,11 +154,27 @@ class UserController extends Controller
         //
         try {
             $user = Auth::user();
-            $patient = User::where('specialist_id', $user->id)->get();
+            $treatment = Treatment::where('specialist_id', $user->id)->get();
+            if (!$treatment) {
+                return response()->json([
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }
             $recordList = array();
-            foreach ($patient as $item)
-            {
-                array_push($recordList, Record::where('identificador', $item->identificador)->get());
+            foreach ($treatment as $item) {
+                $user_treatment = User_Treatment::where('treatment_id', $item->id)->get();
+                foreach ($user_treatment as $item_treat) {
+                    $phrase = Phrase::where('treatment_id', $item_treat->treatment_id)->get();
+
+                    foreach ($phrase as $key => $item_phrase) {
+                        if (Record::where('phrase_id', $item_phrase->id)->first() != null )  {
+                            array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());
+                            $recordList[$key]['phrase_id']= $item_phrase;
+                            $recordList[$key]['phrase_id']['treatment_id']= $item_treat;
+                            $recordList[$key]['phrase_id']['treatment_id']['patient_id']= User::where('id', $item_treat->patient_id)->first();
+                        }
+                    }
+                }
             }
             return response()->json([
                 'data' => $recordList,
@@ -177,11 +195,24 @@ class UserController extends Controller
         //
         try {
             $user = Auth::user();
-            $patient = User::where('specialist_id', $user->id)->get();
+            $treatment = Treatment::where('specialist_id', $user->id)->get();
+            if (!$treatment) {
+                return response()->json([
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }
             $recordList = array();
-            foreach ($patient as $item)
-            {
-                array_push($recordList, Record::where('identificador', $item->identificador)->get());
+            foreach ($treatment as $item) {
+                $user_treatment = User_Treatment::where('treatment_id', $item->id)->get();
+                foreach ($user_treatment as $item_treat) {
+                    $phrase = Phrase::where('treatment_id', $item_treat->treatment_id)->get();
+
+                    foreach ($phrase as $item_phrase) {
+                        if (Record::where('phrase_id', $item_phrase->id)->first() != null )  {
+                            array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());                            
+                        }
+                    }
+                }
             }
             return response()->json([
                 'data' => count($recordList),

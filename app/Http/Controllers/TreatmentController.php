@@ -179,6 +179,8 @@ class TreatmentController extends Controller
             
             $treatment->specialist_id = $user->id;        
 
+            $treatment->save();
+            
             
             //Relaciones con las frases
             if($request->has('phrase'))
@@ -203,7 +205,7 @@ class TreatmentController extends Controller
                 ], Response::HTTP_NOT_FOUND); 
             }
 
-            $treatment->save();
+            //$treatment->save();
             
             return response()->json([
                 'data' => $treatment,
