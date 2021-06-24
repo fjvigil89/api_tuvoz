@@ -23,6 +23,11 @@ Route::get('login', function () {
 })->name('web.login');
 
 
+// Route::get('email', function () {    
+//     return view('Email.registroPrevioPatiente');
+// })->name('web.email');
+
+
 //Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
