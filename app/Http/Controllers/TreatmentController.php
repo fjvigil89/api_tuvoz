@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TreatmentController extends Controller
 {
-    //Solo muestra los tratamientos del usuario logueado
+    //Solo muestra los tratamientos del especialista logueado
     /**
      * Display a listing of the resource.
      * 
@@ -24,6 +24,7 @@ class TreatmentController extends Controller
      */    
     public function index()
     {
+        //Solo muestra los tratamientos del especialista logueadov
         try{
             $user = Auth::user();
             $treatment=Treatment::where('specialist_id', $user->id)->get();
@@ -57,6 +58,7 @@ class TreatmentController extends Controller
 
         
     }
+    
 
      //Solo muestra los tratamientos del usuario logueado
     /**
