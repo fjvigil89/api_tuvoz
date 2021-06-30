@@ -188,12 +188,13 @@ class TreatmentController extends Controller
             if($request->has('phrase'))
             {
                 $phrases = $request->phrase;                
-                 foreach($phrases as $item)                    
+                 foreach($phrases as $key => $item)                    
                     {
                         
                         $newPhrase = Phrase::create([
                             'phrase' => $item['namePhrase'],
                             'treatment_id'=> $treatment->id,
+                            'current' => $key == 0 ? 1 : 0,
                             'created_at' => date('Y-m-d H:m:s'),
                             'updated_at' => date('Y-m-d H:m:s')
                         ]);                        
@@ -238,9 +239,14 @@ class TreatmentController extends Controller
         try{
             $item = Treatment::find($treatment);
             if (!$item) {
-                return response("No existe el Tratamiento deseado", 404);
+                return response()->json([                    
+                    'message' => 'The data descriptions were not found correctly.',
+                ], Response::HTTP_NOT_FOUND); 
             }            
-            return response()->json($item, 200);
+            return response()->json([
+                'data' => $item,
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
         }
         catch(\Exception $e)
         {
@@ -249,6 +255,8 @@ class TreatmentController extends Controller
         }
 
     }
+
+    
 
     /**
      * Update the specified resource in storage.
