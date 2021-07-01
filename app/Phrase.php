@@ -14,7 +14,7 @@ class Phrase extends Model
      * @var array
      */
     protected $fillable = [
-         'id','phrase', 'status','treatment_id'
+         'id','phrase', 'status','treatment_id', 'current'
     ];
 
     /**

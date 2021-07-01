@@ -14,7 +14,7 @@ class User_Treatment extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'patient_id','treatment_id'
+        'id', 'patient_id','treatment_id', 'status'
     ];
     
 

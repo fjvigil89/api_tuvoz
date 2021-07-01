@@ -46,12 +46,12 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::resource('record', 'RecordController', ['only' => [
         'index', 'store', 'show', 'update', 'destroy'
     ]]);    
-
-    Route::get('phrasePatientTreatment/{treatment}', 'TreatmentPatientController@phrasePatientTreatment')->name('treatment.phrasePatientTreatment');
-    Route::get('countPatientTreatment', 'TreatmentPatientController@countPatientTreatment')->name('treatment.countPatientTreatment');
     Route::resource('treatment_patient', 'TreatmentPatientController', ['only' => [
         'index'
     ]]);
+    
+    Route::get('countPatientTreatment', 'TreatmentPatientController@countPatientTreatment')->name('treatment.countPatientTreatment');
+
 
     Route::post('update-password', 'Api\\UpdatePwdController@updatePassword')->name('updatePassword');
     Route::post('logout', 'Api\\AuthController@logout')->name('api.logout');
@@ -69,7 +69,10 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::get('getUser', 'Admin\\AdminController@getUser')->name('admin.getUser');
     Route::get('countGetRecord', 'Admin\\AdminController@countGetRecord')->name('admin.countGetRecord');
     Route::get('getAllRecord', 'Admin\\AdminController@getAllRecord')->name('admin.getAllRecord');
-    
+
+
+    //Patient
+    Route::get('phrasePatientTreatment/{treatment}', 'TreatmentPatientController@phrasePatientTreatment')->name('treatment.phrasePatientTreatment');
 });
 
 Route::post('register', 'Api\\AuthController@register')->name('api.register');

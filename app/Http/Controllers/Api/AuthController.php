@@ -81,6 +81,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        //return response()->json($request, 200);
 
         $validator = Validator::make($request->all(), [
             'email' => 'email|required',
@@ -161,7 +162,7 @@ class AuthController extends Controller
 
     //se pasa el id del usuario que esta loguedo
     public function logout(Request $request)
-    {
+    {        
         try {
             $user = Auth::user()->currentAccessToken()->delete();
             return response()->json([

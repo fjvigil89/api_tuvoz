@@ -17,8 +17,8 @@ class CreatePhrasesTable extends Migration
             $table->id();
             $table->string('phrase');
             $table->boolean('status')->default(false);
-            $table->timestamps();           
-
+            $table->boolean('current')->default(false);
+            $table->timestamps();
             $table->unsignedBigInteger('treatment_id')->nullable();
             $table->foreign('treatment_id')->references('id')->on('treatments')->onDelete('cascade');
             

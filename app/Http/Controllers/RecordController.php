@@ -33,36 +33,76 @@ class RecordController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {        
-        // try {    
+    {    
+        //return response()->json($request, 200);    
+        try {    
             
-        //     $user = Auth::user();
+            $user = Auth::user();
 
-        //     $identificador = $user->identificador.$request->identificador;
-        //     if ($this->saveAudio($_FILES['audio'], $identificador)) {
-        //         $record = new Record;
-        //         $record->path = $request->root()."/audio/".$identificador;
-        //         $record->name = $request->identificador;
-        //         $record->identificador = $user->identificador;
-        //         $record->phrase_id = $request->phrase_id;
-        //         $record->save();
+            $identificador = $user->username.$request->identificador;
+            if ($this->saveAudio($_FILES['audio'], $identificador)) {
+                $record = new Record;
+                $record->path = $request->root()."/audio/".$identificador;
+                $record->name = $request->identificador;
+                $record->identificador = $user->identificador;
+                $record->save();
                 
-        //         return response()->json([
-        //             'data' => TRUE,
-        //             'message' => 'The data was found successfully.',
-        //             'status' => Response::HTTP_OK,
-        //         ], Response::HTTP_OK);
-        //     }
+                
+                $phrases= Phrase::all();               
+                foreach($phrases as $key => $phrase)
+                {
+                    if ($phrase->id == $request->idPhrase)
+                        {
+                            $aux = Phrase::find($phrase->id );
+                            if(!$aux)
+                            {
+                                return response()->json([
+                                    'data' => FALSE,
+                                    'message' => 'The data file were not found correctly.',
+                                    'status' => Response::HTTP_NOT_FOUND,
+                                ], Response::HTTP_NOT_FOUND);
+                            }
+                            $aux->current= 0;
+                            $aux->save();
 
-        //     return response()->json([
-        //         'data' => FALSE,
-        //         'message' => 'The data file were not found correctly.',
-        //         'status' => Response::HTTP_NOT_FOUND,
-        //     ], Response::HTTP_NOT_FOUND);
-        // } catch (\Exception $e) {
-        //     Log::critical("The file is not save :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-        //     return false;
-        // }
+                            $record->phrase_id=$phrase->id;
+                            $record->save();
+                           
+                            if ($key != count($phrases)-1)
+                            {
+                                $tmp = Phrase::find($phrases[++$key]->id );
+                                $tmp->current=1;
+                                $tmp->save();
+                            }
+                            else
+                            {
+                                
+                                $user_treat= User_Treatment::where('treatment_id', $request->idTreatment)->where('patient_id', $user->id)->first();
+                                $user_treat->status=1;
+                                $user_treat->save();
+                            }
+                            
+                        }
+                }
+
+
+                return response()->json([
+                    'data' => TRUE,
+                    'message' => 'The data was found successfully.',
+                    'status' => Response::HTTP_OK,
+                ], Response::HTTP_OK);
+            }
+
+            return response()->json([
+                'data' => FALSE,
+                'message' => 'The data file were not found correctly.',
+                'status' => Response::HTTP_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            Log::critical("The file is not save :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return false;
+        }
+
     }
 
     function saveAudio($file, $identificador)
