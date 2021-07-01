@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('identificador')->unique();
             $table->string('role');
+            $table->text('foto');
             $table->boolean('status')->default(false);
             $table->unsignedBigInteger('specialist_id')->nullable();
             $table->foreign('specialist_id')->references('id')->on('users')->onUpdate('cascade');
