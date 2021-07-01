@@ -69,10 +69,30 @@ class UserController extends Controller
         //
         try {
             $user = Auth::user();
-            $patient = User::where('specialist_id', $user->id)->get();
+            $patients = User::where('specialist_id', $user->id)->get();
+            if (!$patients) {
+                return response()->json([
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+            foreach ($patients as $key => $patient) {
+                $user_treatment = User_Treatment::where('patient_id', $patient->id)->get();
+                $countTreatmentByPatient = count($user_treatment);                
+                $countTreatmentByPatientComplete = 0;
+                foreach ($user_treatment as $treat) {
+                    if ($treat->status === 1) {
+                        $countTreatmentByPatientComplete ++;
+                    }                    
+                }
+
+                $patient['porcientoTreatmentComplete'] = $this->obtenerPorcentaje($countTreatmentByPatientComplete, $countTreatmentByPatient );                
+                
+            }
+
+
 
             return response()->json([
-                'data' => $patient,
+                'data' => $patients,
                 'message' => 'The data was found successfully.',
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
@@ -80,7 +100,15 @@ class UserController extends Controller
         }
     }
 
-
+    function obtenerPorcentaje($current, $total) {
+        if ($total > 0) {
+            $total = (float)$total; 
+            $porcentaje = ((float)$current * 100) / $total; 
+            $porcentaje = round($porcentaje, 2);
+            return $porcentaje;
+        }        
+        return 0;
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -167,11 +195,11 @@ class UserController extends Controller
                     $phrase = Phrase::where('treatment_id', $item_treat->treatment_id)->get();
 
                     foreach ($phrase as $key => $item_phrase) {
-                        if (Record::where('phrase_id', $item_phrase->id)->first() != null )  {
+                        if (Record::where('phrase_id', $item_phrase->id)->first() != null) {
                             array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());
-                            $recordList[$key]['phrase_id']= $item_phrase;
-                            $recordList[$key]['phrase_id']['treatment_id']= $item_treat;
-                            $recordList[$key]['phrase_id']['treatment_id']['patient_id']= User::where('id', $item_treat->patient_id)->first();
+                            $recordList[$key]['phrase_id'] = $item_phrase;
+                            $recordList[$key]['phrase_id']['treatment_id'] = $item_treat;
+                            $recordList[$key]['phrase_id']['treatment_id']['patient_id'] = User::where('id', $item_treat->patient_id)->first();
                         }
                     }
                 }
@@ -208,8 +236,8 @@ class UserController extends Controller
                     $phrase = Phrase::where('treatment_id', $item_treat->treatment_id)->get();
 
                     foreach ($phrase as $item_phrase) {
-                        if (Record::where('phrase_id', $item_phrase->id)->first() != null )  {
-                            array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());                            
+                        if (Record::where('phrase_id', $item_phrase->id)->first() != null) {
+                            array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());
                         }
                     }
                 }
@@ -240,9 +268,23 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($user)
     {
-        //
+        try {
+            $user = User::find($user);
+            if (!$user) {
+                return response()->json([
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            return response()->json([
+                'data' => $user,
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical(" Error al cargar los Usuarios: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        }
     }
 
     /**

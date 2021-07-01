@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'identificador' => bcrypt("Admin"),
             'role'=> 'Admin',            
             'status' => true,
-            'foto'=> "http://lorempixel.com/grey/400/200/people/fake/",
+            'foto'=> "http://lorempixel.com/grey/800/800/people/fake/",
         ])->assignRole('Admin');
 
         $specialis = User::create([
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             'identificador' => bcrypt("Frank Josué Vigil Vega"),
             'role'=> 'Specialist',
             'status' => true,
-            'foto'=> "http://lorempixel.com/grey/400/200/people/fake/",
+            'foto'=> "http://lorempixel.com/grey/800/800/people/fake/",
         ])->assignRole('Specialist');
         
         $demo = User::create([
@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
             'role'=> 'Guest',
             'specialist_id'=> $specialis->id,
             'status' => true,
-            'foto'=> "http://lorempixel.com/grey/400/200/people/fake/",
+            'foto'=> "http://lorempixel.com/grey/800/800/people/fake/",
         ])->assignRole('Guest');
 
         // $faker = Faker::create();

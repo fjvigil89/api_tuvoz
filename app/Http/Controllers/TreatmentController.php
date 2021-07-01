@@ -27,7 +27,7 @@ class TreatmentController extends Controller
         //Solo muestra los tratamientos del especialista logueadov
         try{
             $user = Auth::user();
-            $treatment=Treatment::where('specialist_id', $user->id)->get();
+            $treatment=Treatment::where('specialist_id', $user->id)->get();            
             
             if (!$treatment) {
                 return response()->json([
@@ -38,11 +38,18 @@ class TreatmentController extends Controller
             foreach($treatment as $item)
             {
                 $user_treatment = array();            
-                $patinets = User_Treatment::where('treatment_id', $item->id)->get();                                
-                 foreach($patinets as $patient){                    
+                $patients = User_Treatment::where('treatment_id', $item->id)->get();  
+                $countTreatment = count($patients);                              
+                $countTreatmentComplete = 0;
+                 foreach($patients as $patient){
+                     if($patient->status === 1){
+                         $countTreatmentComplete++;
+                     }                  
                      array_push($user_treatment, User::where('id', $patient->patient_id)->get());
                  }
                  $item['patients'] = $user_treatment;
+                 $item['porcientoTreatmentComplete'] = $this->obtenerPorcentaje($countTreatmentComplete, $countTreatment );
+                 
 
             }
             
@@ -58,7 +65,6 @@ class TreatmentController extends Controller
 
         
     }
-    
 
      //Solo muestra los tratamientos del usuario logueado
     /**
