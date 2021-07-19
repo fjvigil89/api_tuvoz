@@ -70,6 +70,11 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::get('countGetRecord', 'Admin\\AdminController@countGetRecord')->name('admin.countGetRecord');
     Route::get('getAllRecord', 'Admin\\AdminController@getAllRecord')->name('admin.getAllRecord');
 
+    //Apk
+    Route::resource('app', 'AppController', ['only' => [
+        'index', 'store', 'show', 'update', 'destroy'
+    ]]);  
+
 
     //Patient
     Route::get('phrasePatientTreatment/{treatment}', 'TreatmentPatientController@phrasePatientTreatment')->name('treatment.phrasePatientTreatment');
@@ -81,5 +86,7 @@ Route::post('forgot-password', 'Api\\PasswordController@fotgotPassword')->name('
 
 //Para la aplicación movil, modo DEMO
 Route::post('storeRecordFile', 'RecordController@storeRecordFile')->name('demo.storeRecordFile');
+
+
 
 //Auth::routes();
