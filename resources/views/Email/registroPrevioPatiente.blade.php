@@ -100,6 +100,25 @@
 
 																														<p style="margin: 0px;"><span style="font-family: georgia, serif; font-size: 12pt;">&nbsp;</span></p>
 																													</div>
+</br>
+																													<div style="text-align: justify;">
+																														<p style="margin: 0px;"><span style="font-family: georgia, serif; font-size: 12pt;">
+																																Puede descargar nuestra aplicación en la siguiente dirección
+																																<a href="{!! $dowload_url !!}" download>
+																																	{!! $dowload_url !!}
+																																</a>
+																																
+																															</span><br />
+																														</p>
+
+																																<div class="visible-print text-center">
+																																	<p>O puede scanear este código con su movil</p>	
+																																	<img src="{{ $message->embed(public_path() . '/qrcode/qrcode.svg') }}"  alt="qrcode"/>
+
+
+																																</div>
+																														<p style="margin: 0px;"><span style="font-family: georgia, serif; font-size: 12pt;">&nbsp;</span></p>
+																													</div>
 
 																												</td>
 																											</tr>

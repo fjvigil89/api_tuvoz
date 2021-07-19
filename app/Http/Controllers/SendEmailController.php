@@ -15,6 +15,7 @@ use Log;
 use Mail;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SendEmailController extends Controller
 {
@@ -74,10 +75,13 @@ class SendEmailController extends Controller
 
     function SendEmail($user, $request, $role)
     {   
+        $download = $request->origin_url."/apk/tu-voz.apk";
     	$data = array(
 			'name' => $user->nombre,
 			'email' => $request->emailRegister, 
             'url_register' => $request->uri_register,
+            'dowload_url' => $download,
+            'qr_code'=> QrCode::size(100)->generate($download, "../public/qrcode/qrcode.svg"),
             'identificador' => base64_encode($user->id),
             'role' => $role,
 		  );	
