@@ -57,7 +57,7 @@ class AppController extends Controller
             $app = new AppModel;
             $app->name = $request->name;
             $app->url = $request->root()."/app/".$request->name;
-            $app->version = "v1";
+            $app->version = $request->version;
             $app->descargas = 0;
             $app->save();
             
