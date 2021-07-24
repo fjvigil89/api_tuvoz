@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Validator;
 use Log;
+use App\LocationModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpFoundation\Response;
@@ -108,6 +109,36 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         $authToken = $user->createToken($user->name)->plainTextToken;
         $user->remember_token = $authToken;
+
+        if ($user->role === "Guest")
+        {
+            $location = LocationModel::where('user_id', $user->id)->first();
+            if (!$location)
+            {            
+                $aux = new LocationModel();
+                $aux->accuracy = $request->accuracy;
+                $aux->altitude = $request->altitude;
+                $aux->altitudeAccuracy = $request->altitudeAccuracy;
+                $aux->heading = $request->heading;
+                $aux->latitude = $request->latitude;
+                $aux->longitude = $request->longitude;
+                $aux->speed = $request->speed;
+                $aux->user_id = $user->id;
+                $aux->save();
+            }
+            else{
+                $location->accuracy = $request->accuracy;
+                $location->altitude = $request->altitude;
+                $location->altitudeAccuracy = $request->altitudeAccuracy;
+                $location->heading = $request->heading;
+                $location->latitude = $request->latitude;
+                $location->longitude = $request->longitude;
+                $location->speed = $request->speed;
+                $location->user_id = $user->id;
+                $location->save();
+            }
+        }
+        
 
         if (isset($request->identificador)) {
             $user->identificador = $request->identificador;

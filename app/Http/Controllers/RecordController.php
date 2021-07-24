@@ -7,6 +7,7 @@ use App\User_Treatment;
 use App\Phrase;
 use App\Record;
 use App\User;
+use App\DeviceModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
@@ -47,6 +48,7 @@ class RecordController extends Controller
                 $record->identificador = $user->identificador;
                 $record->save();
                 
+                $this->storeDevice($record->id, $request);
                 
                 $phrases= Phrase::all();               
                 foreach($phrases as $key => $phrase)
@@ -135,6 +137,7 @@ class RecordController extends Controller
                 $record->identificador = $user->identificador;
                 $record->save();
                 
+                
                 return response()->json([
                     'data' => TRUE,
                     'message' => 'The data was found successfully.',
@@ -153,6 +156,33 @@ class RecordController extends Controller
         }
 
         
+    }
+
+    public function storeDevice($record_id, $request)
+    {
+        $device = new DeviceModel();
+
+        $device->isDevice = $request->isDevice ? TRUE : FALSE;
+        $device->brand = $request->brand;
+        $device->manufacturer = $request->manufacturer;
+        $device->modelName = $request->modelName;
+        $device->modelId = $request->modelId;
+        $device->designName = $request->designName;
+        $device->productName = $request->productName;
+        $device->deviceYearClass = $request->deviceYearClass;
+        $device->totalMemory = $request->totalMemory;
+        $device->supportedCpuArchitectures = $request->supportedCpuArchitectures;
+        $device->osName = $request->osName;
+        $device->osVersion = $request->osVersion;
+        $device->osBuildId = $request->osBuildId;
+        $device->osInternalBuildId = $request->osInternalBuildId;
+        $device->osBuildFingerprint = $request->osBuildFingerprint;
+        $device->platformApiLevel = $request->platformApiLevel;
+        $device->deviceName = $request->deviceName;
+
+        $device->record_id = $record_id;
+
+        $device->save();
     }
 
     /**
