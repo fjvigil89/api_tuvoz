@@ -8,6 +8,7 @@ use App\User_Treatment;
 use App\Phrase;
 use App\Record;
 use App\User;
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
@@ -75,13 +76,15 @@ class SendEmailController extends Controller
 
     function SendEmail($user, $request, $role)
     {   
-        $download = $request->origin_url."/apk/tu-voz.apk";
+        
+        $download = new \App\Http\Controllers\AppController();
+        $aux = $download->lastUpdates();
     	$data = array(
 			'name' => $user->nombre,
 			'email' => $request->emailRegister, 
             'url_register' => $request->uri_register,
-            'dowload_url' => $download,
-            'qr_code'=> QrCode::size(100)->generate($download, "../public/qrcode/qrcode.svg"),
+            'dowload_url' => $aux['url'],
+            'qr_code'=> QrCode::format('png')->size(100)->generate($aux['url'], "../public/qrcode/qrcode.png"),
             'identificador' => base64_encode($user->id),
             'role' => $role,
 		  );	

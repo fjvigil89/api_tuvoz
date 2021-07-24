@@ -87,6 +87,8 @@ Route::post('forgot-password', 'Api\\PasswordController@fotgotPassword')->name('
 //Para la aplicación movil, modo DEMO
 Route::post('storeRecordFile', 'RecordController@storeRecordFile')->name('demo.storeRecordFile');
 
-
+//Obtener la Ultima Actualizacion
+Route::get('lastUpdate', 'AppController@lastUpdate')->name('api.lastUpdate');
+  
 
 //Auth::routes();

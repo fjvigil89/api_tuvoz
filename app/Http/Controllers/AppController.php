@@ -107,4 +107,58 @@ class AppController extends Controller
         //
     }
 
+      /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function lastUpdate()
+    { //
+        try{            
+
+            $app = AppModel::all()->last();
+            $app->descargas += 1;
+            
+            $app->save();
+            if (!$app) {
+                return response()->json([
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }      
+            return response()->json([
+                'data' => $app,                              
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        }
+        catch(\Exception $e)
+            {  	        			
+                Log::critical(" Error al cargar las aplicaciones: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            } 
+    }
+
+       /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function lastUpdates()
+    { //
+        try{            
+
+            $app = AppModel::all()->last();
+            $app->descargas += 1;
+            
+            $app->save();
+            if (!$app) {
+                return null;
+            }      
+            return $app;
+        }
+        catch(\Exception $e)
+            {  	        			
+                Log::critical(" Error al cargar las aplicaciones: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            } 
+    }
 }
