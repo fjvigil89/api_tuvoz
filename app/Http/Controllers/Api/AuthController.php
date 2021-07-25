@@ -60,7 +60,7 @@ class AuthController extends Controller
 
             $user = User::where('email', $request->email)->first();
             if ($user && $user->status === 0) {
-                return redirect()->to($request->url . '/' . $request->email);    
+                return redirect()->to($request->url.'/'.$request->email);    
             }
             User::create([
                 'name' => "Nuevo Registro",
@@ -71,9 +71,10 @@ class AuthController extends Controller
                 'role' => $request->role,
                 'specialist_id' => base64_decode($request->identificador),
                 'status' => false,
+                'foto'=> "http://lorempixel.com/grey/800/800/people/fake/",
             ])->assignRole($request->role);
 
-            return redirect()->to($request->url . '/' . $request->email);
+            return redirect()->to($request->url.'/'.$request->email);
         } catch (\Exception $e) {
             Log::critical(" Error al cargar los Usuarios: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             return redirect()->to($request->url);    

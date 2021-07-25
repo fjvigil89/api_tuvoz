@@ -189,6 +189,7 @@
                                                                                                                                 <a
                                                                                                                                     href="{{ route('api.pre_register', ['url' => $url_register, 'identificador' => $identificador, 'email' => $email, 'role' => $role]) }}">
                                                                                                                                     {!! $url_register !!}&ident={!! $identificador !!}
+
                                                                                                                                 </a>
                                                                                                                                 en
                                                                                                                                 la
