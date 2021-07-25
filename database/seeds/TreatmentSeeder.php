@@ -19,7 +19,7 @@ class TreatmentSeeder extends Seeder
                    array(
                          //'id'         => $faker->unique()->randomNumber,
                          'name'          => "Frases Neurologia",
-                         'desc'          => "HAciendo banco de voces para el trabajo de Interligibilidad", 
+                         'desc'          => "Haciendo banco de voces para el trabajo de Interligibilidad", 
                          'status'        => 1,
                          'specialist_id' => 2,                        
                          'created_at'    => date('Y-m-d H:m:s'),
