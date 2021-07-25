@@ -17,6 +17,7 @@ class AuthController extends Controller
     //
     public function register(Request $request)
     {
+        
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|min:1|max:50',
@@ -37,8 +38,11 @@ class AuthController extends Controller
     
     
             //$user->roles()->attach(2); // Simple user role
-            return $this->login($request);
-            //return response()->json($user);
+            return $this->login($request, TRUE);
+            //return redirect()->to($request->redirect);
+            
+           //return response()->json($request);
+            
         } catch (\Throwable $th) {
             //throw $th;
             Log::critical(" Error al cargar los Usuarios: {$th->getCode()}, {$th->getLine()}, {$th->getMessage()} ");
@@ -81,7 +85,7 @@ class AuthController extends Controller
         }
     }
 
-    public function login(Request $request)
+    public function login(Request $request, $newRegister = FALSE)
     {
         //return response()->json($request, 200);
 
@@ -111,7 +115,7 @@ class AuthController extends Controller
         $authToken = $user->createToken($user->name)->plainTextToken;
         $user->remember_token = $authToken;
 
-        if ($user->role === "Guest")
+        if ($user->role === "Guest" && !$newRegister)
         {
             $location = LocationModel::where('user_id', $user->id)->first();
             if (!$location)
