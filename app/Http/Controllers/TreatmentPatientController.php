@@ -86,12 +86,20 @@ class TreatmentPatientController extends Controller
     public function phrasePatientTreatment($treatment)
     {
                
+        $user = Auth::user();   
         $phrase=Phrase::where('treatment_id', $treatment)->get();
+        $use_treatment= User_Treatment::where('treatment_id', $treatment)->where('patient_id', $user->id)->first();
+
         if (!$phrase) {
             return response()->json([
                 'message' => 'The given data was not found.',
             ], Response::HTTP_NOT_FOUND);
-        }        
+        }      
+        foreach($phrase as $item)
+        {
+            $item['current_phrase'] = $use_treatment->current_phrase;
+        }  
+        
         
         return response()->json([
             'data' => $phrase,

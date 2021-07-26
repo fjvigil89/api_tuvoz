@@ -70,17 +70,23 @@ class RecordController extends Controller
                             $record->phrase_id=$phrase->id;
                             $record->save();
                            
+                            $user_treat= User_Treatment::where('treatment_id', $request->idTreatment)->where('patient_id', $user->id)->first();
+
                             if ($key != count($phrases)-1)
                             {
                                 $tmp = Phrase::find($phrases[++$key]->id );
-                                $tmp->current=1;
+                                $tmp->current=TRUE;
                                 $tmp->save();
+
+                                
+                                $user_treat->current_phrase=$tmp->id;
+                                $user_treat->save();
+
+                                
                             }
                             else
-                            {
-                                
-                                $user_treat= User_Treatment::where('treatment_id', $request->idTreatment)->where('patient_id', $user->id)->first();
-                                $user_treat->status=1;
+                            {   
+                                $user_treat->complete=TRUE;
                                 $user_treat->save();
                             }
                             

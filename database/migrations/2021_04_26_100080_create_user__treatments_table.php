@@ -16,7 +16,8 @@ class CreateUserTreatmentsTable extends Migration
         Schema::create('user__treatments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->boolean('status')->default(false);
+            $table->boolean('complete')->default(false);
+            $table->integer("current_phrase")->default(1);
             $table->unsignedBigInteger('treatment_id')->nullable();
             $table->unsignedBigInteger('patient_id')->nullable();              
             $table->foreign('patient_id')->references('id')->on('users')->onDelete('cascade');           
