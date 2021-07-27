@@ -87,8 +87,9 @@ class AuthController extends Controller
 
     public function login(Request $request, $newRegister = FALSE)
     {
-        //return response()->json($request, 200);
-
+        /* if ($request->isWeb)
+            return response()->json($request, 200);
+ */
         $validator = Validator::make($request->all(), [
             'email' => 'email|required',
             'password' => 'required'
@@ -114,8 +115,10 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         $authToken = $user->createToken($user->name)->plainTextToken;
         $user->remember_token = $authToken;
-
-        if ($user->role === "Guest" && !$newRegister)
+        $device = isset($request->isWeb) ? false : false;
+        //return response()->json($device, 200);
+        
+        if ($user->role === "Guest" && !$newRegister && $device)
         {
             $location = LocationModel::where('user_id', $user->id)->first();
             if (!$location)
