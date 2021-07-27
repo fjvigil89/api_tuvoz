@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->text('foto');
             $table->boolean('status')->default(false);
             $table->unsignedBigInteger('specialist_id')->nullable();
-            $table->foreign('specialist_id')->references('id')->on('users')->onUpdate('cascade');
+            $table->foreign('specialist_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             //$table->foreignId('treatment_id')->constrained();
             
             $table->rememberToken();

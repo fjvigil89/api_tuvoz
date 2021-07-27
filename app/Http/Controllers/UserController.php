@@ -305,8 +305,28 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        try{
+            $item = User::FindOrFail($id);
+            if (!$item) {
+                return response()->json([                    
+                    'message' => 'No se ha encontrado el archivo.',
+                ], Response::HTTP_NOT_FOUND); 
+            }
+
+         
+                $item->delete();
+                 
+            return response()->json([
+                'data' => $item,
+                'message' => 'Los datos se han cargado correctamente.',
+            ], Response::HTTP_OK);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No existe el audio deseado :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+        }
     }
 }
