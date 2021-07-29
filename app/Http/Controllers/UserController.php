@@ -199,7 +199,7 @@ class UserController extends Controller
                             array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());
                             $recordList[$key]['phrase_id'] = $item_phrase;
                             $recordList[$key]['phrase_id']['treatment_id'] = $item_treat;
-                            $recordList[$key]['phrase_id']['treatment_id']['patient_id'] = User::where('id', $item_treat->patient_id)->first();
+                            //$recordList[$key]['phrase_id']['treatment_id']['patient_id'] = User::where('id', $item_treat->patient_id)->get();
                         }
                     }
                 }
