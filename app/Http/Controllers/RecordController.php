@@ -46,9 +46,9 @@ class RecordController extends Controller
                 $record->path = $request->root()."/audio/".$identificador;
                 $record->name = $request->identificador;
                 $record->identificador = $user->identificador;
-                $record->save();
+                //$record->save();
                 
-                $this->storeDevice($record->id, $request);
+              
                 
                 $phrases= Phrase::all();               
                 foreach($phrases as $key => $phrase)
@@ -92,6 +92,8 @@ class RecordController extends Controller
                             
                         }
                 }
+
+                $this->storeDevice($record->id, $request);
 
 
                 return response()->json([
