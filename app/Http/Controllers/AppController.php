@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\AppModel;
+use App\Http\Controllers\SendEmailController;
 use Validator;
 use Log;
 use Illuminate\Support\Facades\Auth;
@@ -60,6 +61,9 @@ class AppController extends Controller
             $app->version = $request->version;
             $app->descargas = 0;
             $app->save();
+            
+            $sendEmail = new SendEmailController();
+            $sendEmail->sendEmailNewApp();
             
             return response()->json([
                 'data' => $app,

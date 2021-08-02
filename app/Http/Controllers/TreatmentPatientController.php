@@ -38,7 +38,17 @@ class TreatmentPatientController extends Controller
             {   
                 $treatment = Treatment::where('id', $item->treatment_id)->first();
                 $treatment['specialist']= User::where('id', $treatment->specialist_id)->first();
-                
+                $phrases = Phrase::where('treatment_id', $treatment->id)->get();
+                $cantidad_phrase_hechas = 0;
+                for ($i=0; $i < count($phrases)-1; $i++) { 
+                    $cantidad_phrase_hechas++;
+                    if ($phrases[$i]->id === $item->current_phrase) {
+                        break;                        
+                    }
+                }
+                $treatment['count_phrase']= count($phrases);
+                $treatment['cantidad_phrase_hechas']= $cantidad_phrase_hechas;
+                $treatment['current_phrase']= $item->current_phrase;
                 array_push($treatment_patient, $treatment);                
             }
             
