@@ -38,6 +38,9 @@ class AuthController extends Controller
     
     
             //$user->roles()->attach(2); // Simple user role
+            if ($user->role === "Guest") {
+                return redirect()->back();
+            }
             return $this->login($request, TRUE);
             //return redirect()->to($request->redirect);
             
