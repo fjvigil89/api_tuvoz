@@ -39,7 +39,12 @@ class AuthController extends Controller
     
             //$user->roles()->attach(2); // Simple user role
             if ($user->role === "Guest") {
-                return redirect()->back();
+                //return view('register.guest_register')->with('users', $user);
+                return response()->json([
+                    'data' => $user,           
+                    'message' => "Congratulation!! your Register es successfully.",
+                    'status' => Response::HTTP_OK,
+                ], Response::HTTP_OK);
             }
             return $this->login($request, TRUE);
             //return redirect()->to($request->redirect);
