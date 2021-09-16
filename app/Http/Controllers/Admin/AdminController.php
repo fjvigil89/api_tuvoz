@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DeviceModel;
 use App\Http\Controllers\Controller;
 use App\Treatment;
 use App\User_Treatment;
@@ -190,7 +191,14 @@ class AdminController extends Controller
                     'message' => 'The given data was not found.',
                 ], Response::HTTP_NOT_FOUND);
             } 
-                                              
+
+            foreach ($record as $key => $item)
+            {
+                $device = DeviceModel::where('record_id', $item->id)->first();
+                $record[$key]['devices']= $device;
+            }
+              
+            
             return response()->json([
                 'data' => $record,                              
                 'message' => 'The data was found successfully.',

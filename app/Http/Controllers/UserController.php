@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\DeviceModel;
+use App\LocationModel;
 use App\Treatment;
 use App\User_Treatment;
 use App\Phrase;
@@ -49,7 +51,10 @@ class UserController extends Controller
                     'message' => 'The given data was not found.',
                 ], Response::HTTP_NOT_FOUND);
             }
-
+            foreach ($user as $key => $item)
+            {
+                $user[$key]['location']= LocationModel::where('user_id', $item->id)->first();
+            }
             return response()->json([
                 'data' => $user,
                 'message' => 'The data was found successfully.',
@@ -199,6 +204,7 @@ class UserController extends Controller
                             array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());
                             $recordList[$key]['phrase_id'] = $item_phrase;
                             $recordList[$key]['phrase_id']['treatment_id'] = $item_treat;
+                            $recordList[$key]['devices']= DeviceModel::where('record_id', $recordList[$key]->id )->first();
                             //$recordList[$key]['phrase_id']['treatment_id']['patient_id'] = User::where('id', $item_treat->patient_id)->get();
                         }
                     }
