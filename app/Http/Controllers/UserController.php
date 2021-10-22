@@ -85,9 +85,9 @@ class UserController extends Controller
                 $countTreatmentByPatient = count($user_treatment);                
                 $countTreatmentByPatientComplete = 0;
                 foreach ($user_treatment as $treat) {
-                    if ($treat->status === 1) {
+                    //if ($treat->status === 1) {
                         $countTreatmentByPatientComplete ++;
-                    }                    
+                    //}                    
                 }
 
                 $patient['porcientoTreatmentComplete'] = $this->obtenerPorcentaje($countTreatmentByPatientComplete, $countTreatmentByPatient );                

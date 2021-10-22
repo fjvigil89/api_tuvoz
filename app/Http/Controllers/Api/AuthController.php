@@ -74,17 +74,17 @@ class AuthController extends Controller
             if ($user && $user->status === 0) {
                 return redirect()->to($request->url.'/'.$request->email);    
             }
-            User::create([
-                'name' => "Nuevo Registro",
-                'username' => explode('@',$request->email)[0],
-                'email' => $request->email,
-                'password' => bcrypt(random_int(1, 10)),
-                'identificador' => bcrypt($request->identificador),
-                'role' => $request->role,
-                'specialist_id' => base64_decode($request->identificador),
-                'status' => false,
-                'foto'=> "http://lorempixel.com/grey/800/800/people/fake/",
-            ])->assignRole($request->role);
+            // User::create([
+            //     'name' => "Nuevo Registro",
+            //     'username' => explode('@',$request->email)[0],
+            //     'email' => $request->email,
+            //     'password' => bcrypt(random_int(1, 10)),
+            //     'identificador' => bcrypt($request->identificador),
+            //     'role' => $request->role,
+            //     'specialist_id' => base64_decode($request->identificador),
+            //     'status' => false,
+            //     'foto'=> "http://lorempixel.com/grey/800/800/people/fake/",
+            // ])->assignRole($request->role);
 
             return redirect()->to($request->url.'/'.$request->email);
         } catch (\Exception $e) {

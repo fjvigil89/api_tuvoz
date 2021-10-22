@@ -39,6 +39,19 @@ class SendEmailController extends Controller
             }
 
             $this->SendEmail($user, $request, "Guest");
+          
+            User::create([
+                'name' => "Nuevo Registro",
+                'username' => explode('@',$request->emailRegister)[0],
+                'email' => $request->emailRegister,
+                'password' => bcrypt(random_int(1, 10)),
+                'identificador' => bcrypt($request->emailRegister),
+                'role' => "Guest",
+                'identificador' => base64_encode($request->emailRegister),
+                'status' => false,
+                'foto'=> "http://lorempixel.com/grey/800/800/people/fake/",
+                'specialist_id' => $user->id,
+            ])->assignRole("Guest");
 
             return response()->json([                
                 'message' => 'The data was found successfully.',
