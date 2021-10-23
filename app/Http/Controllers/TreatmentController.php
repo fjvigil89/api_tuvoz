@@ -196,14 +196,17 @@ class TreatmentController extends Controller
                 $phrases = $request->phrase;                
                  foreach($phrases as $key => $item)                    
                     {
-                        
-                        $newPhrase = Phrase::create([
-                            'phrase' => $item['namePhrase'],
-                            'treatment_id'=> $treatment->id,
-                            'current' => $key == 0 ? 1 : 0,
-                            'created_at' => date('Y-m-d H:m:s'),
-                            'updated_at' => date('Y-m-d H:m:s')
-                        ]);                        
+                        $split = explode("\n", $item['namePhrase']);
+                        foreach($split as $key => $value)
+                        { 
+                            $newPhrase = Phrase::create([
+                                'phrase' => $value,
+                                'treatment_id'=> $treatment->id,
+                                'current' => $key == 0 ? 1 : 0,
+                                'created_at' => date('Y-m-d H:m:s'),
+                                'updated_at' => date('Y-m-d H:m:s')
+                            ]);
+                        }                        
                         
                     }
                 
