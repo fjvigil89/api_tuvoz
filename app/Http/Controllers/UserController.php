@@ -85,9 +85,9 @@ class UserController extends Controller
                 $countTreatmentByPatient = count($user_treatment);                
                 $countTreatmentByPatientComplete = 0;
                 foreach ($user_treatment as $treat) {
-                    //if ($treat->status === 1) {
+                    if ($treat->complete === 1) {
                         $countTreatmentByPatientComplete ++;
-                    //}                    
+                    }                    
                 }
 
                 $patient['porcientoTreatmentComplete'] = $this->obtenerPorcentaje($countTreatmentByPatientComplete, $countTreatmentByPatient );                
@@ -154,9 +154,11 @@ class UserController extends Controller
     {
 
         try {
+            $phrase = Phrase::where('treatment_id', $request->idTreatment)->first();
             $user = User_Treatment::create([
-                'patient_id'   => $request->idPatient,
-                'treatment_id'   => $request->idTreatment,
+                'patient_id'      => $request->idPatient,
+                'treatment_id'    => $request->idTreatment,
+                'current_phrase'  => $phrase->id,
                 'created_at'      => date('Y-m-d H:m:s'),
                 'updated_at'      => date('Y-m-d H:m:s')
             ]);

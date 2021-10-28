@@ -26,6 +26,7 @@ class TreatmentPatientController extends Controller
     {
         try{
             $user = Auth::user();
+           
             $use_treatment=User_Treatment::where('patient_id', $user->id)->get();
             
             if (!$use_treatment) {
@@ -34,13 +35,15 @@ class TreatmentPatientController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }        
             $treatment_patient = array();
+            
             foreach($use_treatment as $item)
-            {   
+            {
+                
                 $treatment = Treatment::where('id', $item->treatment_id)->first();
                 $treatment['specialist']= User::where('id', $treatment->specialist_id)->first();
                 $phrases = Phrase::where('treatment_id', $treatment->id)->get();
                 $cantidad_phrase_hechas = 0;
-                for ($i=0; $i < count($phrases)-1; $i++) { 
+                for ($i=0; $i < count($phrases)-1; $i++) { dd($phrases[$i]->id);
                     $cantidad_phrase_hechas++;
                     if ($phrases[$i]->id === $item->current_phrase) {
                         break;                        
@@ -49,9 +52,11 @@ class TreatmentPatientController extends Controller
                 $treatment['count_phrase']= count($phrases);
                 $treatment['cantidad_phrase_hechas']= $cantidad_phrase_hechas;
                 $treatment['current_phrase']= $item->current_phrase;
-                array_push($treatment_patient, $treatment);                
+                array_push($treatment_patient, $treatment);  
+                
+                
             }
-            
+          
             return response()->json([
                 'data' => $treatment_patient,                              
                 'message' => 'The data was found successfully.',

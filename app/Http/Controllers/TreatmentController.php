@@ -42,7 +42,7 @@ class TreatmentController extends Controller
                 $countTreatment = count($patients);                              
                 $countTreatmentComplete = 0;
                  foreach($patients as $patient){
-                     if($patient->status === 1){
+                     if($patient->complete === 1){
                          $countTreatmentComplete++;
                      }                  
                      array_push($user_treatment, User::where('id', $patient->patient_id)->get());
@@ -194,7 +194,7 @@ class TreatmentController extends Controller
             if($request->has('phrase'))
             {
                 $phrases = $request->phrase;                
-                 foreach($phrases as $key => $item)                    
+                 foreach($phrases as $item)                    
                     {
                         $split = explode("\n", $item['namePhrase']);
                         foreach($split as $key => $value)
