@@ -43,7 +43,7 @@ class TreatmentPatientController extends Controller
                 $treatment['specialist']= User::where('id', $treatment->specialist_id)->first();
                 $phrases = Phrase::where('treatment_id', $treatment->id)->get();
                 $cantidad_phrase_hechas = 0;
-                for ($i=0; $i < count($phrases)-1; $i++) { dd($phrases[$i]->id);
+                for ($i=0; $i < count($phrases)-1; $i++) {
                     $cantidad_phrase_hechas++;
                     if ($phrases[$i]->id === $item->current_phrase) {
                         break;                        
@@ -122,6 +122,47 @@ class TreatmentPatientController extends Controller
         ], Response::HTTP_OK);
 
         
+    }
+
+    public function user_tratement_update(){
+        try{
+            
+            $use_treatment=User_Treatment::all();
+            
+            if (!$use_treatment) {
+                return response()->json([
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }        
+                        
+            foreach($use_treatment as $item)
+            {
+                
+                $treatment = Treatment::where('id', $item->treatment_id)->first();
+                $phrases = Phrase::where('treatment_id', $treatment->id)->get();
+               
+                foreach ($phrases as $aux)
+                {
+                    
+                    if (1 === $aux->current) {
+                        $item->update([
+                            'current_phrase' => $aux->id,
+                        ]);
+                        break;                        
+                    }
+                }
+                
+            }
+          
+            return response()->json([
+                'data' => $use_treatment,                              
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        }
+        catch(\Exception $e)
+            {  	        			
+                Log::critical(" Error al cargar los Tratamiento: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            } 
     }
 
     
