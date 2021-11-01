@@ -94,4 +94,4 @@ Route::get('lastUpdate', 'AppController@lastUpdate')->name('api.lastUpdate');
 //Auth::routes();
 
 //Organizar tabla Usuarios-Tratamientos
-Route::get('user_tratement_update', 'TreatmentPatientController@user_tratement_update')->name('api.user_tratement_update');
+//Route::get('user_tratement_update', 'TreatmentPatientController@user_tratement_update')->name('api.user_tratement_update');

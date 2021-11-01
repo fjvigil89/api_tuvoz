@@ -124,6 +124,7 @@ class TreatmentPatientController extends Controller
         
     }
 
+    ///esta función es solo para actualizar los indices de las frases contra los tratamientos
     public function user_tratement_update(){
         try{
             
