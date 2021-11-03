@@ -36,7 +36,8 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::get('countTreatment', 'TreatmentController@countTreatment')->name('treatment.countTreatment');
     Route::get('countUserByTreatment', 'TreatmentController@countUserByTreatment')->name('treatment.countUserByTreatment');
     Route::get('countGetRecordByUser', 'UserController@countGetRecordByUser')->name('user.countGetRecordByUser');
-    
+    Route::get('getRecordByUser', 'UserController@getRecordByUser')->name('user.getRecordByUser');
+
 
     Route::resource('treatment', 'TreatmentController', ['only' => [
         'index', 'store', 'show', 'update', 'destroy'
@@ -94,5 +95,3 @@ Route::get('lastUpdate', 'AppController@lastUpdate')->name('api.lastUpdate');
 
 //Organizar tabla Usuarios-Tratamientos
 //Route::get('user_tratement_update', 'TreatmentPatientController@user_tratement_update')->name('api.user_tratement_update');
-
-Route::get('getRecordByUser', 'UserController@getRecordByUser')->name('user.getRecordByUser');
