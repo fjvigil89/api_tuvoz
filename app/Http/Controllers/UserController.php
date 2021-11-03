@@ -189,6 +189,7 @@ class UserController extends Controller
         //
         try {
             $user = Auth::user();
+            //$user = User::find(2);
             $treatment = Treatment::where('specialist_id', $user->id)->get();
             if (!$treatment) {
                 return response()->json([
@@ -196,6 +197,7 @@ class UserController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
             $recordList = array();
+            
             foreach ($treatment as $item) {
                 $user_treatment = User_Treatment::where('treatment_id', $item->id)->get();
                 foreach ($user_treatment as $item_treat) {
@@ -205,13 +207,15 @@ class UserController extends Controller
                         if (Record::where('phrase_id', $item_phrase->id)->first() != null) {
                             array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());
                             $recordList[$key]['phrase_id'] = $item_phrase;
-                            $recordList[$key]['phrase_id']['treatment_id'] = $item_treat;
+                            $recordList[$key]['phrase_id']['treatment_id'] = $item_treat; 
                             $recordList[$key]['devices']= DeviceModel::where('record_id', $recordList[$key]->id )->first();
                             //$recordList[$key]['phrase_id']['treatment_id']['patient_id'] = User::where('id', $item_treat->patient_id)->get();
+                           //dd(DeviceModel::where('record_id', 19 )->first());
                         }
                     }
                 }
             }
+            //dd(Record::all());
             return response()->json([
                 'data' => $recordList,
                 'message' => 'The data was found successfully.',

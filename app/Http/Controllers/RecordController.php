@@ -232,7 +232,7 @@ class RecordController extends Controller
                 ], Response::HTTP_NOT_FOUND); 
             }
 
-         
+            
              if(Storage::disk('audio')->delete($item->identificador.$item->name))
              {
                 $item->delete();
