@@ -179,12 +179,12 @@ class UserController extends Controller
         }
     }
 
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRecordByUser()
+    public function RecordByUser()
     {
         //
         try {
@@ -196,30 +196,25 @@ class UserController extends Controller
                     'message' => 'The given data was not found.',
                 ], Response::HTTP_NOT_FOUND);
             }
-            $recordList = array();
-            
-            foreach ($treatment as $item) {
-                $user_treatment = User_Treatment::where('treatment_id', $item->id)->get();
-
-                foreach ($user_treatment as $item_treat) {
-                    $phrase = Phrase::where('treatment_id', $item_treat->treatment_id)->get();                    
-                    foreach ($phrase as $key => $item_phrase) {
-                        if (Record::where('phrase_id', $item_phrase->id)->first() != null) {
-                            array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());
-                            $recordList[$key]['phrase_id'] = $item_phrase;
-                            $recordList[$key]['phrase_id']['treatment_id'] = $item_treat; 
-                            $recordList[$key]['devices']= DeviceModel::where('record_id', $recordList[$key]->id )->first();
-                            //$recordList[$key]['phrase_id']['treatment_id']['patient_id'] = User::where('id', $item_treat->patient_id)->get();
-                           //dd(DeviceModel::where('record_id', 19 )->first());
-                        }                        
+            $recordList = array();            
+            foreach ($treatment as $item) {               
+                $phrases = Phrase::where('treatment_id', $item->id)->get();
+                foreach($phrases as $key => $phrase)
+                {                    
+                    $record = Record::where('phrase_id', $phrase->id)->get();                                          
+                    foreach($record as $voice){
+                        array_push($recordList, $voice);                                                
+                        $recordList[$key]['phrase_id'] = $phrase;
+                        $recordList[$key]['phrase_id']['treatment_id'] = $item;
+                        $recordList[$key]['devices'] = DeviceModel::where("record_id", $voice->id)->first();
+                                
                     }
+                    
                 }
-            }
-            //dd($recordList);
-            return response()->json([
-                'data' => $recordList,
-                'message' => 'The data was found successfully.',
-            ], Response::HTTP_OK);
+                
+            }            
+            return $recordList;
+                
         } catch (\Exception $e) {
             Log::critical(" Error al cargar las Voces: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
         }
@@ -230,37 +225,27 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function countGetRecordByUser()
+    public function getRecordByUser()
     {
-        //
-        try {
-            $user = Auth::user();
-            $treatment = Treatment::where('specialist_id', $user->id)->get();
-            if (!$treatment) {
-                return response()->json([
-                    'message' => 'The given data was not found.',
-                ], Response::HTTP_NOT_FOUND);
-            }
-            $recordList = array();
-            foreach ($treatment as $item) {
-                $user_treatment = User_Treatment::where('treatment_id', $item->id)->get();
-                foreach ($user_treatment as $item_treat) {
-                    $phrase = Phrase::where('treatment_id', $item_treat->treatment_id)->get();
+                
+        return response()->json([
+            'data' => $this->RecordByUser(),
+            'message' => 'The data was found successfully.',
+        ], Response::HTTP_OK);
+      
+    }
 
-                    foreach ($phrase as $item_phrase) {
-                        if (Record::where('phrase_id', $item_phrase->id)->first() != null) {
-                            array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());
-                        }
-                    }
-                }
-            }
-            return response()->json([
-                'data' => count($recordList),
-                'message' => 'The data was found successfully.',
-            ], Response::HTTP_OK);
-        } catch (\Exception $e) {
-            Log::critical(" Error al cargar las Voces: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-        }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function countGetRecordByUser()
+    {        
+        return response()->json([
+            'data' => count($this->RecordByUser()),
+            'message' => 'The data was found successfully.',
+        ], Response::HTTP_OK);
     }
 
     /**
