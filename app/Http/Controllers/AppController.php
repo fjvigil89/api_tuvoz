@@ -9,6 +9,9 @@ use Validator;
 use Log;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+
+use function PHPUnit\Framework\isNull;
+
 class AppController extends Controller
 {
     /**
@@ -149,15 +152,17 @@ class AppController extends Controller
      */
     public function lastUpdates()
     { //
+        
         try{            
 
-            $app = AppModel::all()->last();
+            $app = AppModel::all()->last();                      
+            if (!$app) {
+                return $app;
+            }
             $app->descargas += 1;
             
             $app->save();
-            if (!$app) {
-                return null;
-            }      
+                  
             return $app;
         }
         catch(\Exception $e)

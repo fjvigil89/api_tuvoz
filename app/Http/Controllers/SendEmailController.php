@@ -123,7 +123,7 @@ class SendEmailController extends Controller
         $download = new \App\Http\Controllers\AppController();
         $aux = $download->lastUpdates();
         $qr_code = "";
-        if($aux != null)
+        if(!$aux)
         {
             $qr_code = QrCode::format('png')->size(100)->generate($aux['url'], "../public/qrcode/qrcode.png");
         }
