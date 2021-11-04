@@ -200,9 +200,9 @@ class UserController extends Controller
             
             foreach ($treatment as $item) {
                 $user_treatment = User_Treatment::where('treatment_id', $item->id)->get();
-                foreach ($user_treatment as $item_treat) {
-                    $phrase = Phrase::where('treatment_id', $item_treat->treatment_id)->get();
 
+                foreach ($user_treatment as $item_treat) {
+                    $phrase = Phrase::where('treatment_id', $item_treat->treatment_id)->get();                    
                     foreach ($phrase as $key => $item_phrase) {
                         if (Record::where('phrase_id', $item_phrase->id)->first() != null) {
                             array_push($recordList, Record::where('phrase_id', $item_phrase->id)->first());
@@ -211,11 +211,11 @@ class UserController extends Controller
                             $recordList[$key]['devices']= DeviceModel::where('record_id', $recordList[$key]->id )->first();
                             //$recordList[$key]['phrase_id']['treatment_id']['patient_id'] = User::where('id', $item_treat->patient_id)->get();
                            //dd(DeviceModel::where('record_id', 19 )->first());
-                        }
+                        }                        
                     }
                 }
             }
-            //dd(Record::all());
+            //dd($recordList);
             return response()->json([
                 'data' => $recordList,
                 'message' => 'The data was found successfully.',

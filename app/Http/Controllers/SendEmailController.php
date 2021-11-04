@@ -122,12 +122,17 @@ class SendEmailController extends Controller
         
         $download = new \App\Http\Controllers\AppController();
         $aux = $download->lastUpdates();
+        $qr_code = "";
+        if($aux != null)
+        {
+            $qr_code = QrCode::format('png')->size(100)->generate($aux['url'], "../public/qrcode/qrcode.png");
+        }
     	$data = array(
 			'name' => $user->nombre,
 			'email' => $request->emailRegister, 
             'url_register' => $request->uri_register,
             'dowload_url' => $aux['url'],
-            'qr_code'=> QrCode::format('png')->size(100)->generate($aux['url'], "../public/qrcode/qrcode.png"),
+            'qr_code'=> $qr_code,
             'identificador' => base64_encode($user->id),
             'role' => $role,
 		  );	
