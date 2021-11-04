@@ -157,7 +157,7 @@ class AppController extends Controller
 
             $app = AppModel::all()->last();                      
             if (!$app) {
-                return $app;
+                return NULL;
             }
             $app->descargas += 1;
             
