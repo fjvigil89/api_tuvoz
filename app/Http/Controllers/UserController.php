@@ -7,6 +7,7 @@ use App\LocationModel;
 use App\Treatment;
 use App\User_Treatment;
 use App\Phrase;
+use App\ListPhrase;
 use App\Record;
 use App\User;
 use Carbon\Carbon;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Log;
 use Illuminate\Support\Facades\Auth;
+use phpDocumentor\Reflection\PseudoTypes\True_;
 use Symfony\Component\HttpFoundation\Response;
 
 use function PHPUnit\Framework\isNull;
@@ -154,7 +156,16 @@ class UserController extends Controller
     {
 
         try {
-            $phrase = Phrase::where('treatment_id', $request->idTreatment)->first();
+
+            $phrase = $this->RandomPhrase($request->idTreatment);
+            if (!$phrase)
+            {
+                return response()->json([
+                    'data' => FALSE,
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND); 
+            }
+            $phrase= Phrase::where('treatment_id', $request->idTreatment)->first();
             $user = User_Treatment::create([
                 'patient_id'      => $request->idPatient,
                 'treatment_id'    => $request->idTreatment,
@@ -176,6 +187,41 @@ class UserController extends Controller
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
             Log::critical(" Error al cargar los Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        }
+    }
+
+    public function RandomPhrase($id_treatment)
+    {
+       try {
+                
+            $i=0;
+            $listaPhrase= ListPhrase::where('treatment_id', $id_treatment)->get();
+            while ($i< 5)
+            {
+                $random= rand(0,count($listaPhrase));
+                foreach ($listaPhrase as $key=>$item)
+                {                    
+                    if ($random === $key)
+                    {
+                        Phrase::create([
+                            'phrase' => $item->phrase,
+                            'treatment_id'=> $id_treatment,
+                            'current' => $key == 0 ? 1 : 0,
+                            'created_at' => date('Y-m-d H:m:s'),
+                            'updated_at' => date('Y-m-d H:m:s')
+                        ]);
+                        $i++;
+                    } 
+                
+                }
+            }
+            
+           
+            return TRUE;
+        }
+        catch (\Exception $e) {
+            Log::critical(" No se pudo asociar un tratamiento al  Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return FALSE;
         }
     }
 

@@ -215,12 +215,9 @@ class PhraseSeeder extends Seeder
         ];
         $faker = Faker::create();
          for ($i=0; $i < count($frases)-1; $i++) {
-               \DB::table("phrases")->insert(
+               \DB::table("list_phrases")->insert(
                      array(
-      //                     //'id'         => $faker->unique()->randomNumber,
-                           'phrase'       => $frases[$i],
-                           'status'       => FALSE,
-                           'current'      => $i === 0 ? TRUE : FALSE,
+                           'phrase'       => $frases[$i],                           
                            'created_at'   => date('Y-m-d H:m:s'),
                            'updated_at'   => date('Y-m-d H:m:s'),
                            'treatment_id' => 1,
