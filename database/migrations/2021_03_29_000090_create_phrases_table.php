@@ -21,6 +21,8 @@ class CreatePhrasesTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('treatment_id')->nullable();
             $table->foreign('treatment_id')->references('id')->on('treatments')->onDelete('cascade');
+            $table->unsignedBigInteger('patient_id')->nullable();
+            $table->foreign('patient_id')->references('id')->on('users')->onDelete('cascade');
             
         });
     }

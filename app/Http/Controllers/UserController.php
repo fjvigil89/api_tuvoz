@@ -116,8 +116,29 @@ class UserController extends Controller
         }        
         return 0;
     }
-
+    
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getPatientTreat(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $phrase= Phrase::where('treatment_id', $request->idTreatment)->where('patient_id', $request->idpatient)->get();
+
+            return response()->json([
+                'data' =>  $phrase,
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical(" Error al cargar los Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        }
+    }
+    /**
+     * Devolvemos una array de paciente con la variable assignment en true o en false, depende si ha sido asociado a un tratamiento
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -132,9 +153,12 @@ class UserController extends Controller
 
             foreach ($patients as $item) {
                 $patient = User_Treatment::where('patient_id', $item->id)->where('treatment_id', $request->idTreatment)->first();
+                $item["assignment"]= TRUE;
                 if (is_null($patient)) {
-                    array_push($notTreatment, $item);
+                    $item["assignment"]= FALSE;
+                                        
                 }
+                array_push($notTreatment, $item);
             }
 
             return response()->json([
@@ -145,6 +169,44 @@ class UserController extends Controller
             Log::critical(" Error al cargar los Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
         }
     }
+
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function UnassociatePatientTreatment(Request $request)
+    {
+
+        try {
+            
+            $phrase= Phrase::where('treatment_id', $request->idTreatment)->where('patient_id', $request->idPatient)->delete();
+            $user_treat= User_Treatment::where('treatment_id', $request->idTreatment)->where('patient_id', $request->idPatient)->delete();
+
+            if (!$phrase) {
+                return response()->json([
+                    'data' => FALSE,
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+            if (!$user_treat) {
+                return response()->json([
+                    'data' => FALSE,
+                    'message' => 'The given data was not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            return response()->json([
+                'data' =>  TRUE,
+                'message' => 'The data was found successfully.',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical(" Error al desasociar los Paciente: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -157,7 +219,7 @@ class UserController extends Controller
 
         try {
 
-            $phrase = $this->RandomPhrase($request->idTreatment);
+            $phrase = $this->RandomPhrase($request->idTreatment,  $request->idPatient);
             if (!$phrase)
             {
                 return response()->json([
@@ -166,6 +228,7 @@ class UserController extends Controller
                 ], Response::HTTP_NOT_FOUND); 
             }
             $phrase= Phrase::where('treatment_id', $request->idTreatment)->first();
+            
             $user = User_Treatment::create([
                 'patient_id'      => $request->idPatient,
                 'treatment_id'    => $request->idTreatment,
@@ -190,7 +253,7 @@ class UserController extends Controller
         }
     }
 
-    public function RandomPhrase($id_treatment)
+    public function RandomPhrase($id_treatment, $idPatient)
     {
        try {
                 
@@ -205,6 +268,7 @@ class UserController extends Controller
                     {
                         Phrase::create([
                             'phrase' => $item->phrase,
+                            'patient_id'=> $idPatient,
                             'treatment_id'=> $id_treatment,
                             'current' => $key == 0 ? 1 : 0,
                             'created_at' => date('Y-m-d H:m:s'),

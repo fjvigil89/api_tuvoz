@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     ]]);    
     //Specialist
     Route::get('getPatientNotTreatment', 'UserController@getPatientNotTreatment')->name('user.getPatientNotTreatment');
+    
+    Route::get('getPatientTreat', 'UserController@getPatientTreat')->name('user.getPatientTreat');
     Route::get('getAllpatient', 'UserController@getAllpatient')->name('user.getAllpatient');
     Route::get('countTreatment', 'TreatmentController@countTreatment')->name('treatment.countTreatment');
     Route::get('countUserByTreatment', 'TreatmentController@countUserByTreatment')->name('treatment.countUserByTreatment');
@@ -58,6 +60,7 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
 
     Route::post('treatment_status', 'TreatmentController@ChangeStatus')->name('treatment_status');
     Route::post('associatePatientTreatment', 'UserController@associatePatientTreatment')->name('associatePatientTreatment');
+    Route::post('unassociatePatientTreatment', 'UserController@UnassociatePatientTreatment')->name('unassociatePatientTreatment');
 
     Route::post('setEmailRegisterPatient', 'SendEmailController@setEmailRegisterPatient')->name('api.setEmailRegisterPatient');
     Route::post('setEmailRegisterSpecialist', 'SendEmailController@setEmailRegisterSpecialist')->name('api.setEmailRegisterSpecialist');
