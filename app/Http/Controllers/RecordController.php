@@ -19,6 +19,9 @@ use Log;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Storage;
+use phpDocumentor\Reflection\Types\Float_;
+use Ramsey\Uuid\Type\Integer;
+
 class RecordController extends Controller
 {
     /**
@@ -33,28 +36,30 @@ class RecordController extends Controller
 
     public function modelOpenSmille(Request $request)
     {
-        // $path= public_path()."/audio/".$request->name_audio;
-        // $count_features =5;        
-        // //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
-        // $python ="python";
-        // $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
-        
-        // //dd($script);
-        // //$output = shell_exec($script);
-        // //dd($output);
-        // $process = new Process([$script]);
+        $path= public_path()."/audio/".$request->name_audio;
+        $count_features =25;        
+        //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
+        $python ="python3";
+        $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
+    
+        //dd($script);
+        $output = shell_exec($script);
+      
+        $split = explode("'", $output);
+        $aux=explode('"',$split[1]);
+        $label=array();
+        $data=array();
+        foreach($aux as $item)
+         if (strlen($item) >3) {
+             array_push($label, $item);
+         }
+        $aux=explode(",",explode("]",explode('[',$split[3])[1])[0]);
+        foreach($aux as $item)       
+            array_push($data,(Float)$item);       
+       // dd($data);
 
-        // $process->run();
-        // // executes after the command finishes
-        // if (!$process->isSuccessful()) {
-        //     throw new ProcessFailedException($process);
-        // }
-
-        // echo $process->getOutput();
-       
-        //dd($process->getOutput());
         $label=['','','','',''];
-        $data =[0.74330497, 0.2617801, 0.9528796 , 2.1997395 , 3.2440636 ];        
+        //$data =[0.74330497, 0.2617801, 0.9528796 , 2.1997395 , 3.2440636 ];        
         return response()->json([            
             'label' =>$label,
             'data' => $data,
