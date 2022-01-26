@@ -33,30 +33,29 @@ class RecordController extends Controller
 
     public function modelOpenSmille(Request $request)
     {
-        $path= public_path()."/audio/".$request->name_audio;
-        $count_features =5;        
-        //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
-        $python ="python";
-        $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
+        // $path= public_path()."/audio/".$request->name_audio;
+        // $count_features =5;        
+        // //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
+        // $python ="python";
+        // $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
         
-        dd($script);
-        //$output = shell_exec($script);
-        //dd($output);
-        $process = new Process([$script]);
+        // //dd($script);
+        // //$output = shell_exec($script);
+        // //dd($output);
+        // $process = new Process([$script]);
 
-        $process->run();
-        // executes after the command finishes
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
+        // $process->run();
+        // // executes after the command finishes
+        // if (!$process->isSuccessful()) {
+        //     throw new ProcessFailedException($process);
+        // }
 
-        echo $process->getOutput();
+        // echo $process->getOutput();
        
-        dd($process->getOutput());
+        //dd($process->getOutput());
         $label=['','','','',''];
         $data =[0.74330497, 0.2617801, 0.9528796 , 2.1997395 , 3.2440636 ];        
-        return response()->json([
-            'python' => $process->getOutput(),
+        return response()->json([            
             'label' =>$label,
             'data' => $data,
             'message' => 'The data was found successfully.',
