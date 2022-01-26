@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Treatment;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+
+
 use App\User_Treatment;
 use App\Phrase;
 use App\Record;
@@ -25,6 +29,39 @@ class RecordController extends Controller
     public function index()
     {
         //
+    }
+
+    public function modelOpenSmille(Request $request)
+    {
+        $path= public_path()."/audio/".$request->name_audio;
+        $count_features =5;        
+        //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
+        $python ="python";
+        $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
+        
+        dd($script);
+        //$output = shell_exec($script);
+        //dd($output);
+        $process = new Process([$script]);
+
+        $process->run();
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        echo $process->getOutput();
+       
+        dd($process->getOutput());
+        $label=['','','','',''];
+        $data =[0.74330497, 0.2617801, 0.9528796 , 2.1997395 , 3.2440636 ];        
+        return response()->json([
+            'python' => $process->getOutput(),
+            'label' =>$label,
+            'data' => $data,
+            'message' => 'The data was found successfully.',
+            'status' => Response::HTTP_OK,
+        ], Response::HTTP_OK);
     }
 
     /**
