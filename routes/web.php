@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Treatment;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,6 @@ Route::get('login', function () {
 // Route::get('email', function () {    
 //     return view('Email.registroPrevioPatiente');
 // })->name('web.email');
-
 
 //Auth::routes();
 
