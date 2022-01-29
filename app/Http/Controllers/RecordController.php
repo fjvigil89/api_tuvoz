@@ -35,10 +35,10 @@ class RecordController extends Controller
         //
     }
 
-    public function modelOpenSmille(Request $request)
+    public function modelOpenSmille($path)
     {
         try {
-            $path= public_path()."/audio/".$request->name_audio;
+            $path= public_path()."/audio/".$path;
             $count_features =$this->count_features;        
             //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
             $python ="python3";
@@ -69,7 +69,7 @@ class RecordController extends Controller
                 'status' => Response::HTTP_OK,
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
-            Log::critical("OpenSmille not worker :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            Log::critical("OpenSmille not worker :code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
             return false;
         }
     }
@@ -112,7 +112,7 @@ class RecordController extends Controller
                 'status' => Response::HTTP_OK,
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
-            Log::critical("OpenSmille not worker :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            Log::critical("Last OpenSmille not worker : code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
             return false;
         }
     }
