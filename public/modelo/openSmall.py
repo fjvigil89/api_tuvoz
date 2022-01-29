@@ -14,13 +14,8 @@ polygon is not aligned with the radial axes.
 .. [1] https://en.wikipedia.org/wiki/Radar_chart
 """
 
-from curses import echo
-from operator import length_hint
-from traceback import format_exc
-import numpy as np
 import json
 import opensmile
-import pandas as pd
 import sys
 
 
