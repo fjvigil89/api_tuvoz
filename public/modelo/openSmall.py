@@ -20,6 +20,7 @@ import sys
 
 
 def smille_data(n, _path):    
+    
     path=[_path]
     smile = opensmile.Smile(
         feature_set=opensmile.FeatureSet.ComParE_2016,
@@ -30,7 +31,7 @@ def smille_data(n, _path):
     )
     
     # print("Procesing... " )    
-    
+     
     feature = smile.process_files(path)       
      
     rows=feature.iloc[0].tolist()[:n]
