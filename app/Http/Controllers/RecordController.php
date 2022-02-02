@@ -67,7 +67,15 @@ class RecordController extends Controller
                     'message' => 'The data was found successfully.',
                     'status' => Response::HTTP_OK,
                 ], Response::HTTP_OK);    
-            
+            }
+            $label=['','','','',''];
+            $data =[0, 0, 0 , 0 , 0 ];        
+            return response()->json([            
+                'label' =>$label,
+                'data' => $data,
+                'message' => 'The data was found successfully.',
+                'status' => Response::HTTP_OK,
+            ], Response::HTTP_OK);
         } catch (\Exception $e) {
             Log::critical("OpenSmille not worker :code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
             return false;
