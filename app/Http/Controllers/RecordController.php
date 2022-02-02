@@ -45,7 +45,8 @@ class RecordController extends Controller
             $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
         
             //dd($script);
-            $output = passthru($script);
+            //$output = passthru($script);
+            $output = `$script`;
             if ($output != null) {
                 $split = explode("'", $output);
                 $aux=explode('"',$split[1]);
