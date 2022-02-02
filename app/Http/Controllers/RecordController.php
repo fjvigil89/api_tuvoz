@@ -42,11 +42,10 @@ class RecordController extends Controller
             $count_features =$this->count_features;        
             //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
             $python ="python3";
-<<<<<<< HEAD
-            
-            $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
-           
-            $output = shell_exec($script);//no se ejecuta,
+            $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path. "2>&1";
+        
+            //dd($script);
+            $output = shell_exec($script);
             if ($output != null) {
                 $split = explode("'", $output);
                 $aux=explode('"',$split[1]);
@@ -68,29 +67,6 @@ class RecordController extends Controller
                     'message' => 'The data was found successfully.',
                     'status' => Response::HTTP_OK,
                 ], Response::HTTP_OK);    
-=======
-            $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path. "2>&1";
-        
-            //dd($script);
-            $output = shell_exec($script);
-        
-            $split = explode("'", $output);
-            $aux=explode('"',$split[1]);
-            $label=array();
-            $data=array();
-            foreach($aux as $item)
-            if (strlen($item) >3) {
-                array_push($label, $item);
->>>>>>> 2123b3739e0fa14cf4e455c1dcea0985b50c24a1
-            }
-            $label=['','','','',''];
-            $data =[0, 0, 0 , 0 , 0 ];        
-            return response()->json([            
-                'label' =>$label,
-                'data' => $data,
-                'message' => 'The data was found successfully.',
-                'status' => Response::HTTP_OK,
-            ], Response::HTTP_OK);
             
         } catch (\Exception $e) {
             Log::critical("OpenSmille not worker :code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
@@ -111,7 +87,7 @@ class RecordController extends Controller
 
                 //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
                 $python ="python3";
-                $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
+                $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path. "2>&1";
             
                 //dd($script);
                 $output = shell_exec($script); //No se ejecuta
