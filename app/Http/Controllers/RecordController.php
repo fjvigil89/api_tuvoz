@@ -72,7 +72,7 @@ class RecordController extends Controller
             $data =[0, 0, 0 , 0 , 0 ];        
             return response()->json([            
                 'label' =>$label,
-                'data' => $data,
+                'data' => $output,
                 'message' => 'The data was found successfully.',
                 'status' => Response::HTTP_OK,
             ], Response::HTTP_OK);
