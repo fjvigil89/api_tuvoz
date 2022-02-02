@@ -40,12 +40,12 @@ class RecordController extends Controller
         try {
             $path= public_path()."/audio/".$path;
             $count_features =$this->count_features;        
-            //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
-            $python ="python3";
+            $python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
+            //$python ="python3";
             $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path. "2>&1";
         
             //dd($script);
-            $output = shell_exec($script);
+            $output = system($script);
             if ($output != null) {
                 $split = explode("'", $output);
                 $aux=explode('"',$split[1]);
@@ -72,7 +72,7 @@ class RecordController extends Controller
             $data =[0, 0, 0 , 0 , 0 ];        
             return response()->json([            
                 'label' =>$label,
-                'data' => $data,
+                'data' => $output,
                 'message' => 'The data was found successfully.',
                 'status' => Response::HTTP_OK,
             ], Response::HTTP_OK);
@@ -81,7 +81,7 @@ class RecordController extends Controller
             return false;
         }
     }
-
+    
     public function lastOpenSmille()
     {
        
