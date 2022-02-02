@@ -42,7 +42,7 @@ class RecordController extends Controller
             $count_features =$this->count_features;        
             //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
             $python ="python3";
-            $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
+            $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path. "2>&1";
         
             //dd($script);
             $output = shell_exec($script);
