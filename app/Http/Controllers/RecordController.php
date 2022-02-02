@@ -42,32 +42,41 @@ class RecordController extends Controller
             $count_features =$this->count_features;        
             //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
             $python ="python3";
+            
             $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
-        
-            //dd($script);
-            $output = shell_exec($script);
-        
-            $split = explode("'", $output);
-            $aux=explode('"',$split[1]);
-            $label=array();
-            $data=array();
-            foreach($aux as $item)
-            if (strlen($item) >3) {
-                array_push($label, $item);
+           
+            $output = shell_exec($script);//no se ejecuta,
+            if ($output != null) {
+                $split = explode("'", $output);
+                $aux=explode('"',$split[1]);
+                $label=array();
+                $data=array();
+                foreach($aux as $item)
+                if (strlen($item) >3) {
+                    array_push($label, $item);
+                }
+                $aux=explode(",",explode("]",explode('[',$split[3])[1])[0]);
+                foreach($aux as $item)       
+                    array_push($data,(Float)$item);       
+           
+    
+                $label=['','','','',''];                       
+                return response()->json([            
+                    'label' =>$label,
+                    'data' => $data,
+                    'message' => 'The data was found successfully.',
+                    'status' => Response::HTTP_OK,
+                ], Response::HTTP_OK);    
             }
-            $aux=explode(",",explode("]",explode('[',$split[3])[1])[0]);
-            foreach($aux as $item)       
-                array_push($data,(Float)$item);       
-        // dd($data);
-
             $label=['','','','',''];
-            //$data =[0.74330497, 0.2617801, 0.9528796 , 2.1997395 , 3.2440636 ];        
+            $data =[0, 0, 0 , 0 , 0 ];        
             return response()->json([            
                 'label' =>$label,
                 'data' => $data,
                 'message' => 'The data was found successfully.',
                 'status' => Response::HTTP_OK,
             ], Response::HTTP_OK);
+            
         } catch (\Exception $e) {
             Log::critical("OpenSmille not worker :code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
             return false;
@@ -90,29 +99,31 @@ class RecordController extends Controller
                 $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
             
                 //dd($script);
-                $output = shell_exec($script);
-            
-                $split = explode("'", $output);
-                $aux=explode('"',$split[1]);
-                $label=array();
-                $data=array();
-                foreach($aux as $item)
-                if (strlen($item) >3) {
-                    array_push($label, $item);
+                $output = shell_exec($script); //No se ejecuta
+                if ($output != null) {            
+                    $split = explode("'", $output);
+                    $aux=explode('"',$split[1]);
+                    $label=array();
+                    $data=array();
+                    foreach($aux as $item)
+                    if (strlen($item) >3) {
+                        array_push($label, $item);
+                    }
+                    $aux=explode(",",explode("]",explode('[',$split[3])[1])[0]);
+                    foreach($aux as $item)       
+                        array_push($data,round((Float)$item, 2,PHP_ROUND_HALF_UP));       
+               
+    
+                    $label=['','','','',''];
+                    
+                    return response()->json([            
+                        'label' =>$label,
+                        'data' => $data,
+                        'message' => 'The data was found successfully.',
+                        'status' => Response::HTTP_OK,
+                    ], Response::HTTP_OK);
                 }
-                $aux=explode(",",explode("]",explode('[',$split[3])[1])[0]);
-                foreach($aux as $item)       
-                    array_push($data,round((Float)$item, 2,PHP_ROUND_HALF_UP));       
-            // dd($data);
-
-                $label=['','','','',''];
-                //$data =[0.74330497, 0.2617801, 0.9528796 , 2.1997395 , 3.2440636 ];        
-                return response()->json([            
-                    'label' =>$label,
-                    'data' => $data,
-                    'message' => 'The data was found successfully.',
-                    'status' => Response::HTTP_OK,
-                ], Response::HTTP_OK);
+                
             }
             $label=['','','','',''];
             $data =[0, 0, 0 , 0 , 0 ];        
