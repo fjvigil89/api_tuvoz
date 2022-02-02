@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Treatment;
 use App\User_Treatment;
 use App\Phrase;
+use App\ListPhrase;
 use App\Record;
 use App\User;
 use Carbon\Carbon;
@@ -199,10 +200,9 @@ class TreatmentController extends Controller
                         $split = explode("\n", $item['namePhrase']);
                         foreach($split as $key => $value)
                         { 
-                            $newPhrase = Phrase::create([
+                            $newPhrase = ListPhrase::create([
                                 'phrase' => $value,
                                 'treatment_id'=> $treatment->id,
-                                'current' => $key == 0 ? 1 : 0,
                                 'created_at' => date('Y-m-d H:m:s'),
                                 'updated_at' => date('Y-m-d H:m:s')
                             ]);

@@ -14,16 +14,13 @@ polygon is not aligned with the radial axes.
 .. [1] https://en.wikipedia.org/wiki/Radar_chart
 """
 
-from operator import length_hint
-from traceback import format_exc
-import numpy as np
 import json
 import opensmile
-import pandas as pd
 import sys
 
 
 def smille_data(n, _path):    
+    
     path=[_path]
     smile = opensmile.Smile(
         feature_set=opensmile.FeatureSet.ComParE_2016,
@@ -34,13 +31,15 @@ def smille_data(n, _path):
     )
     
     # print("Procesing... " )    
-    
+     
     feature = smile.process_files(path)       
      
-    rows=feature.iloc[0].to_numpy()[:n]
+    rows=feature.iloc[0].tolist()[:n]
     #feature.to_csv(destinity+"train.csv")    
-    columns = feature.columns[:n].to_numpy()
-    return[columns, rows]
+    columns = feature.columns[:n].tolist()
+    
+    #return columns, rows
+    return json.dumps(columns), json.dumps(rows)
 
 
 if __name__ == '__main__':   
@@ -51,3 +50,4 @@ if __name__ == '__main__':
 
     data = smille_data(N, path)
     print(data)
+    #sys.exit(smille_data(N, path))

@@ -19,8 +19,12 @@ use Log;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Storage;
+use phpDocumentor\Reflection\Types\Float_;
+use Ramsey\Uuid\Type\Integer;
+
 class RecordController extends Controller
 {
+    protected $count_features=5;
     /**
      * Display a listing of the resource.
      *
@@ -31,36 +35,108 @@ class RecordController extends Controller
         //
     }
 
-    public function modelOpenSmille(Request $request)
+    public function modelOpenSmille($path)
     {
-        // $path= public_path()."/audio/".$request->name_audio;
-        // $count_features =5;        
-        // //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
-        // $python ="python";
-        // $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path;
+        try {
+            $path= public_path()."/audio/".$path;
+            $count_features =$this->count_features;        
+            //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
+            $python ="python3";
+            $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path. "2>&1";
         
-        // //dd($script);
-        // //$output = shell_exec($script);
-        // //dd($output);
-        // $process = new Process([$script]);
+            //dd($script);
+            $output = shell_exec($script);
+            if ($output != null) {
+                $split = explode("'", $output);
+                $aux=explode('"',$split[1]);
+                $label=array();
+                $data=array();
+                foreach($aux as $item)
+                if (strlen($item) >3) {
+                    array_push($label, $item);
+                }
+                $aux=explode(",",explode("]",explode('[',$split[3])[1])[0]);
+                foreach($aux as $item)       
+                    array_push($data,(Float)$item);       
+           
+    
+                $label=['','','','',''];                       
+                return response()->json([            
+                    'label' =>$label,
+                    'data' => $data,
+                    'message' => 'The data was found successfully.',
+                    'status' => Response::HTTP_OK,
+                ], Response::HTTP_OK);    
+            }
+            $label=['','','','',''];
+            $data =[0, 0, 0 , 0 , 0 ];        
+            return response()->json([            
+                'label' =>$label,
+                'data' => $data,
+                'message' => 'The data was found successfully.',
+                'status' => Response::HTTP_OK,
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::critical("OpenSmille not worker :code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
+            return false;
+        }
+    }
 
-        // $process->run();
-        // // executes after the command finishes
-        // if (!$process->isSuccessful()) {
-        //     throw new ProcessFailedException($process);
-        // }
-
-        // echo $process->getOutput();
+    public function lastOpenSmille()
+    {
        
-        //dd($process->getOutput());
-        $label=['','','','',''];
-        $data =[0.74330497, 0.2617801, 0.9528796 , 2.1997395 , 3.2440636 ];        
-        return response()->json([            
-            'label' =>$label,
-            'data' => $data,
-            'message' => 'The data was found successfully.',
-            'status' => Response::HTTP_OK,
-        ], Response::HTTP_OK);
+        try {
+            $user = Auth::user();
+            $audio= Record::where('identificador',$user->identificador)->get()->last();
+            if($audio)
+            {
+                $path= public_path()."/audio/".$user->username.$audio->name;
+                $count_features =$this->count_features;
+
+                //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
+                $python ="python3";
+                $script = $python." ".public_path()."/modelo/openSmall.py ".$count_features." " .$path. "2>&1";
+            
+                //dd($script);
+                $output = shell_exec($script); //No se ejecuta
+                if ($output != null) {            
+                    $split = explode("'", $output);
+                    $aux=explode('"',$split[1]);
+                    $label=array();
+                    $data=array();
+                    foreach($aux as $item)
+                    if (strlen($item) >3) {
+                        array_push($label, $item);
+                    }
+                    $aux=explode(",",explode("]",explode('[',$split[3])[1])[0]);
+                    foreach($aux as $item)       
+                        array_push($data,round((Float)$item, 2,PHP_ROUND_HALF_UP));       
+               
+    
+                    $label=['','','','',''];
+                    
+                    return response()->json([            
+                        'label' =>$label,
+                        'data' => $data,
+                        'message' => 'The data was found successfully.',
+                        'status' => Response::HTTP_OK,
+                    ], Response::HTTP_OK);
+                }
+                
+            }
+            $label=['','','','',''];
+            $data =[0, 0, 0 , 0 , 0 ];        
+            return response()->json([            
+                'label' =>$label,
+                'data' => $data,
+                'message' => 'The data was found successfully.',
+                'status' => Response::HTTP_OK,
+            ], Response::HTTP_OK);
+            
+        } catch (\Exception $e) {
+            Log::critical("Last OpenSmille not worker : code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
+            return false;
+        }
     }
 
     /**
