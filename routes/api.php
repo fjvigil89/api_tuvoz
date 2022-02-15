@@ -76,8 +76,10 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     //Apk
     Route::resource('app', 'AppController', ['only' => [
         'index', 'store', 'show', 'update', 'destroy'
-    ]]);  
-
+    ]]);
+    Route::post('sendBotMessenger', 'BotController@sendBotMessenger')->name('apk.sendBotMessenger');
+  
+    
 
     //Patient
     Route::get('phrasePatientTreatment/{treatment}', 'TreatmentPatientController@phrasePatientTreatment')->name('treatment.phrasePatientTreatment');
