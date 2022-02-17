@@ -20,9 +20,12 @@ class BotController extends Controller
         try {
 
             $user = Auth::user();
-            $salida=$request->msg;
-            return response()->json([  
-                'data' => $salida,
+            $python ="python3";
+            $script = $python." ".public_path()."/modelo/botIA.py ".$request->msg;
+            $output = shell_exec($script); //No se ejecuta
+            return response()->json([
+                'user' => $user,
+                'data' => $output,
                 'message' => 'The data was found successfully.',
                 'status' => Response::HTTP_OK,
             ], Response::HTTP_OK);
