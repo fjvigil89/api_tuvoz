@@ -10,6 +10,9 @@ import json
 import random 
 import pickle
 import sys
+import os
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 #nltk.download('punkt')
 
 with open("/home/frank/sites/voicerecord/public/modelo/content.json", encoding="utf-8") as f:
@@ -97,13 +100,11 @@ def mainBot(entrada):
         if item["tag"] == tag:
             respuesta=item["respuestas"]
     #print("Bot: ",random.choice(respuesta))
-    return random.choice(respuesta)
+    print(random.choice(respuesta))
 
 if __name__ == '__main__':   
     args = sys.argv[1:]
      
     entrada = args[0]
-
-    salida = mainBot(entrada)
-    print(salida)
-    #sys.exit(smille_data(N, path))
+    mainBot(entrada)
+    

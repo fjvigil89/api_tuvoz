@@ -39,7 +39,8 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::get('countUserByTreatment', 'TreatmentController@countUserByTreatment')->name('treatment.countUserByTreatment');
     Route::get('countGetRecordByUser', 'UserController@countGetRecordByUser')->name('user.countGetRecordByUser');
     Route::get('getRecordByUser', 'UserController@getRecordByUser')->name('user.getRecordByUser');
-    Route::get('modelOpenSmille/{path}','RecordController@modelOpenSmille')->name('modelOpenSmille');
+    Route::get('modelPraat/{path}','RecordController@modelPraat')->name('modelPraat');
+    //Route::get('modelOpenSmille/{path}','RecordController@modelOpenSmille')->name('modelOpenSmille');
 
     Route::resource('treatment', 'TreatmentController', ['only' => [
         'index', 'store', 'show', 'update', 'destroy'
@@ -83,9 +84,10 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
 
     //Patient
     Route::get('phrasePatientTreatment/{treatment}', 'TreatmentPatientController@phrasePatientTreatment')->name('treatment.phrasePatientTreatment');
-    Route::get('lastOpenSmille','RecordController@lastOpenSmille')->name('lastOpenSmille');
+    Route::get('lastPraat','RecordController@lastPraat')->name('lastPraat');
+    //Route::get('lastOpenSmille','RecordController@lastOpenSmille')->name('lastOpenSmille');
+    
 });
-
 
 Route::post('register', 'Api\\AuthController@register')->name('api.register');
 Route::get('pre_register', 'Api\\AuthController@pre_register')->name('api.pre_register');

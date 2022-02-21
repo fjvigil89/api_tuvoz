@@ -1,8 +1,8 @@
-[ 15.02.2022 - 17:51:26 ]
+[ 19.02.2022 - 23:20:40 ]
     (MSG) [2] SMILEapi: openSMILE starting!
-[ 15.02.2022 - 17:51:26 ]
+[ 19.02.2022 - 23:20:40 ]
     (MSG) [2] SMILEapi: config file is: /home/frank/.local/lib/python3.8/site-packages/opensmile/core/config/compare/ComParE_2016.conf
-[ 15.02.2022 - 17:51:26 ]
+[ 19.02.2022 - 23:20:40 ]
     (MSG) [2] cComponentManager: successfully registered 97 component types.
-[ 15.02.2022 - 17:51:26 ]
+[ 19.02.2022 - 23:20:40 ]
     (MSG) [2] cComponentManager: successfully finished createInstances (43 component instances were finalised, 1 data memories were finalised)

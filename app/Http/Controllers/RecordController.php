@@ -35,7 +35,7 @@ class RecordController extends Controller
         //
     }
 
-    public function modelOpenSmille($path)
+    /* public function modelOpenSmille($path)
     {
         try {
             $path= public_path()."/audio/".$path;
@@ -81,9 +81,9 @@ class RecordController extends Controller
             Log::critical("OpenSmille not worker :code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
             return false;
         }
-    }
+    } */
     
-    public function lastOpenSmille()
+    /* public function lastOpenSmille()
     {
        
         try {
@@ -138,6 +138,106 @@ class RecordController extends Controller
             Log::critical("Last OpenSmille not worker : code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
             return false;
         }
+    } */
+
+    public function lastPraat()
+    {
+       
+        try {
+            $user = Auth::user();
+            //$user = User::where('id','4')->get()->first();
+            $audio= Record::where('identificador',$user->identificador)->get()->last();
+            
+            if($audio)
+            {
+                $path= public_path()."/audio/".$user->username.$audio->name.'.wav';
+                $count_features =$this->count_features;
+                
+                //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
+                $python ="python3";
+                $script = $python." ".public_path()."/modelo/Praat.py ".$count_features." " .$path;
+                $output = shell_exec($script); //No se ejecuta
+
+                if ($output != null) {            
+                    $split = explode("'", $output);                                        
+                    $aux=explode('"',$split[1]);
+                    $label=array();
+                    $data=array();
+                    foreach($aux as $item)
+                    if (strlen($item) >3) {
+                        array_push($label, trim($item));
+                    }
+                    
+                    $aux=explode(",",explode("]",explode('[',$split[3])[1])[0]);
+                    foreach($aux as $item)       
+                        array_push($data,(Float)$item);       
+               
+    
+                    
+                   // $label=['','','','',''];
+                    
+                    return response()->json([            
+                        'label' =>$label,
+                        'data' => $data,
+                        'message' => 'The data was found successfully.',
+                        'status' => Response::HTTP_OK,
+                    ], Response::HTTP_OK);
+                }
+                
+            }
+            return response()->json([
+                'message' => 'The given data was not found.',
+            ], Response::HTTP_NOT_FOUND);
+            
+        } catch (\Exception $e) {
+            Log::critical("Last Praat not worker : code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
+            return false;
+        }
+    }
+
+    public function modelPraat($path)
+    {
+        try {            
+            $path= public_path()."/audio/".$path;
+            $count_features =$this->count_features;        
+            //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
+            $python ="python3";
+            $script = $python." ".public_path()."/modelo/Praat.py ".$count_features." " .$path;
+        
+            //dd($script);
+         
+            $output = `$script`;
+            
+            if ($output != null) {
+                $split = explode("'", $output);
+                $aux=explode('"',$split[1]);               
+                $label=array();
+                $data=array();
+                foreach($aux as $item)
+                if (strlen($item) >3) {
+                    array_push($label, trim($item));
+                }
+                
+                $aux=explode(",",explode("]",explode('[',$split[3])[1])[0]);
+                foreach($aux as $item)       
+                    array_push($data,(Float)$item); 
+           
+    
+                //$label=['','','','',''];                       
+                return response()->json([            
+                    'label' =>$label,
+                    'data' => $data,
+                    'message' => 'The data was found successfully.',
+                    'status' => Response::HTTP_OK,
+                ], Response::HTTP_OK);    
+            }
+            return response()->json([
+                'message' => 'The given data was not found.',
+            ], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            Log::critical("Paat not worker :code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
+            return false;
+        }
     }
 
     /**
@@ -156,7 +256,7 @@ class RecordController extends Controller
             $identificador = $user->username.$request->identificador;
             if ($this->saveAudio($_FILES['audio'], $identificador)) {
                 $record = new Record;
-                $record->path = $request->root()."/audio/".$identificador;
+                $record->path = $request->root()."/audio/".$identificador.".wav";
                 $record->name = $request->identificador;
                 $record->identificador = $user->identificador;
                 //$record->save();
@@ -235,6 +335,10 @@ class RecordController extends Controller
             //indicamos que queremos guardar un nuevo archivo en el disco local
             $path = "./audio/". $identificador;
             if (move_uploaded_file($file['tmp_name'], $path)) {
+                
+                $script = "ffmpeg -i ".$path.' '.$path.".wav";
+                $output = shell_exec($script); 
+                unlink($path);
                 return true;
             }
             return false;
@@ -253,7 +357,7 @@ class RecordController extends Controller
             $identificador = $user->identificador.$request->identificador;
             if ($this->saveAudio($_FILES['audio'], $identificador)) {
                 $record = new Record;
-                $record->path = $request->root()."/audio/".$identificador;
+                $record->path = $request->root()."/audio/".$identificador.".wav";
                 $record->name = $request->identificador;
                 $record->identificador = $user->identificador;
                 $record->save();
