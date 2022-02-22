@@ -47,19 +47,27 @@ class UserSeeder extends Seeder
             'status' => true,
             'foto'=> "https://picsum.photos/800/800?random",
         ])->assignRole('Guest');
+        $bot = User::create([
+            'name' => "Bot TuVoz",
+            'username' => 'bot',
+            'email' => "bot@unizar.es",
+            'password' => bcrypt("bot"),
+            'identificador' => bcrypt("Bot"),
+            'role'=> 'Guest',
+            'status' => true,
+            'foto'=> "https://picsum.photos/800/800?random",
+        ])->assignRole('Guest');
 
-        // $faker = Faker::create();
-        // for ($i=0; $i < 10; $i++) {
-        //       $role = 'Guest'; //$faker->randomElement(['Guest', 'Specialist']);
-        //       $user2 = User::create([
-        //           'name'       => $faker->firstName("male"),
-        //           'email'      => $faker->email,
-        //           'password'   => $faker->password,
-        //           'role'       => $role,
-        //           'specialist_id' => $user->id,
-        //           'created_at' => date('Y-m-d H:m:s'),
-        //           'updated_at' => date('Y-m-d H:m:s')
-        //       ])->assignRole($role);
-        // }
+        $test = User::create([
+            'name' => "test",
+            'username' => 'frank.vigil',
+            'email' => "frank.vigil@unizar.es",
+            'password' => bcrypt("123"),
+            'identificador' => bcrypt("123"),
+            'role'=> 'Guest',
+            'specialist_id'=> $specialis->id,
+            'status' => true,
+            'foto'=> "https://picsum.photos/800/800?random",
+        ])->assignRole('Guest');
     }
 }

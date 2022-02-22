@@ -100,7 +100,7 @@ def mainBot(entrada):
         if item["tag"] == tag:
             respuesta=item["respuestas"]
     #print("Bot: ",random.choice(respuesta))
-    print(random.choice(respuesta))
+    print(random.choice(respuesta).strip())
 
 if __name__ == '__main__':   
     args = sys.argv[1:]

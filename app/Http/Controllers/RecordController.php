@@ -35,7 +35,7 @@ class RecordController extends Controller
         //
     }
 
-    /* public function modelOpenSmille($path)
+    public function modelOpenSmille($path)
     {
         try {
             $path= public_path()."/audio/".$path;
@@ -81,9 +81,9 @@ class RecordController extends Controller
             Log::critical("OpenSmille not worker :code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
             return false;
         }
-    } */
+    }
     
-    /* public function lastOpenSmille()
+    public function lastOpenSmille()
     {
        
         try {
@@ -138,7 +138,7 @@ class RecordController extends Controller
             Log::critical("Last OpenSmille not worker : code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
             return false;
         }
-    } */
+    }
 
     public function lastPraat()
     {
@@ -236,6 +236,47 @@ class RecordController extends Controller
             ], Response::HTTP_NOT_FOUND);
         } catch (\Exception $e) {
             Log::critical("Paat not worker :code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
+            return false;
+        }
+    }
+
+    ///cantidad de record por mes
+    public function chatMovil()
+    {
+        try {
+            $user = Auth::user();
+            //$user = User::where('id','4')->get()->first();
+            $audio= Record::where('identificador',$user->identificador)->get();
+            $label=['Enero','Febrero','Marzo','Abril','Mayo', 'Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+            $data=[0,0,0,0,0,0,0,0,0,0,0];
+            
+            if($audio)
+            {
+                $count=0;
+                foreach($audio as $item)
+                {
+                    $data[(Int)$item->created_at->format('m')]++;
+                }
+                
+                return response()->json([            
+                    'label' =>$label,
+                    'data' => $data,
+                    'message' => 'The data was found successfully.',
+                    'status' => Response::HTTP_OK,
+                ], Response::HTTP_OK);
+            
+            
+            }
+                
+            return response()->json([            
+                'label' =>$label,
+                'data' => $data,
+                'message' => 'The data was found successfully.',
+                'status' => Response::HTTP_OK,
+            ], Response::HTTP_OK);
+            
+        } catch (\Exception $e) {
+            Log::critical("Last Record not worker : code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
             return false;
         }
     }

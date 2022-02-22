@@ -78,16 +78,18 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::resource('app', 'AppController', ['only' => [
         'index', 'store', 'show', 'update', 'destroy'
     ]]);
-    Route::post('sendBotMessenger', 'BotController@sendBotMessenger')->name('apk.sendBotMessenger');
-  
-    
+    //Route::post('sendBotMessenger', 'BotController@sendBotMessenger')->name('apk.sendBotMessenger');
+    Route::get('getBotMessenger','ChatController@getBotMessenger')->name('getBotMessenger');
+    Route::post('setBotMessenger', 'ChatController@setBotMessenger')->name('setBotMessenger');
 
     //Patient
     Route::get('phrasePatientTreatment/{treatment}', 'TreatmentPatientController@phrasePatientTreatment')->name('treatment.phrasePatientTreatment');
-    Route::get('lastPraat','RecordController@lastPraat')->name('lastPraat');
+    //Route::get('lastPraat','RecordController@lastPraat')->name('lastPraat');
     //Route::get('lastOpenSmille','RecordController@lastOpenSmille')->name('lastOpenSmille');
+    Route::get('chatMovil','RecordController@chatMovil')->name('chatMovil');
     
 });
+
 
 Route::post('register', 'Api\\AuthController@register')->name('api.register');
 Route::get('pre_register', 'Api\\AuthController@pre_register')->name('api.pre_register');

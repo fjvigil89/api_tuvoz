@@ -45,5 +45,9 @@ class User extends Authenticatable
     	return $this->belongsToMany('App\User');
 	}
 
+    public function Message() {
+    	return $this->belongsToMany('App\ChatModel');
+	}
+
     
 }
