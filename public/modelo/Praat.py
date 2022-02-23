@@ -6,6 +6,7 @@ from statistics import median
 import parselmouth
 import json
 import sys
+import numpy as np
 from parselmouth.praat import call
 
 
@@ -29,28 +30,28 @@ def measure2Pitch(voiceID, f0min, f0max, unit):
         pulses = call([sound, pitch], "To PointProcess (cc)")
         
         # "Voice report"       
-        meanF0 = round(call(pitch, "Get mean", 0, 0, unit), 3) # get mean pitch
-        stdevF0 = round(call(pitch, "Get standard deviation", 0 ,0, unit), 3) # get standard deviation
+        meanF0 = np.log(round(call(pitch, "Get mean", 0, 0, unit), 3)) # get mean pitch
+        stdevF0 = np.log(round(call(pitch, "Get standard deviation", 0 ,0, unit), 3))# get standard deviation
         harmonicity = call(sound, "To Harmonicity (cc)", 0.01, f0min, 0.1, 1.0)
-        hnr = call(harmonicity, "Get mean", 0, 0)
+        hnr = np.log(call(harmonicity, "Get mean", 0, 0))
         pointProcess = call(sound, "To PointProcess (periodic, cc)", f0min, f0max)
         
-        localJitter = round(100*call(pulses, "Get jitter (local)", 0, 0, 0.0001, 0.02, 1.3), 3)
-        localabsoluteJitter = call(pulses, "Get jitter (local, absolute)", 0, 0, 0.0001, 0.02, 1.3)
-        rapJitter = round(100*call(pulses, "Get jitter (rap)", 0, 0, 0.0001, 0.02, 1.3), 3)
-        ppq5Jitter = round(100*call(pulses, "Get jitter (ppq5)", 0, 0, 0.0001, 0.02, 1.3), 3)
-        ddpJitter = round(100*call(pulses, "Get jitter (ddp)", 0, 0, 0.0001, 0.02, 1.3), 3)
-        localShimmer =  round(100*call([sound, pulses], "Get shimmer (local)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3)
-        localdbShimmer = round(call([sound, pulses], "Get shimmer (local_dB)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3)
-        apq3Shimmer = round(100*call([sound, pulses], "Get shimmer (apq3)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3)
-        aqpq5Shimmer = round(100*call([sound, pulses], "Get shimmer (apq5)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3)
-        apq11Shimmer =  round(100*call([sound, pulses], "Get shimmer (apq11)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3)
-        ddaShimmer = round(100*call([sound, pulses], "Get shimmer (dda)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3)
+        localJitter = np.log(round(100*call(pulses, "Get jitter (local)", 0, 0, 0.0001, 0.02, 1.3), 3))
+        localabsoluteJitter = np.log(call(pulses, "Get jitter (local, absolute)", 0, 0, 0.0001, 0.02, 1.3))
+        rapJitter = np.log(round(100*call(pulses, "Get jitter (rap)", 0, 0, 0.0001, 0.02, 1.3), 3))
+        ppq5Jitter = np.log(round(100*call(pulses, "Get jitter (ppq5)", 0, 0, 0.0001, 0.02, 1.3), 3))
+        ddpJitter = np.log(round(100*call(pulses, "Get jitter (ddp)", 0, 0, 0.0001, 0.02, 1.3), 3))
+        localShimmer =  np.log(round(100*call([sound, pulses], "Get shimmer (local)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3))
+        localdbShimmer = np.log(round(call([sound, pulses], "Get shimmer (local_dB)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3))
+        apq3Shimmer = np.log(round(100*call([sound, pulses], "Get shimmer (apq3)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3))
+        aqpq5Shimmer = np.log(round(100*call([sound, pulses], "Get shimmer (apq5)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3))
+        apq11Shimmer =  np.log(round(100*call([sound, pulses], "Get shimmer (apq11)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3))
+        ddaShimmer = np.log(round(100*call([sound, pulses], "Get shimmer (dda)", 0, 0, 0.0001, 0.02, 1.3, 1.6), 3))
        
        
         columns=["stdev"," hnr"," localJitter"," localabsoluteJitter"," rapJitter"," ppq5Jitter"," ddpJitter"," localShimmer"," localdbShimmer"," apq3Shimmer", "aqpq5Shimmer", "apq11Shimmer", "ddaShimmer"]
         row=[stdevF0, hnr, localJitter, localabsoluteJitter, rapJitter, ppq5Jitter, ddpJitter, localShimmer, localdbShimmer, apq3Shimmer, aqpq5Shimmer, apq11Shimmer, ddaShimmer]
-        return json.dumps(columns), json.dumps(row) 
+        return json.dumps(columns), json.dumps((row)) 
     
 def praat(n, data):
     valor=[]
