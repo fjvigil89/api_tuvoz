@@ -255,7 +255,7 @@ class RecordController extends Controller
                 $count=0;
                 foreach($audio as $item)
                 {
-                    $data[(Int)$item->created_at->format('m')]++;
+                    $data[(Int)$item->created_at->format('m')-1]++;
                 }
                 
                 return response()->json([            

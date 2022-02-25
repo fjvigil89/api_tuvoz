@@ -37,7 +37,7 @@ def measure2Pitch(voiceID, f0min, f0max, unit):
         pointProcess = call(sound, "To PointProcess (periodic, cc)", f0min, f0max)
         
         localJitter = np.log(round(100*call(pulses, "Get jitter (local)", 0, 0, 0.0001, 0.02, 1.3), 3))
-        localabsoluteJitter = np.log(call(pulses, "Get jitter (local, absolute)", 0, 0, 0.0001, 0.02, 1.3))
+        localabsoluteJitter = (call(pulses, "Get jitter (local, absolute)", 0, 0, 0.0001, 0.02, 1.3))
         rapJitter = np.log(round(100*call(pulses, "Get jitter (rap)", 0, 0, 0.0001, 0.02, 1.3), 3))
         ppq5Jitter = np.log(round(100*call(pulses, "Get jitter (ppq5)", 0, 0, 0.0001, 0.02, 1.3), 3))
         ddpJitter = np.log(round(100*call(pulses, "Get jitter (ddp)", 0, 0, 0.0001, 0.02, 1.3), 3))

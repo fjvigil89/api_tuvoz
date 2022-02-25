@@ -213,7 +213,7 @@ class PhraseSeeder extends Seeder
         "Teníamos permiso para ir a nuestras casas.",
         "Lo que se consigue de esta manera es que todos paguen la cuota.",
         ];
-        $faker = Faker::create();
+       
          for ($i=0; $i < count($frases)-1; $i++) {
                \DB::table("list_phrases")->insert(
                      array(
@@ -224,5 +224,16 @@ class PhraseSeeder extends Seeder
                      )
                );
          }
+      $frases =["Diga 'a' sostenida", "Diga 'i' sostenida", "Diga 'u' sostenida"];
+      for ($i=0; $i < count($frases)-1; $i++) {
+            \DB::table("list_phrases")->insert(
+                  array(
+                        'phrase'       => $frases[$i],                           
+                        'created_at'   => date('Y-m-d H:m:s'),
+                        'updated_at'   => date('Y-m-d H:m:s'),
+                        'treatment_id' => 2,
+                  )
+            );
+      }
     }
 }

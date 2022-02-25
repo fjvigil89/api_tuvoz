@@ -26,6 +26,17 @@ class TreatmentSeeder extends Seeder
                          'updated_at'    => date('Y-m-d H:m:s')
                    )
              );
+             \DB::table("treatments")->insert(
+                array(
+                      //'id'         => $faker->unique()->randomNumber,
+                      'name'          => "Vocales",
+                      'desc'          => "Haciendo banco de voces para el trabajo de Interligibilidad", 
+                      'status'        => 1,
+                      'specialist_id' => 2,                        
+                      'created_at'    => date('Y-m-d H:m:s'),
+                      'updated_at'    => date('Y-m-d H:m:s')
+                )
+          );
          }
     }
 }
