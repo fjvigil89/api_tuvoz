@@ -35,7 +35,7 @@ jobs:
     - run: |   
         mkdir -p ~/.kube/     
         echo $KUBE_CONFIG_DATA | base64 -d >  ~/.kube/config
-        cd .kustomize
+        
         kustomize edit set image  api_tuvoz=fjvigil/api_tuvoz:${{ github.sha }}
         kustomize build . | kubectl apply -f -
         kubectl -n api_tuvoz rollout status deployment/api_tuvoz 
