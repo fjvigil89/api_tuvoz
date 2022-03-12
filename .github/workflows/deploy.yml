@@ -35,6 +35,18 @@ jobs:
     - run: |   
         mkdir -p ~/.kube/     
         echo $KUBE_CONFIG_DATA | base64 -d >  ~/.kube/config
+        cd .kustomize
+        kustomize edit set image  api_tuvoz=fjvigil/api_tuvoz:${{ github.sha }}
+        kustomize build . | kubectl apply -f -
+        kubectl -n api_tuvoz rollout status deployment/api_tuvoz 
+        URL=`kubectl -n api_tuvoz get ngrok -o=custom-columns='DATA:ststus.url' | tail -n1'`
+        
+        while [[ $URL != *"ngrok"* ]]; do
+          echo "Skill not ready "&& sleep 5
+          URL=`kubectl -n api_tuvoz get ngrok -o=custom-columns='DATA:ststus.url' | tail -n1'`
+        done
+
+        echo "::set-output name=url::$URL"
   # ngrok-watcher:
   #  name: Ngrok watcher
   #  runs-on: ubuntu-latest
