@@ -33,8 +33,8 @@ jobs:
         helm: '3.7.0'
         kustomize: '4.5.2'
     - run: | 
-        cd .kustomize       
-        kubectl apply -f namespace.yaml
+        ls -l ./      
+        kubectl apply -f .kustomize/namespace.yaml
   # ngrok-watcher:
   #  name: Ngrok watcher
   #  runs-on: ubuntu-latest
