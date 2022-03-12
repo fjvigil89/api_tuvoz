@@ -20,5 +20,5 @@ jobs:
         context: .
         push: true
         pull: true
-        tags: fjvigil/api_tuvoz:latest       
-    
+        tags: fjvigil/api_tuvoz:${{ github.sha }}
+        
