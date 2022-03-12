@@ -29,9 +29,9 @@ jobs:
     - name: deploy to cluster
       uses: yokawasa/action-setup-kube-tools@v0.7.1
       with:
-        kubectl: '1.23.4'
+        kubectl: '1.20.2'
         helm: '3.7.0'
-        kustomize: '4.5.2'
+        kustomize: '3.7.0'
     - run: |   
         mkdir -p ~/.kube/     
         echo $KUBE_CONFIG_DATA | base64 -d >  ~/.kube/config
