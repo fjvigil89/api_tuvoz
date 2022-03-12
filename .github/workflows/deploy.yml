@@ -32,8 +32,7 @@ jobs:
         kubectl: '1.23.4'
         helm: '3.7.0'
         kustomize: '4.5.2'
-    - run: | 
-        ls -l ./      
+    - run: |       
         kubectl apply -f .kustomize/namespace.yaml
   # ngrok-watcher:
   #  name: Ngrok watcher
