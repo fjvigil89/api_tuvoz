@@ -27,7 +27,7 @@ jobs:
     needs: build-and-push
     steps:
     - name: deploy to cluster
-      uses: yokawasa/action-setup-kube-tools@v0.7.1
+      uses: yokawasa/action-setup-kube-tools@v0.4.0
       with:
         kubectl: '1.20.2'
         helm: '3.7.0'
