@@ -14,14 +14,3 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-
-# Install Composer extensions
-RUN composer install
-
-# Install Composer extensions
-RUN composer install
-
-# Install complement
-RUN cp .env.example .env
-RUN php artisan key:generate.
-RUN chmod -R 777 storage.
