@@ -35,6 +35,7 @@ jobs:
     - name: kubectl
       id: kubectl
       run: |   
+        ls
         mkdir -p ~/.kube/     
         echo $KUBE_CONFIG_DATA | base64 -d >  ~/.kube/config
         cd .kustomize
