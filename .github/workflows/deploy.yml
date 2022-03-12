@@ -29,17 +29,12 @@ jobs:
     - name: deploy to cluster
       uses: yokawasa/action-setup-kube-tools@v0.7.1
       with:
-        setup-tools: |
-          kubectl
-          helm
-          kustomize
         kubectl: '1.23.4'
         helm: '3.7.0'
         kustomize: '4.5.2'
-    - run: |
-        kubectl version --client
-        kustomize version
-        helm version
+    - run: | 
+        cd .kustomize       
+        kubectl apply -f namespace.yaml
   # ngrok-watcher:
   #  name: Ngrok watcher
   #  runs-on: ubuntu-latest
