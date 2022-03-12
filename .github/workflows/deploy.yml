@@ -31,14 +31,14 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: set image --record deployment/my-app api_tuvoz=fjvigil/api_tuvoz:${{ github.sha }}
+        args: set image --record deployment/api_tuvoz api_tuvoz=fjvigil/api_tuvoz:${{ github.sha }}
     - name: verify deployment
       uses: steebchen/kubectl@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         KUBECTL_VERSION: "1.20"
       with:
-        args: '"rollout status deployment/my-app"'
+        args: '"rollout status deployment/api_tuvoz"'
   ngrok-watcher:
     name: Ngrok watcher
     runs-on: ubuntu-latest
