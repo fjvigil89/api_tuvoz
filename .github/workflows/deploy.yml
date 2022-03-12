@@ -27,41 +27,30 @@ jobs:
     needs: build-and-push
     steps:
     - name: deploy to cluster
-      uses: yokawasa/action-setup-kube-tools@v0.4.0
+      uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        kubectl: '1.20.2'
-        helm: '3.7.0'
-        kustomize: '3.7.0'
-    - name: kubectl
-      id: kubectl
-      run: |   
-        ls
-        mkdir -p ~/.kube/     
-        echo $KUBE_CONFIG_DATA | base64 -d >  ~/.kube/config
-        cd .kustomize
-        kustomize edit set image  api_tuvoz=fjvigil/api_tuvoz:${{ github.sha }}
-        kustomize build . | kubectl apply -f -
-        kubectl -n api_tuvoz rollout status deployment/api_tuvoz 
-        URL=`kubectl -n api_tuvoz get ngrok -o=custom-columns='DATA:ststus.url' | tail -n1'`
-        
-        while [[ $URL != *"ngrok"* ]]; do
-          echo "Skill not ready "&& sleep 5
-          URL=`kubectl -n api_tuvoz get ngrok -o=custom-columns='DATA:ststus.url' | tail -n1'`
-        done
-
-        echo "::set-output name=url::$URL"
-  # ngrok-watcher:
-  #  name: Ngrok watcher
-  #  runs-on: ubuntu-latest
-  #  needs: deploy-to-cluster
-  #  steps:
-  #  - name: Get ngrok URL
-  #    id: getNgrokUrl
-  #    uses: debianmaster/kubectl@master
-  #    env:
-  #      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-  #      KUBECTL_VERSION: "1.20"
-  #    with:
-  #      args: |
-  #        URL=`kubectl -n api_tuvoz get ngrok -o=custom-columns='DATA:status.url' | tail -n1` 
-  #        echo "::set-output name=url::$URL"
+        args: set image --record deployment/api_tuvoz api_tuvoz=fjvigil/api_tuvoz:${{ github.sha }}
+    - name: verify deployment
+      uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBECTL_VERSION: "1.20"
+      with:
+        args: '"rollout status deployment/api_tuvoz"'
+  ngrok-watcher:
+    name: Ngrok watcher
+    runs-on: ubuntu-latest
+    needs: deploy-to-cluster
+    steps:
+    - name: Get ngrok URL
+      id: getNgrokUrl
+      uses: debianmaster/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBECTL_VERSION: "1.20"
+      with:
+        args: |
+          URL=`kubectl -n api_tuvoz get ngrok -o=custom-columns='DATA:status.url' | tail -n1` 
+          echo "::set-output name=url::$URL"
