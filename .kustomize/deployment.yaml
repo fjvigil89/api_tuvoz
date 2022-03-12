@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+  name: api_tuvoz
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: api_tuvoz
+  template:
+    metadata:
+      labels:
+        name: api_tuvoz
+    spec:
+      containers:
+      - name: api_tuvoz
+        image: fjvigil/api_tuvoz
+        ports:
+        - containerPort: 80
+          name: http

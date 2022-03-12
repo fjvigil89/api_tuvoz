@@ -1,0 +1,8 @@
+apiVersion: ngrok.com/v1alpha1
+kind: Ngrok
+metadata:
+  name: api_tuvoz
+spec:
+  protocol: http
+  service: api_tuvoz
+  port: 80
