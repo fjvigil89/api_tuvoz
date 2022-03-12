@@ -4,7 +4,7 @@ metadata:
   labels:
   name: api_tuvoz
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       name: api_tuvoz
