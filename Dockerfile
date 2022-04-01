@@ -1,1 +1,4 @@
-FROM php:7.3-fpm
+FROM nginx:1.19-alpine
+
+
+ADD ./* /usr/share/nginx/html
