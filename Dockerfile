@@ -1,10 +1,9 @@
 # Set master image
-FROM drcreazy/php-fpm73-alpine
+FROM bitnami/php-fpm:7.4.28-debian-10-r48
 
 # Set working directory
 WORKDIR /var/www/html
 
 COPY . .
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm", "php artisan serve --port 80"]
+
+CMD ["php artisan serve --port 80"]
