@@ -1,8 +1,10 @@
-FROM ubuntu/apache2:2.4-21.10_beta 
+# Set master image
+FROM drcreazy/php-fpm73-alpine
 
-EXPOSE 80:80
+# Set working directory
+WORKDIR /var/www/html
 
-WORKDIR /app
-
-ADD . .
- 
+COPY . .
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm", "php artisan serve --port 80"]
