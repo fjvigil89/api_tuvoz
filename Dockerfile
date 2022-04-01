@@ -1,9 +1,9 @@
 # Set master image
-FROM ubuntu:focal
+FROM php:7.3.33-zts-alpine3.14
 
+EXPOSE 80
 # Set working directory
-WORKDIR /var/www/html
-
+WORKDIR /app
 COPY . .
-EXPOSE 8000:8000
-CMD ["php artisan serve"]
+
+CMD php artisan serve --host=0.0.0.0 --port=80
