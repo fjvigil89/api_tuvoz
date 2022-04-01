@@ -1,8 +1,8 @@
-FROM ubuntu/nginx:1.18-21.10_beta
+FROM ubuntu/apache2:2.4-20.04_edge 
 
 EXPOSE 80:80
 
 WORKDIR /app
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./apache2.conf /etc/apache2/apache2.conf
 
 ADD . .
