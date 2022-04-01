@@ -5,5 +5,5 @@ FROM bitnami/php-fpm:7.4.28-debian-10-r48
 WORKDIR /var/www/html
 
 COPY . .
-
-CMD ["php artisan serve --port 80"]
+EXPOSE 8000:8000
+CMD ["php artisan serve"]
