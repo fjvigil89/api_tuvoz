@@ -1,4 +1,4 @@
-FROM ubuntu/apache2:2.4-20.04_edge 
+FROM ubuntu/apache2:2.4-21.10_beta 
 
 EXPOSE 80:80
 
