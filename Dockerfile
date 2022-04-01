@@ -1,4 +1,5 @@
-FROM nginx:1.19-alpine
+FROM ubuntu/nginx:1.18-21.10_beta
 
-
-ADD ./* /usr/share/nginx/html
+EXPOSE 80:80
+ADD ./* /var/www/html
+ADD nginx.conf /etc/nginx/nginx.conf
