@@ -1,5 +1,5 @@
 # Set master image
-FROM bitnami/php-fpm:7.4.28-debian-10-r48
+FROM ubuntu:focal
 
 # Set working directory
 WORKDIR /var/www/html
