@@ -2,6 +2,7 @@ on:
   push:
     branches:
     - ci/cd
+    - master
 name: deploy API tuVoz
 jobs:
   build-and-push:
