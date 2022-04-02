@@ -49,3 +49,13 @@ jobs:
         push: true
         pull: true
         tags: fjvigil/api_tuvoz:${{ github.sha }}
+
+    - name: Build latest 
+      if: github.ref == 'refs/heads/master'
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        pull: true
+        tags: fjvigil/api_tuvoz
+          
