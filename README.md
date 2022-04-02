@@ -14,5 +14,5 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 
 `EXPOSE 8080`
 # Set working directory
-`WORKDIR /var/www/html/`
+`WORKDIR /var/www/html/backend`
 `COPY . .`
