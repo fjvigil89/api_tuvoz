@@ -6,4 +6,4 @@ EXPOSE 80
 WORKDIR /app
 COPY . .
 
-CMD php artisan serve --host=0.0.0.0 --port=80
+CMD php artisan serve  --port=80
