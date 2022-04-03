@@ -29,14 +29,13 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: 7.3
-        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, pdo_mysql
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, pdo_mysql, mysql, soap, intl, bcmath, common, json, openssl, xml
         ini-values: post_max_size=512M, max_execution_time=180, memory_limit = 128M 
         coverage: none
 
     - name: Install dependencies
       run: |
         composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
-        sudo apt install -y php7.3-mysql
 
     - name: Copy env file
       run: cp .env.example .env
