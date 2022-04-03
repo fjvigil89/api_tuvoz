@@ -35,18 +35,6 @@ RUN apt-get update && apt-get install -y --quiet ca-certificates \
     iproute2 \
     libmagickwand-dev
 
-# Install extensions: Some extentions are better installed using this method than apt in docker
-RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
-    && docker-php-ext-install \
-        pdo_mysql \
-        mbstring \
-        zip \
-        exif \
-        pcntl \
-        xml \
-        soap \
-        bcmath \
-        gd
 
 # Config php.init
 RUN echo "request_terminate_timeout = 3600" >> /usr/local/etc/php-fpm.conf
