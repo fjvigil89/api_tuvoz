@@ -11,5 +11,15 @@ hacerle salva a la uri public/audio:
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
 ## DockerFile
+# EXPOSE 8080
+# Set working directory
+`ENV DB_CONNECTION mysql`
+`ENV DB_HOST ""`
+`ENV DB_PORT 0`
+`ENV DB_DATABASE ""`
+`ENV DB_USERNAME ""`
+`ENV DB_PASSWORD ""`
+
+
 `WORKDIR /var/www/html`
 `COPY . .`
