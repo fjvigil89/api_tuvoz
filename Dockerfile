@@ -1,5 +1,5 @@
 # Set master image
-FROM karllhughes/laravel-php-7
+FROM laravelsail/php73-composer
 
 # EXPOSE 8080
 # Set working directory
