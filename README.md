@@ -11,8 +11,5 @@ hacerle salva a la uri public/audio:
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
 ## DockerFile
-
-`EXPOSE 8080`
-# Set working directory
-`WORKDIR /var/www/html/backend`
+`WORKDIR /var/www/html`
 `COPY . .`
