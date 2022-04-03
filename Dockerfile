@@ -1,5 +1,5 @@
 # Set master image
-FROM laravelsail/php73-composer
+FROM php:7.3-fpm
 
 # EXPOSE 8080
 # Set working directory
