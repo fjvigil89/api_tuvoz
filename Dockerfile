@@ -1,5 +1,5 @@
 # Set master image
-FROM php:7.3-fpm-stretch 
+FROM php:7.3-fpm
 
 
 # EXPOSE 8080
