@@ -36,7 +36,7 @@ jobs:
     - name: Install dependencies
       run: |
         composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
-        apt install -y php7.3-mysql
+        sudo apt install -y php7.3-mysql
 
     - name: Copy env file
       run: cp .env.example .env
