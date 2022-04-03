@@ -25,15 +25,6 @@ jobs:
         path: vendor
         key: dependencies-php-composer-${{ hashFiles('**/composer.lock') }}
 
-    - name: Setup PHP${{ matrix.php }} sample
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
-        tools: deployer
-        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, pdo_mysql, mysql, soap, intl, json, openssl, xml
-        ini-values: post_max_size=512M, max_execution_time=180, memory_limit = 128M 
-        coverage: xdebug2
-
     - name: Install dependencies
       run: |
         composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
