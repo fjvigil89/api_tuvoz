@@ -1,5 +1,5 @@
 # Set master image
-FROM ubuntu:focal
+FROM karllhughes/laravel-php-7
 
 # EXPOSE 8080
 # Set working directory

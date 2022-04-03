@@ -30,7 +30,7 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
         tools: deployer
-        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, pdo_mysql, mysql, soap, intl, bcmath7, json, openssl, xml
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, pdo_mysql, mysql, soap, intl, json, openssl, xml
         ini-values: post_max_size=512M, max_execution_time=180, memory_limit = 128M 
         coverage: xdebug2
 
