@@ -1,5 +1,5 @@
 # Set master image
-FROM php:7.3.33-zts-alpine3.14
+FROM ubuntu:focal
 
 # EXPOSE 8080
 # Set working directory
