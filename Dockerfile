@@ -48,13 +48,13 @@ RUN pecl install -o -f redis \
 # Install composer: This could be removed and run in it's own container
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 # xdebug.remote_connect_back = true does NOT work in docker
-RUN echo '\n\
-    [Xdebug]\n\
-    xdebug.remote_enable=true\n\
-    xdebug.remote_autostart=true\n\
-    xdebug.remote_port=9000\n\
-    xdebug.remote_host=docker.host.internal\n'\
-    >> /usr/local/etc/php/php.ini
+#RUN echo '\n\
+#    [Xdebug]\n\
+ #   xdebug.remote_enable=true\n\
+ #   xdebug.remote_autostart=true\n\
+ #   xdebug.remote_port=9000\n\
+ #   xdebug.remote_host=docker.host.internal\n'\
+ #   >> /usr/local/etc/php/php.ini
 
 
 # Config php.init
