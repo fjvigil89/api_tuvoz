@@ -45,9 +45,6 @@ jobs:
     - name: Generate key
       run: php artisan key:generate
 
-    - name: Config cahce
-      run: php artisan config:cache
-
     - name: storage
       run: chmod -R 777 storage
 
