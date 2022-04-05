@@ -41,20 +41,20 @@ RUN apt-get update && apt-get install -y --quiet ca-certificates \
 RUN pecl install -o -f redis \
     imagick \
     xdebug \
-&&  rm -rf /tmp/pear \
-&&  docker-php-ext-enable redis \
+    &&  rm -rf /tmp/pear \
+    &&  docker-php-ext-enable redis \
     imagick \
     xdebug
 # Install composer: This could be removed and run in it's own container
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 # xdebug.remote_connect_back = true does NOT work in docker
 RUN echo '\n\
-[Xdebug]\n\
-xdebug.remote_enable=true\n\
-xdebug.remote_autostart=true\n\
-xdebug.remote_port=9000\n\
-xdebug.remote_host=docker.host.internal\n'\
->> /usr/local/etc/php/php.ini
+    [Xdebug]\n\
+    xdebug.remote_enable=true\n\
+    xdebug.remote_autostart=true\n\
+    xdebug.remote_port=9000\n\
+    xdebug.remote_host=docker.host.internal\n'\
+    >> /usr/local/etc/php/php.ini
 
 
 # Config php.init
@@ -62,5 +62,5 @@ RUN echo "request_terminate_timeout = 3600" >> /usr/local/etc/php-fpm.conf
 RUN echo "max_execution_time = 180" >> /usr/local/etc/php/php.ini
 RUN echo "post_max_size = 512M" >> /usr/local/etc/php/php.ini
 RUN echo "memory_limit = 128M" >> /usr/local/etc/php/php.ini
-  
+
 COPY . .
