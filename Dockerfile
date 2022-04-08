@@ -44,7 +44,8 @@ RUN pecl install -o -f redis \
     &&  rm -rf /tmp/pear \
     &&  docker-php-ext-enable redis \
     imagick \
-    xdebug
+    xdebug \
+    pdo_mysql
 # Install composer: This could be removed and run in it's own container
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 # xdebug.remote_connect_back = true does NOT work in docker
@@ -62,5 +63,6 @@ RUN echo "request_terminate_timeout = 3600" >> /usr/local/etc/php-fpm.conf
 RUN echo "max_execution_time = 180" >> /usr/local/etc/php/php.ini
 RUN echo "post_max_size = 512M" >> /usr/local/etc/php/php.ini
 RUN echo "memory_limit = 128M" >> /usr/local/etc/php/php.ini
+RUN echo "extension = pdo_mysql" >> /usr/local/etc/php/php.ini
 
 COPY . .
