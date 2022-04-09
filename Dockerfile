@@ -27,24 +27,11 @@ RUN apt-get update && apt-get install -y --quiet ca-certificates \
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --quiet ca-certificates \
-   build-essential \
-   mariadb-client \
-   libpng-dev \
-   libxml2-dev \
-   libxrender1 \
-   wkhtmltopdf \
-   libjpeg62-turbo-dev \
-   libfreetype6-dev \
    locales \
    zip \
-   jpegoptim optipng pngquant gifsicle \
    vim \
    unzip \
-   curl \
-   libmcrypt-dev \
-   msmtp \
-   iproute2 \
-   libmagickwand-dev 
+   curl 
 
 
 
