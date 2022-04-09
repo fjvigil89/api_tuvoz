@@ -1,27 +1,53 @@
+
 # Set master image
-FROM php:7.3.33-cli-alpine3.14
+FROM php:7.3-fpm-alpine
 
+# Copy composer.lock and composer.json
+COPY composer.lock composer.json /var/www/html/
 
-# EXPOSE 8080
 # Set working directory
-ENV DB_CONNECTION mysql
-ENV DB_HOST ""
-ENV DB_PORT 0
-ENV DB_DATABASE ""
-ENV DB_USERNAME ""
-ENV DB_PASSWORD ""
-
-
 WORKDIR /var/www/html
 
+# Install Additional dependencies
+RUN apk update && apk add --no-cache \
+    build-base shadow vim curl \
+    php7 \
+    php7-fpm \
+    php7-common \
+    php7-pdo \
+    php7-pdo_mysql \
+    php7-mysqli \
+    php7-mcrypt \
+    php7-mbstring \
+    php7-xml \
+    php7-openssl \
+    php7-json \
+    php7-phar \
+    php7-zip \
+    php7-gd \
+    php7-dom \
+    php7-session \
+    php7-zlib
 
+# Add and Enable PHP-PDO Extenstions
+RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-enable pdo_mysql
 
-# Config php.init
-#RUN echo "request_terminate_timeout = 3600" >> /usr/local/etc/php-fpm.conf
-RUN echo "max_execution_time = 180" >> /usr/local/etc/php/php.ini
-RUN echo "post_max_size = 512M" >> /usr/local/etc/php/php.ini
-RUN echo "memory_limit = 128M" >> /usr/local/etc/php/php.ini
-RUN echo "extension = pdo_mysql" >> /usr/local/etc/php/php.ini
+# Install PHP Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Remove Cache
+RUN rm -rf /var/cache/apk/*
 
-COPY . .
+# Add UID '1000' to www-data
+RUN usermod -u 1000 www-data
+
+# Copy existing application directory permissions
+COPY --chown=www-data:www-data . /var/www/html
+
+# Change current user to www
+USER www-data
+
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]
