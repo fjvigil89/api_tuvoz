@@ -14,27 +14,7 @@ ENV DB_PASSWORD ""
 
 WORKDIR /var/www/html
 
-# Install dependencies
-RUN apt-get update && apt-get install -y --quiet ca-certificates \
-   locales \
-   zip \
-   vim \
-   unzip \
-   curl \
-   php7.3-fpm\
-   php7.3-mcrypt \
-   php7.3-xml \
-   php7.3-gd \
-   php7.3-opcache \
-   php7.3-mbstring  \
-   php7.3-intl \
-   php7.3-bcmath \
-   php7.3-common \
-   php7.3-json \
-   openssl \
-   php7.3-mysql \
-   php7.3-cli \
-   php7.3-curl  
+
 
 
 
