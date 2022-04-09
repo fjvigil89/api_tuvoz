@@ -8,6 +8,9 @@ jobs:
   build-and-push:
     name: build and push image
     runs-on: ubuntu-latest
+    strategy:
+     matrix:
+       php: [7.3]
     steps:
     - uses: actions/checkout@master
     - name: Login to DockerHub
@@ -21,6 +24,11 @@ jobs:
       with:
         path: vendor
         key: dependencies-php-composer-${{ hashFiles('**/composer.lock') }}
+
+    - name: Setup PHP${{ matrix.php }} sample
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
 
     - name: Copy env file
       run: cp .env.example .env
