@@ -8,9 +8,6 @@ jobs:
   build-and-push:
     name: build and push image
     runs-on: ubuntu-latest
-    strategy:
-     matrix:
-       php: [7.3]
     steps:
     - uses: actions/checkout@master
     - name: Login to DockerHub
@@ -24,20 +21,6 @@ jobs:
       with:
         path: vendor
         key: dependencies-php-composer-${{ hashFiles('**/composer.lock') }}
-
-    - name: Setup PHP${{ matrix.php }} sample
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
-        tools: deployer
-        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, pdo_mysql, mysql, soap, intl, json, openssl, xml
-        ini-values: post_max_size=512M, max_execution_time=180, memory_limit = 128M 
-        coverage: xdebug2
-
-    - name: Install dependencies
-      run: |
-        composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
-        sudo apt-get update && sudo apt-get install php7.3-mcrypt php7.3-xml php7.3-gd php7.3-opcache php7.3-mbstring  php7.3-intl php7.3-bcmath php7.3-common php7.3-json openssl php7.3-curl  
 
     - name: Copy env file
       run: cp .env.example .env

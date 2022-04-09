@@ -21,9 +21,20 @@ RUN apt-get update && apt-get install -y --quiet ca-certificates \
 # Install repository
 RUN add-apt-repository ppa:ondrej/php
 
-# Install Php/.3
+# Install Php7.3
 RUN apt-get update && apt-get install -y --quiet ca-certificates \
-   php7.3-fpm
+   php7.3-fpm\
+   php7.3-mcrypt \
+   php7.3-xml \
+   php7.3-gd \
+   php7.3-opcache \
+   php7.3-mbstring  \
+   php7.3-intl \
+   php7.3-bcmath \
+   php7.3-common \
+   php7.3-json \
+   openssl \
+   php7.3-curl  
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --quiet ca-certificates \
@@ -60,5 +71,10 @@ RUN echo "max_execution_time = 180" >> /etc/php/7.3/fpm/php.ini
 RUN echo "post_max_size = 512M" >> /etc/php/7.3/fpm/php.ini
 RUN echo "memory_limit = 128M" >> /etc/php/7.3/fpm/php.ini
 RUN echo "extension = pdo_mysql" >> /etc/php/7.3/fpm/php.ini
+
+RUN echo "max_execution_time = 180" >> /etc/php/7.3/cli/php.ini
+RUN echo "post_max_size = 512M" >> /etc/php/7.3/cli/php.ini
+RUN echo "memory_limit = 128M" >> /etc/php/7.3/cli/php.ini
+RUN echo "extension = pdo_mysql" >> /etc/php/7.3/cli/php.ini
 
 COPY . .
