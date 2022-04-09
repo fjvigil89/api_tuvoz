@@ -34,6 +34,8 @@ RUN apt-get update && apt-get install -y --quiet ca-certificates \
    php7.3-common \
    php7.3-json \
    openssl \
+   php7.3-mysql \
+   php7.3-cli \
    php7.3-curl  
 
 # Install dependencies
