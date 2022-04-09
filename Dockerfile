@@ -14,26 +14,37 @@ ENV DB_PASSWORD ""
 
 WORKDIR /var/www/html
 
+# Install software common
+RUN apt-get update && apt-get install -y --quiet ca-certificates \
+    software-properties-common
+
+# Install repository
+RUN add-apt-repository ppa:ondrej/php
+
+# Install Php/.3
+RUN apt-get update && apt-get install -y --quiet ca-certificates \
+   php7.3-fpm
+
 # Install dependencies
-# RUN apt-get update && apt-get install -y --quiet ca-certificates \
-#    build-essential \
-#    mariadb-client \
-#    libpng-dev \
-#    libxml2-dev \
-#    libxrender1 \
-#    wkhtmltopdf \
-#    libjpeg62-turbo-dev \
-#    libfreetype6-dev \
-#    locales \
-#    zip \
-#    jpegoptim optipng pngquant gifsicle \
-#    vim \
-#    unzip \
-#    curl \
-#    libmcrypt-dev \
-#    msmtp \
-#    iproute2 \
-#    libmagickwand-dev
+RUN apt-get update && apt-get install -y --quiet ca-certificates \
+   build-essential \
+   mariadb-client \
+   libpng-dev \
+   libxml2-dev \
+   libxrender1 \
+   wkhtmltopdf \
+   libjpeg62-turbo-dev \
+   libfreetype6-dev \
+   locales \
+   zip \
+   jpegoptim optipng pngquant gifsicle \
+   vim \
+   unzip \
+   curl \
+   libmcrypt-dev \
+   msmtp \
+   iproute2 \
+   libmagickwand-dev 
 
 
 
@@ -57,10 +68,10 @@ WORKDIR /var/www/html
 
 
 # Config php.init
-# RUN echo "request_terminate_timeout = 3600" >> /usr/local/etc/php-fpm.conf
-# RUN echo "max_execution_time = 180" >> /usr/local/etc/php/php.ini
-# RUN echo "post_max_size = 512M" >> /usr/local/etc/php/php.ini
-# RUN echo "memory_limit = 128M" >> /usr/local/etc/php/php.ini
-# RUN echo "extension = pdo_mysql" >> /usr/local/etc/php/php.ini
+#RUN echo "request_terminate_timeout = 3600" >> /usr/local/etc/php-fpm.conf
+RUN echo "max_execution_time = 180" >> /etc/php/7.3/fpm/php.ini
+RUN echo "post_max_size = 512M" >> /etc/php/7.3/fpm/php.ini
+RUN echo "memory_limit = 128M" >> /etc/php/7.3/fpm/php.ini
+RUN echo "extension = pdo_mysql" >> /etc/php/7.3/fpm/php.ini
 
 COPY . .
