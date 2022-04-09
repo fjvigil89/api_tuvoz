@@ -1,6 +1,15 @@
-
 # Set master image
 FROM php:7.3-fpm-alpine
+
+# Set working directory
+ENV DB_CONNECTION mysql
+ENV DB_HOST ""
+ENV DB_PORT 0
+ENV DB_DATABASE ""
+ENV DB_USERNAME ""
+ENV DB_PASSWORD ""
+
+
 
 # Copy composer.lock and composer.json
 COPY composer.lock composer.json /var/www/html/
