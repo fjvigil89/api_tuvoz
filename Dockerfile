@@ -46,7 +46,7 @@ WORKDIR /var/www/html
 #    imagick \
 #    xdebug 
 # Install composer: This could be removed and run in it's own container
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 # xdebug.remote_connect_back = true does NOT work in docker
 RUN echo '\n\
 [Xdebug]\n\
