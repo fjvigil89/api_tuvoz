@@ -250,13 +250,7 @@ class RecordController extends Controller
             //dd($script);
          
             $output = `$script`;
-            return response()->json([                            
-                'data' => $output,
-                'message' => 'The data was found successfully.',
-                'status' => Response::HTTP_OK,
-            ], Response::HTTP_OK);    
-            
-            /* if ($output != null) {
+            if ($output != null) {
                 $split = explode("'", $output);
                 $aux=explode('"',$split[1]);               
                 $label=array();
@@ -278,7 +272,7 @@ class RecordController extends Controller
                     'message' => 'The data was found successfully.',
                     'status' => Response::HTTP_OK,
                 ], Response::HTTP_OK);    
-            } */
+            }
             return response()->json([
                 'message' => 'The given data was not found.',
             ], Response::HTTP_NOT_FOUND);
