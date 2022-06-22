@@ -25,6 +25,7 @@ use Ramsey\Uuid\Type\Integer;
 class RecordController extends Controller
 {
     protected $count_features=5;
+    protected $s3 =false; 
     /**
      * Display a listing of the resource.
      *
@@ -150,12 +151,11 @@ class RecordController extends Controller
             
             if($audio)
             {
-                $path= public_path()."/audio/".$user->username.$audio->name.'.wav';
-                $count_features =$this->count_features;
+                $path= public_path()."/audio/".$user->username.$audio->name.'.wav';               
                 
                 //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
                 $python ="python3";
-                $script = $python." ".public_path()."/modelo/Praat.py ".$count_features." " .$path;
+                $script = $python." ".public_path()."/modelo/Praat.py ".$this->s3." " .$path;
                 $output = shell_exec($script); //No se ejecuta
 
                 if ($output != null) {            
@@ -198,11 +198,10 @@ class RecordController extends Controller
     public function modelPraat($path)
     {
         try {            
-            $path= public_path()."/audio/".$path;
-            $count_features =$this->count_features;        
+            $path= public_path()."/audio/".$path;                   
             //$python ="C:\Users\fjvigil\AppData\Local\Programs\Python\Python38\python.exe";
             $python ="python3";
-            $script = $python." ".public_path()."/modelo/Praat.py ".$count_features." " .$path;
+            $script = $python." ".public_path()."/modelo/Praat.py ".$this->s3." " .$path;
         
             //dd($script);
          
@@ -240,6 +239,54 @@ class RecordController extends Controller
         }
     }
 
+    public function modelPraat_s3Blob($blob)
+    {      
+        try {
+            $s3 =true;
+            $parth = "'".$blob."'";
+            $python ="python3";
+            $script = $python." ".public_path()."/modelo/Praat.py ".$s3." ". $parth;
+        
+            //dd($script);
+         
+            $output = `$script`;
+            return response()->json([                            
+                'data' => $output,
+                'message' => 'The data was found successfully.',
+                'status' => Response::HTTP_OK,
+            ], Response::HTTP_OK);    
+            
+            /* if ($output != null) {
+                $split = explode("'", $output);
+                $aux=explode('"',$split[1]);               
+                $label=array();
+                $data=array();
+                foreach($aux as $item)
+                if (strlen($item) >3) {
+                    array_push($label, trim($item));
+                }
+                
+                $aux=explode(",",explode("]",explode('[',$split[3])[1])[0]);
+                foreach($aux as $item)       
+                    array_push($data,(Float)$item); 
+           
+    
+                //$label=['','','','',''];                       
+                return response()->json([            
+                    'label' =>$label,
+                    'data' => $data,
+                    'message' => 'The data was found successfully.',
+                    'status' => Response::HTTP_OK,
+                ], Response::HTTP_OK);    
+            } */
+            return response()->json([
+                'message' => 'The given data was not found.',
+            ], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            Log::critical("Paat not worker :code:{$e->getCode()}, line: {$e->getLine()}, msg:{$e->getMessage()} ");
+            return false;
+        }
+    }
     ///cantidad de record por mes
     public function chatMovil()
     {

@@ -2,13 +2,16 @@
 Prosody parameters
 '''
 
+from ast import arg
 from statistics import median
 import parselmouth
 import json
 import sys
+import wget
 import numpy as np
+import  shlex, subprocess
 from parselmouth.praat import call
-
+import datetime
 
 
 # This is the function to measure voice pitch
@@ -23,7 +26,7 @@ def measurePitch(voiceID, f0min, f0max, unit):
     
     
     return voice_report_str
-def measure2Pitch(voiceID, f0min, f0max, unit):
+def measure2Pitch(voiceID, f0min, f0max, unit):        
         sound = parselmouth.Sound(voiceID) # read the sound
         duration = call(sound, "Get total duration") # duration
         pitch = call(sound, "To Pitch (cc)", 0, f0min, 15, 'no', 0.03, 0.45, 0.15, 0.35, 0.14, f0max)
@@ -95,15 +98,28 @@ def praat(n, data):
 
 if __name__ == '__main__':          
     args = sys.argv[1:]        
-    n =int(args[0]) 
-    sound = args[1]
+    s3 = args[0]
 
-    #data = measurePitch(sound, 75, 500, "Hertz") 
-    data2 = measure2Pitch(sound, 75, 500, "Hertz") 
+    if s3 :              
+        sound = "https://tuvoz-bucket.s3.eu-central-1.amazonaws.com/"+args[1]
+        path="/tmp"
+        wget.download(sound,out = path)
+
+        input= path+"/"+args[1]
+        output= path+"/"+str(datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S"))+".wav"
+        command_line = 'ffmpeg -i '+input+' '+output
+        args = shlex.split(command_line)
+        subprocess.call(args)    
+        
+        data2 = measure2Pitch(output, 75, 500, "Hertz") 
+        print(data2)
+    else:
+        sound = args[1]
+        data2 = measure2Pitch(sound, 75, 500, "Hertz") 
+        print(data2)
+
     
-    #data = praat(n, data)
-    #print(data)
 
-    print(data2)
+    
 
     

@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:60,1']], function () {
     Route::get('countGetRecordByUser', 'UserController@countGetRecordByUser')->name('user.countGetRecordByUser');
     Route::get('getRecordByUser', 'UserController@getRecordByUser')->name('user.getRecordByUser');
     Route::get('modelPraat/{path}','RecordController@modelPraat')->name('modelPraat');
+    Route::get('modelPraat_s3Blob/{blob}','RecordController@modelPraat_s3Blob')->name('modelPraat_s3Blob');
     //Route::get('modelOpenSmille/{path}','RecordController@modelOpenSmille')->name('modelOpenSmille');
 
     Route::resource('treatment', 'TreatmentController', ['only' => [
